@@ -4,14 +4,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "segytools"
-version = "0.0.2"
+version = "0.0.3"
 authors = [
   { name="Anthony Torlucci", email="anthonytorlucci@gmail.com" },
 ]
 description = "A python package for low-level manipulation of segy files for seismic data."
 readme = "README.md"
 license = { file="LICENSE" }
-requires-python = ">=3.8"
+requires-python = ">=3.7"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",

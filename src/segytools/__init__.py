@@ -1,5 +1,4 @@
-"""segytools
-"""
+"""segytools"""
 
 from .segy_header_item import SegyHeaderItem
 from .segy_abstract_header import SegyAbstractHeader

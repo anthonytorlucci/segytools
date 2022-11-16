@@ -2,9 +2,6 @@
 segy header item
 '''
 
-__author__ = 'Anthony Torlucci'
-__version__ = '0.0.1'
-
 # import python standard modules
 
 

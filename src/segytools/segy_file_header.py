@@ -2,9 +2,6 @@
 segy file header aka binary header
 '''
 
-__author__ = 'Anthony Torlucci'
-__version__ = '0.0.1'
-
 # import python standard modules
 
 
@@ -93,6 +90,86 @@ VIBRATORY_POLARITY_CODE = {
 
 
 class SegyFileHeaderRev2(SegyAbstractHeader):
+    """
+    File or binary header definition of a segy file.
+
+    Attributes
+    ----------
+    jobid : SegyHeaderItem
+        job identification number
+    lineno : SegyHeaderItem
+        line number
+    reelno : SegyHeaderItem
+        reel number
+    ntrcens : SegyHeaderItem
+        number of data traces per ensemble
+    ntrcaux : SegyHeaderItem
+        number of auxiliary traces per ensemble
+    smpint : SegyHeaderItem
+        sample interval in microseconds
+    smpinto : SegyHeaderItem
+        sample interval in microseconds or original recording
+    numsmp : SegyHeaderItem
+        number of samples per data trace
+    numsmpo : SegyHeaderItem
+        number of samples per data trace or original recording
+    dsfmt : SegyHeaderItem
+        data sample format code
+    fold : SegyHeaderItem
+        ensemble fold
+    sortcode : SegyHeaderItem
+        trace sorting code
+    vsumcode : SegyHeaderItem
+        vertical sum code
+    sweepfs : SegyHeaderItem
+        sweep frequency at start
+    sweepfe : SegyHeaderItem
+        sweep frequency at end
+    sweeplen : SegyHeaderItem
+        sweep length
+    sweepcode : SegyHeaderItem
+        sweep type code
+    sweepchan : SegyHeaderItem
+        trace_number of sweep channel
+    sweeptprs : SegyHeaderItem
+        sweep_trace taper length in ms at start
+    sweeptpre : SegyHeaderItem
+        sweep trace taper length in ms at end
+    tprtype : SegyHeaderItem
+        taper type
+    corrtrc : SegyHeaderItem
+        correlated data traces
+    bingain : SegyHeaderItem
+        binary gain recovered
+    amprec : SegyHeaderItem
+        amplitude recovery method
+    meassys : SegyHeaderItem
+        measurement system
+    polarity : SegyHeaderItem
+        impulse signal polarity
+    vpolarity : SegyHeaderItem
+        vibratory polarity code
+    segyrev : SegyHeaderItem
+        seg y format revision number
+    fixedlen : SegyHeaderItem
+        fixed length trace flag
+    ntxthead : SegyHeaderItem
+        number of 3200 byte ext file header records following
+            
+
+    Methods
+    -------
+    segy_type
+        Returns the value of the data sample format. Result is one of `ibm`, `int32`, `int16`, `float32`, or `int8`. (see segpy datatypes)
+    ctype
+        Returns the format character used by the python standard library. (see segpy datatypes).
+    bytes_per_sample
+        Returns the number of bytes for a given datatype.
+    number_of_samples
+        Returns the number of samples from the `numsmp` header item.
+    to_bytes
+        Converts the container class to a bytes object usually for exporting a new segy file.
+    """
 
     def __init__(self):
         super().__init__()
@@ -355,6 +432,7 @@ class SegyFileHeaderRev2(SegyAbstractHeader):
             bobj = bsgy[obj.startbyte - 1:obj.startbyte + obj.nbytes - 1]
             obj.value = int.from_bytes(bobj, byteorder=endianess, signed=obj.signed)
 
+            # TODO: do not map by default. this will cause an error when converting back to bytes.
             if obj.map_bool is True:
                 self.set_key_property(obj.name, 'value', self.mapped_value(obj.name))
 
@@ -378,3 +456,9 @@ class SegyFileHeaderRev2(SegyAbstractHeader):
 
     def to_bytes(self, endianess, byte_length=400):
         return self._to_bytes(endianess=endianess, byte_length=byte_length)
+
+    # TODO: def is_fixed_length(self):
+    #     if self.fixedlen == ??:
+    #         return True
+    #     else:
+    #         return False
