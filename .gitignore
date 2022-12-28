@@ -151,4 +151,12 @@ cython_debug/
 .history/
 
 # Misc
+notes.md
 references/
+
+# example data too large for upload
+examples/poland2D/data/Line_001.RPS
+examples/poland2D/data/Line_001.SPS
+examples/poland2D/data/Line_001.XPS
+examples/poland2D/data/Line_001.TXT
+examples/poland2D/data/Line_001.sgy
