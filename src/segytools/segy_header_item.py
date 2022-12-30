@@ -12,6 +12,27 @@ segy header item
 
 
 class SegyHeaderItem(object):
+    """Used to describe a single header item or field in a segy file header or trace header.
+
+    Parameters
+    ----------
+    name : str
+        Header item identifier.
+    nbytes : int
+        number of bytes.
+    startbyte : int
+        Zero-indexed starting location.
+    description : str
+        Description of the header item.
+    signed : bool
+        If the header item is an int, this flag indicates that the bytes object is signed.
+    map_bool : bool
+        Flag that indicates where this item is to be mapped from the interpreted value to another value.
+    map_dict : `dict`
+        Dictionary in which the key is the interpreted value. Required if map_bool is True.
+    value : Numeric
+        Header item value.
+    """
 
     def __init__(self, name:str, nbytes=4, startbyte=0, description='', signed=False,
                  map_bool=False, map_dict={}, value=0):

@@ -93,7 +93,7 @@ class SegyFileHeaderRev2(SegyAbstractHeader):
     """
     File or binary header definition of a segy file.
 
-    Attributes
+    Parameters
     ----------
     jobid : SegyHeaderItem
         job identification number
@@ -413,20 +413,30 @@ class SegyFileHeaderRev2(SegyAbstractHeader):
 
     # --- METHODS ---
     def segy_type(self):
+        """Return the segy type, e.g. 'ibm', 'int32', 'int16'.
+        """
         return self.dsfmt.value
 
     def ctype(self):
+        """Return the characther type used to convert the bytes to python data.
+        """
         return SEG_Y_TYPE_TO_CTYPE[self.segy_type()]
 
     def bytes_per_sample(self):
+        """Return the number of bytes per sample in a trace.
+        """
         return size_in_bytes(self.ctype())
 
     def number_of_samples(self):
+        """Return the number of samples in a trace.
+        """
         return self.numsmp.value
 
 
     # MUTATORS
     def set_file_header_values(self, bsgy, endianess):
+        """Set the file header items values by converting the bytes object into python data.
+        """
         file_key_obj_dict = self.key_object_dict()
         for _, obj in file_key_obj_dict.items():
             bobj = bsgy[obj.startbyte - 1:obj.startbyte + obj.nbytes - 1]
@@ -455,6 +465,8 @@ class SegyFileHeaderRev2(SegyAbstractHeader):
     #     return bytes(bsgy)
 
     def to_bytes(self, endianess, byte_length=400):
+        """Convert a SegyFileHeader object to bytes().
+        """
         return self._to_bytes(endianess=endianess, byte_length=byte_length)
 
     # TODO: def is_fixed_length(self):
