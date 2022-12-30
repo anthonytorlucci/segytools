@@ -9,9 +9,9 @@ segy file header aka binary header
 
 
 # import local python
-from .segy_header_item import SegyHeaderItem
-from .segy_abstract_header import SegyAbstractHeader
-from .segpy.datatypes import DATA_SAMPLE_FORMAT_TO_SEG_Y_TYPE, SEG_Y_TYPE_TO_CTYPE, size_in_bytes
+from segytools.segy_header_item import SegyHeaderItem
+from segytools.segy_abstract_header import SegyAbstractHeader
+from segytools.datatypes import DATA_SAMPLE_FORMAT_TO_SEG_Y_TYPE, SEG_Y_TYPE_TO_CTYPE, size_in_bytes
 
 
 # bytes 29-30
