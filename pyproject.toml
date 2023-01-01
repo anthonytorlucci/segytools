@@ -1,22 +1,15 @@
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[project]
+[tool.poetry]
 name = "segytools"
-version = "0.0.4"
-authors = [
-  { name="Anthony Torlucci", email="anthonytorlucci@gmail.com" },
-]
-description = "A python package for low-level manipulation of segy files for seismic data."
+version = "0.1.0"
+description = "low-level toolkit for managing segy formatted data"
+authors = ["anthonytorlucci <anthonytorlucci@gmail.com>"]
+license = "MIT"
 readme = "README.md"
-license = { file="LICENSE" }
-requires-python = ">=3.7"
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-]
 
-[project.urls]
-"Homepage" = "https://github.com/anthonytorlucci/segytools"
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
