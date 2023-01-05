@@ -150,6 +150,9 @@ cython_debug/
 # Local History for Visual Studio Code
 .history/
 
+# poetry
+poetry.lock
+
 # Misc
 notes.md
 cicd.sh
