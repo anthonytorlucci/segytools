@@ -56,6 +56,7 @@ class SegyHeaderItem(object):
 
     # ACCESSORS
     def field(self, field_id):
+        """Likely to be depreciated in favor of property decorators."""
         if field_id == 'name':
             return self.name
         elif field_id == 'nbytes':
@@ -79,18 +80,22 @@ class SegyHeaderItem(object):
             return None
 
     def header_name(self):
+        """Likely to be depreciated in favor of property decorators."""
         return self.name
 
     def number_of_bytes(self):
+        """Likely to be depreciated in favor of property decorators."""
         return self.nbytes
 
     def start_byte(self):
+        """Likely to be depreciated in favor of property decorators."""
         return self.startbyte
 
     # def description(self):
     #     return self.description
 
     def is_signed(self):
+        """Likely to be depreciated in favor of property decorators."""
         return self.signed
 
     # def value(self):

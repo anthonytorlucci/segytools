@@ -31,10 +31,14 @@ MAX_EXACT_INTEGER_IBM_FLOAT = 2**MIN_BITS_PRECISION_IBM_FLOAT
 def ibm2ieee(big_endian_bytes):
     """Interpret a byte string as a big-endian IBM float.
 
-    Args:
-        big_endian_bytes (bytes): A byte-string containing at least four bytes.
+    Parameters
+    ----------
+    big_endian_bytes : byte 
+        A byte-string containing at least four bytes.
 
-    Returns:
+    Returns
+    -------
+    float
         The floating point value.
     """
     a, b, c, d = four_bytes(big_endian_bytes)
@@ -56,17 +60,22 @@ BITS_PER_NYBBLE = 4
 def ieee2ibm(f):
     """Convert a float to four big-endian bytes representing an IBM float.
 
-    Args:
-        f (float): The value to be converted.
+    Parameters
+    ----------
+    f : float 
+        The value to be converted.
 
-    Returns:
-        A bytes object (Python 3) or a string (Python 2) containing four
+    Returns
+    -------
+    byte
+        A bytes object (Python 3) containing four
         bytes representing a big-endian IBM float.
 
-    Raises:
-        OverflowError: If f is outside the representable range.
-        ValueError: If f is NaN or infinite.
-        FloatingPointError: If f cannot be represented without total loss of precision.
+    Raises
+    ------
+    OverflowError: If f is outside the representable range.
+    ValueError: If f is NaN or infinite.
+    FloatingPointError: If f cannot be represented without total loss of precision.
     """
     if f == 0:
         # There are many potential representations of zero - this is the standard one
@@ -151,16 +160,20 @@ class IBMFloat(Real):
     def from_float(cls, f):
         """Construct an IBMFloat from an IEEE float.
 
-        Args:
-            f (float): The value to be converted.
+        Parameters
+        ----------
+        f : float
+            The value to be converted.
 
-        Returns:
-            An IBMFloat.
+        Returns
+        -------
+        IBMFloat
 
-        Raises:
-            OverflowError: If f is outside the representable range.
-            ValueError: If f is NaN or infinite.
-            FloatingPointError: If f cannot be represented without total loss of precision.
+        Raises
+        ------
+        OverflowError: If f is outside the representable range.
+        ValueError: If f is NaN or infinite.
+        FloatingPointError: If f cannot be represented without total loss of precision.
         """
         if isinstance(f, IBMFloat):
             return f
@@ -170,17 +183,21 @@ class IBMFloat(Real):
     def from_float_without_underflow(cls, f):
         """Construct an IBMFloat from an IEEE float.
 
-        Args:
-            f (float): The value to be converted. If the provided
-                IEEE value underflows the smallest representable
-                IBM value, this function returns zero.
+        Parameters
+        ----------
+        f : float
+            The value to be converted. If the provided
+            IEEE value underflows the smallest representable
+            IBM value, this function returns zero.
 
-        Returns:
-            An IBMFloat.
+        Returns
+        -------
+        IBMFloat
 
-        Raises:
-            OverflowError: If f is outside the representable range.
-            ValueError: If f is NaN or infinite.
+        Raises
+        ------
+        OverflowError: If f is outside the representable range.
+        ValueError: If f is NaN or infinite.
         """
         try:
             buffer = ieee2ibm(f)
@@ -203,9 +220,20 @@ class IBMFloat(Real):
 
         The is the inverse function of IBMFloat.frexp()
 
-        Args:
-            fraction: A Real in the range -1.0 to 1.0.
-            exponent: An integer in the range -256 to 255 inclusive.
+        Parameters
+        ----------
+        fraction : flaot 
+            A Real in the range -1.0 to 1.0.
+        exponent : int
+            An integer in the range -256 to 255 inclusive.
+
+        Returns
+        -------
+        IBMfloat
+        
+        Raises
+        ------
+        ValueError
         """
         if not (-1.0 <= fraction <= 1.0):
             raise ValueError("ldexp fraction {!r} out of range -1.0 to +1.0")
@@ -239,7 +267,8 @@ class IBMFloat(Real):
     def __bool__(self):
         return not self.is_zero()
 
-    def is_zero(self):
+    def is_zero(self) -> bool:
+        """Whether the value is zero."""
         return self.int_mantissa == 0
 
     def is_subnormal(self):
@@ -255,7 +284,9 @@ class IBMFloat(Real):
     def frexp(self):
         """Obtain the fraction and exponent.
 
-        Returns:
+        Returns
+        -------
+        tuple
             A pair where the first item is the fraction in the range -1.0 and +1.0 and the
             exponent is an integer such that f = fraction * 2**exponent
         """
@@ -265,6 +296,12 @@ class IBMFloat(Real):
         return mantissa, exp_2
 
     def as_integer_ratio(self):
+        """Convert to ratio expressed as a tuple (numerator, denominator)
+        
+        Returns
+        -------
+        tuple
+        """
         sign = -1 if self.signbit else 1
         e16 = self.exp16
         if e16 >= 0:
@@ -386,11 +423,14 @@ class IBMFloat(Real):
     def normalize(self):
         """Normalize the floating point representation.
 
-        Returns:
+        Returns
+        -------
+        IBMFloat
             A normalized IBMFloat equal in value to this object.
 
-        Raises:
-            FloatingPointError: If the number could not be normalized.
+        Raises
+        ------
+        FloatingPointError: If the number could not be normalized.
         """
         if self.is_zero():
             return IBM_FLOAT_ZERO

@@ -171,6 +171,7 @@ SOURCE_MEASUREMENT_UNIT = {
 }
 
 class SegyTraceHeaderRev2(SegyAbstractHeader):
+    """Segy Trace Header container based on segy format revision 2"""
 
     def __init__(self):
         super().__init__()
@@ -859,6 +860,7 @@ class SegyTraceHeaderRev2(SegyAbstractHeader):
 
     # --- METHODS ---
     def set_scalar_corrected_cooridinates(self):
+        """Modifies the coordinates by scaling with the scaler value.""" 
         if self.zsclr.value != 1:
             sclr = self.zsclr.value
             self.recelev.value = self.recelev.value * sclr
@@ -877,6 +879,15 @@ class SegyTraceHeaderRev2(SegyAbstractHeader):
             self.recy.value = self.recy.value * sclr
 
     def set_trace_header_values(self, bsgy, endianess):
+        """Set the trace header values for each segy header item from the segy data (bytes).
+
+        Parameters
+        ----------
+        bsgy : bytes
+            Byte data from the segy file.
+        endianess : str
+            Must be either 'big' or 'little'.
+        """
         # bsgy is type bytes
         file_key_obj_dict = self.key_object_dict()
         for name, obj in file_key_obj_dict.items():
@@ -887,34 +898,13 @@ class SegyTraceHeaderRev2(SegyAbstractHeader):
                 self.set_key_property(obj.name, 'value', self.mapped_value(obj.name))
 
     def to_bytes(self, endianess, byte_length=240):
-        # bsgy = bytearray(byte_length)
-        # file_key_obj_dict = self.key_object_dict()
-        # reverse scaler coordinates for write
-        # if self.zsclr.value != 0:
-        #     self.recelev.value = self.recelev.value / self.zsclr.value
-        #     self.srcelev.value = self.srcelev.value / self.zsclr.value
-        #     self.srcdepth.value = self.srcdepth.value / self.zsclr.value
-        #     self.datmsrc.value = self.datmsrc.value / self.zsclr.value
-        #     self.datmrec.value = self.datmrec.value / self.zsclr.value
-        #     self.h2ozsrc.value = self.h2ozsrc.value / self.zsclr.value
-        #     self.h2ozrec.value = self.h2ozrec.value / self.zsclr.value
-        # if self.xysclr.value != 0:
-        #     self.srcx.value = self.srcx.value / self.xysclr.value
-        #     self.srcy.value = self.srcy.value / self.xysclr.value
-        #     self.recx.value = self.recx.value / self.xysclr.value
-        #     self.recy.value = self.recy.value / self.xysclr.value
-        # for name, obj in file_key_obj_dict.items():
-            
-        #     if obj.map_bool is True:
-        #         # reverse map back to integer
-        #         # tmp_int = list(obj.map_dict.keys())[list(obj.map_dict.values()).index(obj.value)]
-        #         tmp_int = 0
-        #         for key, val in obj.map_dict.items():
-        #             if obj.value == val:
-        #                 tmp_int = int(key)
-        #                 break
-        #         obj.value = tmp_int
-        #     tmp = int.to_bytes(int(obj.value), length=obj.nbytes, byteorder=endianess, signed=obj.signed)
-        #     bsgy[obj.startbyte - 1:obj.startbyte + obj.nbytes - 1] = tmp
-        # return bytes(bsgy)
+        """Convert the object to a bytes object.
+        
+        Parameters
+        ----------
+        endianess : str
+            Must be either 'big' or 'little'
+        byte_length : int
+            Number of bytes in the output bytes object.
+        """
         return self._to_bytes(endianess=endianess, byte_length=byte_length)

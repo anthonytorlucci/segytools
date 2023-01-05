@@ -86,18 +86,42 @@ CTYPE_TO_SIZE = dict(
 
 def data_sample_format_size_in_bytes(data_sample_format: DataSampleFormat):
     """The size in bytes per sample of a data sample format.
+
+    Parameters
+    ----------
+    data_sample_format : DataSampleFormat
+       Indicates the format of the binary data in the file as defined in the segy standard. Typically segy files are formatted as DataSampleFormat.IBM or DataSampleFormat.FLOAT32.
     """
     return CTYPE_TO_SIZE[SEG_Y_TYPE_TO_CTYPE[DATA_SAMPLE_FORMAT_TO_SEG_Y_TYPE[data_sample_format]]]
 
 
 def data_sample_format_description(data_sample_format: DataSampleFormat):
     """A textual description of the data sample format.
+
+    Parameters
+    ----------
+    data_sample_format : DataSampleFormat
+       Indicates the format of the binary data in the file as defined in the segy standard. Typically segy files are formatted as DataSampleFormat.IBM or DataSampleFormat.FLOAT32.
     """
     return SEG_Y_TYPE_DESCRIPTION[DATA_SAMPLE_FORMAT_TO_SEG_Y_TYPE[data_sample_format]]
 
 
-def size_in_bytes(ctype):
+def size_in_bytes(ctype: str):
     """The size in bytes of a ctype.
+
+    Parameters
+    ----------
+    ctype : str
+       Character type. Must be either 'i', 'I', 'h', 'H', 'b', 'B', 'f', 'ibm'
+
+    Returns
+    -------
+    int
+        number of bytes for each sample based on sample format.
+    
+    Raises
+    ------
+    ValueError
     """
     try:
         return CTYPE_TO_SIZE[ctype]

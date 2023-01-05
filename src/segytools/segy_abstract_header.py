@@ -119,6 +119,10 @@ class SegyAbstractHeader(object):
             Either 'big' or 'little'
         byte_length : int
             the number of bytes in the output bytes object. default is 240.
+
+        Returns
+        -------
+        bytes
         """
         bsgy = bytearray(byte_length)
         file_key_obj_dict = self.key_object_dict()
