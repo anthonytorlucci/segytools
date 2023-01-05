@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "segytools"
 version = "0.1.0"
-description = "low-level toolkit for managing segy formatted data"
+description = "low level toolkit for manipulating and analyzing segy formatted data"
 authors = ["anthonytorlucci <anthonytorlucci@gmail.com>"]
 license = "MIT"
 readme = "README.md"
