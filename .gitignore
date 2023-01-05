@@ -152,6 +152,7 @@ cython_debug/
 
 # Misc
 notes.md
+cicd.sh
 references/
 
 # example data too large for upload
