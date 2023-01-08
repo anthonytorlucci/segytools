@@ -175,6 +175,7 @@ class SegyTraceHeaderRev2(SegyAbstractHeader):
 
     def __init__(self):
         super().__init__()
+        self.byte_length = 240
 
         # HEADERS
         self.trseql = SegyHeaderItem(

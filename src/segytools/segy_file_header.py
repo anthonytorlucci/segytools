@@ -173,6 +173,7 @@ class SegyFileHeaderRev2(SegyAbstractHeader):
 
     def __init__(self):
         super().__init__()
+        self.byte_length = 400
         self.jobid = SegyHeaderItem(
             name='jobid', 
             nbytes=4, 
@@ -434,6 +435,8 @@ class SegyFileHeaderRev2(SegyAbstractHeader):
 
 
     # MUTATORS
+    # TODO: replace with header item to_bytes()
+    # NOTE: custom header shouldn't have to rewrite this. Should this also be in abstract header?
     def set_file_header_values(self, bsgy, endianess):
         """Set the file header items values by converting the bytes object into python data.
         """
@@ -467,6 +470,7 @@ class SegyFileHeaderRev2(SegyAbstractHeader):
     def to_bytes(self, endianess, byte_length=400):
         """Convert a SegyFileHeader object to bytes().
         """
+        # calls the _to_bytes method in the SegyAbstractHeader class.
         return self._to_bytes(endianess=endianess, byte_length=byte_length)
 
     # TODO: def is_fixed_length(self):

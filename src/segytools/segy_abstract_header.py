@@ -20,6 +20,11 @@ class SegyAbstractHeader(object):
     by SegyFileHeader and SegyTraceHeader. Any custom trace headers classes 
     should inherit this class.
 
+    Attributes
+    ----------
+    byte_length : int
+        The number of bytes of the header. This must be overwritten is converting back to bytes object.
+
     Methods
     -------
     header_list()
@@ -33,6 +38,7 @@ class SegyAbstractHeader(object):
     set_key_property(self, name: str, field_id: str, value: Any)
         Sets the value of the field of a header item based on the identifier `name`.
     """
+    byte_length = 0
 
     def header_list(self) -> list:
         """
@@ -124,19 +130,26 @@ class SegyAbstractHeader(object):
         -------
         bytes
         """
-        bsgy = bytearray(byte_length)
+        barr = bytearray(byte_length)
         file_key_obj_dict = self.key_object_dict()
         for _, obj in file_key_obj_dict.items():
+            barr[obj.start_byte-1:obj.start_byte + obj.n_bytes - 1] = obj.to_bytes(endianess=endianess)
+        return bytes(barr)
+        
+        
+        # bsgy = bytearray(byte_length)
+        # file_key_obj_dict = self.key_object_dict()
+        # for _, obj in file_key_obj_dict.items():
             
-            if obj.map_bool is True:
-                # reverse map back to integer
-                # tmp_int = list(obj.map_dict.keys())[list(obj.map_dict.values()).index(obj.value)]
-                tmp_int = 0
-                for key, val in obj.map_dict.items():
-                    if obj.value == val:
-                        tmp_int = int(key)
-                        break
-                obj.value = tmp_int
-            tmp = int.to_bytes(int(obj.value), length=obj.nbytes, byteorder=endianess, signed=obj.signed)
-            bsgy[obj.startbyte - 1:obj.startbyte + obj.nbytes - 1] = tmp
-        return bytes(bsgy)
+        #     if obj.map_bool is True:
+        #         # reverse map back to integer
+        #         # tmp_int = list(obj.map_dict.keys())[list(obj.map_dict.values()).index(obj.value)]
+        #         tmp_int = 0
+        #         for key, val in obj.map_dict.items():
+        #             if obj.value == val:
+        #                 tmp_int = int(key)
+        #                 break
+        #         obj.value = tmp_int
+        #     tmp = int.to_bytes(int(obj.value), length=obj.nbytes, byteorder=endianess, signed=obj.signed)
+        #     bsgy[obj.startbyte - 1:obj.startbyte + obj.nbytes - 1] = tmp
+        # return bytes(bsgy)
