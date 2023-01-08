@@ -61,3 +61,18 @@ def read_binary_values(buf, num_items, ctype, endian):
               else unpack_values(buf, ctype, endian))
     assert len(values) == num_items
     return values
+
+def format_textheader_string(textheader):
+    """Format the textheader to have each line be 80 characters long and return a single string.
+
+    Parameters
+    ----------
+    textheader : str
+        The textual header string after decoding.
+
+    Returns
+    -------
+    str
+        Textual header with 80 characters per line.
+    """
+    return '\n'.join(textwrap.wrap(textheader, 80))
