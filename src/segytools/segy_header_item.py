@@ -10,7 +10,6 @@ import numpy
 from ibm2ieee import ibm2float32, ibm2float64
 
 # import local python
-#--from segytools.datatypes import DataSampleFormat, data_sample_format_size_in_bytes
 from segytools.datatypes import DataSampleFormat
 
 
@@ -93,7 +92,7 @@ class SegyHeaderItem(object):
         # TODO: sample format validation; must be a valid DataSampleFormat Enum Type
         # TODO: convert the value to this format
         self._sample_format = sample_format
-        self._n_bytes = data_sample_format_size_in_bytes(self._sample_format)
+        self._n_bytes = sample_format.size_in_bytes
 
     @property
     def n_bytes(self) -> int:
@@ -181,7 +180,7 @@ class SegyHeaderItem(object):
     def map_dict(self, mapping_dictionary:dict):
         """Set the item's mapping dictionary."""
         self._map_dict = mapping_dictionary
-        self._mapped_value = mapping_dictionary[self._value]   
+        self._mapped_value = self._map_dict[self._value]
     
     @property
     def mapped_value(self):

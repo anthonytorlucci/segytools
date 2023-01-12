@@ -154,12 +154,6 @@ def test_segy_header_item_from_bytes_IBM_NEG_ONE_BIG():
     actual = header_item.value
     assert actual == expected
 
-
-
-
-
-
-
 def test_segy_header_item_to_bytes_INT8_ONE_LITTLE():
     expected = int(1).to_bytes(1, byteorder='little', signed=True)
     header_item = SegyHeaderItem(name='example', sample_format=DataSampleFormat_INT8, value=int(1))
@@ -200,4 +194,71 @@ def test_segy_header_item_to_bytes_FLOAT32_ONE_LITTLE():
     expected = struct.pack("<f", float(1.0))
     header_item = SegyHeaderItem(name='example', sample_format=DataSampleFormat_FLOAT32, value=float(1.0))
     actual = header_item.to_bytes(endianess='<')
+    assert actual == expected
+
+def test_segy_header_item_has_mapping_dictionary_False():
+    expected = False
+    header_item = SegyHeaderItem(name='example', sample_format=DataSampleFormat_INT16, value=int(1))
+    actual = header_item.has_mapping_dictionary()
+    assert actual == expected
+
+def test_segy_header_item_has_mapping_dictionary_True():
+    expected = True
+    d = {1: 'has a mapping'}
+    header_item = SegyHeaderItem(name='example', sample_format=DataSampleFormat_INT16, value=int(1), map_dict=d)
+    actual = header_item.has_mapping_dictionary()
+    assert actual == expected
+
+def test_segy_header_item_mapping_dictionary_value():
+    expected = 0.01
+    d = {1: 0.01}
+    header_item = SegyHeaderItem(name='example', sample_format=DataSampleFormat_INT16, value=int(1), map_dict=d)
+    actual = header_item.mapped_value
+    assert actual == expected
+
+def test_segy_header_item_mapping_dictionary_getter():
+    d = {1: 0.01}
+    expected = d
+    header_item = SegyHeaderItem(name='example', sample_format=DataSampleFormat_INT16, value=int(1), map_dict=d)
+    actual = header_item.map_dict
+    assert actual == expected
+
+def test_segy_header_item_mapping_dictionary_setter():
+    d = {1: 0.01}
+    expected = 0.01
+    header_item = SegyHeaderItem(name='example', sample_format=DataSampleFormat_INT16, value=int(1))
+    header_item.map_dict = d
+    actual = header_item.mapped_value
+    assert actual == expected
+
+def test_segy_header_item_value_setter():
+    expected = 1
+    header_item = SegyHeaderItem(name='example', sample_format=DataSampleFormat_INT16)
+    header_item.value = expected
+    actual = header_item.value
+    assert actual == expected
+
+def test_segy_header_item_n_bytes_getter_INT8():
+    expected = 1
+    header_item = SegyHeaderItem(name='example', sample_format=DataSampleFormat_INT8)
+    actual = header_item.n_bytes
+    assert actual == expected
+
+def test_segy_header_item_n_bytes_getter_INT16():
+    expected = 2
+    header_item = SegyHeaderItem(name='example', sample_format=DataSampleFormat_INT16)
+    actual = header_item.n_bytes
+    assert actual == expected
+
+def test_segy_header_item_n_bytes_getter_INT32():
+    expected = 4
+    header_item = SegyHeaderItem(name='example', sample_format=DataSampleFormat_INT32)
+    actual = header_item.n_bytes
+    assert actual == expected
+
+def test_segy_header_item_sample_format_setter_nbytes_INT8():
+    expected = 1
+    header_item = SegyHeaderItem(name='example', sample_format=DataSampleFormat_INT16)
+    header_item.sample_format = DataSampleFormat_INT8
+    actual = header_item.n_bytes
     assert actual == expected
