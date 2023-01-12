@@ -22,8 +22,9 @@ class SegyHeaderItem(object):
         Header item identifier.
     sample_format : DataSampleFormat
         data sample format that tells the system how to interpret the bytes
-    startbyte : int
-        Zero-indexed starting location.
+    start_byte : int
+        Index of the first byte to read. Uses SEGY standard notation which starts a header container at one, not zero. 
+        For example, reading a 4-byte integer header from a bytes or bytearray object, b[0:4] would have a start_byte = 1.
     description : str
         Description of the header item.
     map_dict : `dict`
