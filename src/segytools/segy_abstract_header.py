@@ -192,5 +192,3 @@ class SegyAbstractHeader(object):
         #     tmp = int.to_bytes(int(obj.value), length=obj.nbytes, byteorder=endianess, signed=obj.signed)
         #     bsgy[obj.startbyte - 1:obj.startbyte + obj.nbytes - 1] = tmp
         # return bytes(bsgy)
-
-    #TODO: def from_bytes()

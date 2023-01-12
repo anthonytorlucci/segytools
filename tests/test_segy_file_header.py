@@ -101,8 +101,16 @@ b_ntxthead = int.to_bytes(int(0), length=2, byteorder='little', signed=True)
 file_header_bytearray[304:306] = b_ntxthead
 
 def test_segy_file_header_mapped_sample_format():
+    expected = 'ibm'
     file_header = segytools.segy_file_header.SegyFileHeaderRev2()
     file_header.set_header_values(buf=bytes(file_header_bytearray), endianess='<')
+    actual = file_header.dsfmt.mapped_value
+    assert actual == expected
+
+def test_segy_file_header_segy_type():
     expected = 'ibm'
-    assert file_header.dsfmt.mapped_value == expected
+    file_header = segytools.segy_file_header.SegyFileHeaderRev2()
+    file_header.set_header_values(buf=bytes(file_header_bytearray), endianess='<')
+    actual = file_header.segy_type()
+    assert actual == expected
 
