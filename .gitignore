@@ -155,7 +155,7 @@ poetry.lock
 
 # Misc
 notes.md
-cicd.sh
+sandbox.py
 references/
 
 # example data too large for upload
