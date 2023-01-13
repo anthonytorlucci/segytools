@@ -9,10 +9,12 @@ segy trace header
 
 
 # import local python
+from segytools.datatypes import DataSampleFormat, \
+    DATA_SAMPLE_FORMAT_INT16, DATA_SAMPLE_FORMAT_INT32
 from segytools.segy_abstract_header import SegyAbstractHeader
 from segytools.segy_header_item import SegyHeaderItem
 
-
+# --- Mappings
 # bytes 29-30
 TRACE_IDENTIFICATION_CODE = {
     -1: 'Other',
@@ -180,495 +182,415 @@ class SegyTraceHeaderRev2(SegyAbstractHeader):
         # HEADERS
         self.trseql = SegyHeaderItem(
             name='trseql', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=1,
-            description='trace_sequence_number_within_line',
-            is_signed=True)
+            description='trace_sequence_number_within_line')
         self.trseqf = SegyHeaderItem(
             name='trseqf', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=5,
-            description='trace_sequence_number_within_segy_file',
-            is_signed=True)
+            description='trace_sequence_number_within_segy_file')
         self.ffid = SegyHeaderItem(
             name='ffid', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=9,
-            description='original_field_record_number',
-            is_signed=True)
+            description='original_field_record_number',)
         self.trffid = SegyHeaderItem(
             name='trffid', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=13,
-            description='trace_number_within_the_original_field_record',
-            is_signed=True)
-        self.shot = SegyHeaderItem(
-            name='shot', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            description='trace_number_within_the_original_field_record')
+        self.energysrcnum = SegyHeaderItem(
+            name='energysrcnum', 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=17,
-            description='energy_source_point_number',
-            is_signed=True)
+            description='energy_source_point_number')
         self.ens = SegyHeaderItem(
             name='ens', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=21,
-            description='ensemble_number',
-            is_signed=True)
+            description='ensemble_number')
         self.trcens = SegyHeaderItem(
             name='trcens', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=25,
-            description='trace_number_within_the_ensemble',
-            is_signed=True)
+            description='trace_number_within_the_ensemble')
         self.trid = SegyHeaderItem(
             name='trid', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=29,
-            description='trace_identification_code',
-            is_signed=True,
-            map_bool=True, 
+            description='trace_identification_code', 
             map_dict=TRACE_IDENTIFICATION_CODE)
         self.vsum = SegyHeaderItem(
             name='vsum', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=31,
-            description='number_of_vertically_summed_traces_yielding_this_trace',
-            is_signed=True)
+            description='number_of_vertically_summed_traces_yielding_this_trace')
         self.hsum = SegyHeaderItem(
             name='hsum', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=33,
-            description='number_of_horizontally_stacked_traces_yielding_this_trace',
-            is_signed=True)
+            description='number_of_horizontally_stacked_traces_yielding_this_trace')
         self.datuse = SegyHeaderItem(
             name='datuse', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=35,
             description='data_use',
-            is_signed=True,
-            map_bool=True, 
-            map_dict=DATA_USE)
+            map_dict=DATA_USE,
+            value=1)
         self.offset = SegyHeaderItem(
             name='offset', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=37,
-            description='distance_from_center_of_the_source_point_to_the_center_of_the_receiver_group',
-            is_signed=True)
+            description='distance_from_center_of_the_source_point_to_the_center_of_the_receiver_group')
         self.recelev = SegyHeaderItem(
             name='recelev', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=41,
-            description='receiver_group_elevation',
-            is_signed=True)
+            description='receiver_group_elevation')
         self.srcelev = SegyHeaderItem(
             name='srcelev', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=45,
-            description='surface_elevation_at_source',
-            is_signed=True)
+            description='surface_elevation_at_source')
         self.srcdepth = SegyHeaderItem(
             name='srcdepth', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=49,
-            description='source_depth_below_surface',
-            is_signed=True)
+            description='source_depth_below_surface')
         self.datmrec = SegyHeaderItem(
             name='datmrec', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=53,
-            description='datum_elevation_at_receiver_group',
-            is_signed=True)
+            description='datum_elevation_at_receiver_group')
         self.datmsrc = SegyHeaderItem(
             name='datmsrc', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=57,
-            description='datum_elevation_at_source',
-            is_signed=True)
+            description='datum_elevation_at_source')
         self.h2ozsrc = SegyHeaderItem(
             name='h2ozsrc', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=61,
-            description='water_depth_at_source',
-            is_signed=True)
+            description='water_depth_at_source')
         self.h2ozrec = SegyHeaderItem(
             name='h2ozrec', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=65,
-            description='water_depth_at_group',
-            is_signed=True)
+            description='water_depth_at_group')
         self.zsclr = SegyHeaderItem(
             name='zsclr', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=69,
             description='scalar_to_be_applied_to_all_elevations_and_depths',
-            is_signed=True,
-            map_bool=True, 
-            map_dict=COORDINATE_SCALAR_MULTIPLIER)
+            map_dict=COORDINATE_SCALAR_MULTIPLIER,
+            value=1)
         self.xysclr = SegyHeaderItem(
             name='xysclr', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=71,
             description='scalar_to_be_applied_to_all_coordinates',
-            is_signed=True,
-            map_bool=True, 
-            map_dict=COORDINATE_SCALAR_MULTIPLIER)
+            map_dict=COORDINATE_SCALAR_MULTIPLIER,
+            value=1)
         self.srcx = SegyHeaderItem(
             name='srcx', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=73,
-            description='source_coordinate_x',
-            is_signed=True)
+            description='source_coordinate_x')
         self.srcy = SegyHeaderItem(
             name='srcy', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=77,
-            description='source_coordinate_y',
-            is_signed=True)
+            description='source_coordinate_y')
         self.recx = SegyHeaderItem(
             name='recx', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=81,
-            description='group_coordinate_x',
-            is_signed=True)
+            description='group_coordinate_x')
         self.recy = SegyHeaderItem(
             name='recy', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=85,
-            description='group_coordinate_y',
-            is_signed=True)
+            description='group_coordinate_y')
         self.coordunits = SegyHeaderItem(
             name='coordunits', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=89,
             description='coordinate_units',
-            is_signed=True,
-            map_bool=True, 
-            map_dict=COORDINATE_UNITS)
+            map_dict=COORDINATE_UNITS,
+            value=1)
         self.weathvel = SegyHeaderItem(
             name='weathvel', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=91,
-            description='weathering_velocity',
-            is_signed=True)
+            description='weathering_velocity')
         self.subweathvel = SegyHeaderItem(
             name='subweathvel', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=93,
-            description='subweathering_velocity',
-            is_signed=True)
+            description='subweathering_velocity')
         self.uptsrc = SegyHeaderItem(
             name='uptsrc', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=95,
-            description='uphole_time_at_source_in_ms',
-            is_signed=True)
+            description='uphole_time_at_source_in_ms')
         self.uptrec = SegyHeaderItem(
             name='uptrec', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=97,
-            description='uphole_time_at_group_in_ms',
-            is_signed=True)
+            description='uphole_time_at_group_in_ms')
         self.srcstat = SegyHeaderItem(
             name='srcstat', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=99,
-            description='source_static_correction_in_ms',
-            is_signed=True)
+            description='source_static_correction_in_ms')
         self.recstat = SegyHeaderItem(
             name='recstat', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=101,
-            description='group_static_correction_in_ms',
-            is_signed=True)
+            description='group_static_correction_in_ms')
         self.totstat = SegyHeaderItem(
             name='totstat', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=103,
-            description='total_static_applied_in_ms',
-            is_signed=True)
+            description='total_static_applied_in_ms')
         self.lagA = SegyHeaderItem(
             name='lagA', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=105,
-            description='lag_time_A',
-            is_signed=True)
+            description='lag_time_A')
         self.lagB = SegyHeaderItem(
             name='lagB', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=107,
-            description='lag_time_B',
-            is_signed=True)
+            description='lag_time_B')
         self.delayt = SegyHeaderItem(
             name='delayt', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=109,
-            description='delay_recording_time',
-            is_signed=True)
+            description='delay_recording_time')
         self.mutes = SegyHeaderItem(
             name='mutes', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=111,
-            description='mute_time_start_time_in_ms',
-            is_signed=True)
+            description='mute_time_start_time_in_ms')
         self.mutee = SegyHeaderItem(
             name='mutee', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=113,
-            description='mute_time_end_time_in_ms',
-            is_signed=True)
+            description='mute_time_end_time_in_ms')
         self.numsmp = SegyHeaderItem(
             name='numsmp', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=115,
-            description='number_of_samples_in_this_trace',
-            is_signed=True)  # verify this matches file header
+            description='number_of_samples_in_this_trace')
         self.smpint = SegyHeaderItem(
             name='smpint', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=117,
-            description='sample_interval_in_ms_for_this_trace',
-            is_signed=True) # verify this matches file header
+            description='sample_interval_in_ms_for_this_trace')
         self.gaintype = SegyHeaderItem(
             name='gaintype', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=119,
             description='gain_type_of_field_instruments',
-            is_signed=True,
-            map_bool=True, 
-            map_dict=GAIN_TYPE_OF_FIELD_INSTRUMENTS)
+            map_dict=GAIN_TYPE_OF_FIELD_INSTRUMENTS,
+            value=1)
         self.gainconst = SegyHeaderItem(
             name='gainconst', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=121,
-            description='instrument_gain_constant',
-            is_signed=True)
+            description='instrument_gain_constant')
         self.initgain = SegyHeaderItem(
             name='initgain', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=123,
-            description='instrument_early_or_initial_gain',
-            is_signed=True)
+            description='instrument_early_or_initial_gain')
         self.corrx = SegyHeaderItem(
             name='corrx', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=125,
             description='correlated',
-            is_signed=True,
-            map_bool=True, 
-            map_dict=CORRELATED)
+            map_dict=CORRELATED,
+            value=1)
         self.sweepfs = SegyHeaderItem(
             name='sweepfs', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=127,
-            description='sweep_frequency_at_start',
-            is_signed=True)
+            description='sweep_frequency_at_start')
         self.sweepfe = SegyHeaderItem(
             name='sweepfe', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=129,
-            description='sweep_frequency_at_end',
-            is_signed=True)
+            description='sweep_frequency_at_end')
         self.sweeplen = SegyHeaderItem(
             name='sweeplen', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=131,
-            description='sweep_length_in_ms',
-            is_signed=True)
+            description='sweep_length_in_ms')
         self.sweeptype = SegyHeaderItem(
             name='sweeptype', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=133,
             description='sweep_type',
-            is_signed=True,
-            map_bool=True, 
-            map_dict=SWEEP_TYPE)
+            map_dict=SWEEP_TYPE,
+            value=1)
         self.sweeptprs = SegyHeaderItem(
             name='sweeptprs', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=135,
-            description='sweep_trace_taper_length_at_start_in_ms',
-            is_signed=True)
+            description='sweep_trace_taper_length_at_start_in_ms')
         self.sweeptpre = SegyHeaderItem(
             name='sweeptpre', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=137,
-            description='sweep_trace_taper_length_at_end_in_ms',
-            is_signed=True)
+            description='sweep_trace_taper_length_at_end_in_ms')
         self.tprtype = SegyHeaderItem(
             name='tprtype', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=139,
             description='taper_type',
-            is_signed=True,
-            map_bool=True, 
-            map_dict=TAPER_TYPE)
+            map_dict=TAPER_TYPE,
+            value=1)
         self.aliasfilf = SegyHeaderItem(
             name='aliasfilf', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=141,
-            description='alias_filter_frequency',
-            is_signed=True)
+            description='alias_filter_frequency')
         self.aliasfils = SegyHeaderItem(
             name='aliasfils', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=143,
-            description='alias_filter_slope',
-            is_signed=True)
+            description='alias_filter_slope')
         self.notchfilf = SegyHeaderItem(
             name='notchfilf', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=145,
-            description='notch_filter_frequency',
-            is_signed=True)
+            description='notch_filter_frequency')
         self.notchfils = SegyHeaderItem(
             name='notchfils', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=147,
-            description='notch_filter_slope',
-            is_signed=True)
+            description='notch_filter_slope')
         self.lowcutf = SegyHeaderItem(
             name='lowcutf', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=149,
-            description='low_cut_frequency',
-            is_signed=True)
+            description='low_cut_frequency')
         self.highcutf = SegyHeaderItem(
             name='highcutf', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=151,
-            description='high_cut_frequency',
-            is_signed=True)
+            description='high_cut_frequency')
         self.lowcuts = SegyHeaderItem(
             name='lowcuts', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=153,
-            description='low_cut_slope',
-            is_signed=True)
+            description='low_cut_slope')
         self.highcuts = SegyHeaderItem(
             name='highcuts', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=155,
-            description='high_cut_slope',
-            is_signed=True)
+            description='high_cut_slope')
         self.year = SegyHeaderItem(
             name='year', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=157,
-            description='year_data_recorded',
-            is_signed=True)
+            description='year_data_recorded')
         self.day = SegyHeaderItem(
             name='day', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=159,
-            description='day_of_year',
-            is_signed=True)
+            description='day_of_year')
         self.hour = SegyHeaderItem(
             name='hour', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=161,
-            description='hour_of_day',
-            is_signed=True)
+            description='hour_of_day')
         self.minute = SegyHeaderItem(
             name='minute', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=163,
-            description='minute_of_hour',
-            is_signed=True)
+            description='minute_of_hour')
         self.second = SegyHeaderItem(
             name='second', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=165,
-            description='second_of_minute',
-            is_signed=True)
+            description='second_of_minute')
         self.timebasis = SegyHeaderItem(
             name='timebasis', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=167,
             description='time_basis_code',
-            is_signed=True,
-            map_bool=True, 
-            map_dict=TIME_BASIS_CODE)
+            map_dict=TIME_BASIS_CODE,
+            value=1)
         self.trcweight = SegyHeaderItem(
             name='trcweight', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=169,
-            description='trace_weighting_factor',
-            is_signed=True)
+            description='trace_weighting_factor')
         self.groupnum = SegyHeaderItem(
             name='groupnum', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=171,
-            description='geophone_group_number_of_roll_switch_position_one',
-            is_signed=True)
+            description='geophone_group_number_of_roll_switch_position_one')
         self.groupnumfirst = SegyHeaderItem(
             name='groupnumfirst', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=173,
-            description='geophone_group_number_of_trace_number_one',
-            is_signed=True)
+            description='geophone_group_number_of_trace_number_one')
         self.groupnumlast = SegyHeaderItem(
             name='groupnumlast', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=175,
-            description='geophone_group_number_of_last_trace',
-            is_signed=True)
+            description='geophone_group_number_of_last_trace')
         self.gapsize = SegyHeaderItem(
             name='gapsize', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=177,
-            description='gap_size',
-            is_signed=True)
+            description='gap_size')
         self.overtrvl = SegyHeaderItem(
             name='overtrvl', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=179,
             description='over_travel_associated_with_taper',
-            is_signed=True,
-            map_bool=True, 
-            map_dict=OVER_TRAVEL_ASSOCIATED_TAPER_AT_BEGINNING_OR_END_OF_LINE)
+            map_dict=OVER_TRAVEL_ASSOCIATED_TAPER_AT_BEGINNING_OR_END_OF_LINE,
+            value=1)
         self.ensx = SegyHeaderItem(
             name='ensx', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=181,
-            description='x_coordinate_of_ensemble_position_of_this_trace',
-            is_signed=True)
+            description='x_coordinate_of_ensemble_position_of_this_trace')
         self.ensy = SegyHeaderItem(
             name='ensy', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=185,
-            description='y_coordinate_of_ensemble_position_of_this_trace',
-            is_signed=True)
+            description='y_coordinate_of_ensemble_position_of_this_trace')
         self.il = SegyHeaderItem(
             name='il', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=189,
-            description='for_3d_poststack_data_this_field_is_for_in_line_number',
-            is_signed=True)
+            description='for_3d_poststack_data_this_field_is_for_in_line_number')
         self.xl = SegyHeaderItem(
             name='xl', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=193,
-            description='for_3d_poststack_data_this_field_is_for_cross_line_number',
-            is_signed=True)
+            description='for_3d_poststack_data_this_field_is_for_cross_line_number')
         self.shotpoint = SegyHeaderItem(
             name='shotpoint', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=197,
-            description='shotpoint_number',
-            is_signed=True)
+            description='shotpoint_number')
         self.shotptsclr = SegyHeaderItem(
             name='shotptsclr', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=201,
-            description='scalar_to_be_applied_to_the_shotpoint_number',
-            is_signed=True)
+            description='scalar_to_be_applied_to_the_shotpoint_number')
         self.trcvalmeas = SegyHeaderItem(
             name='trcvalmeas', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=203,
             description='trace_value_measurement_unit',
-            is_signed=True,
-            map_bool=True, 
             map_dict=TRACE_VALUE_MEASUREMENT_UNIT)
         # The transduction constant is encoded with the mantissa and the power of
         # the exponent, e.g.:
@@ -676,92 +598,76 @@ class SegyTraceHeaderRev2(SegyAbstractHeader):
         # transduction_constant_mantissa * 10 ** transduction_constant_exponent
         self.transconstm = SegyHeaderItem(
             name='transconstm', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=205,
-            description='transduction_constant_mantissa',
-            is_signed=True)
+            description='transduction_constant_mantissa')
         self.transconste = SegyHeaderItem(
             name='transconste', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=209,
-            description='transduction_constant_exponent',
-            is_signed=True)
+            description='transduction_constant_exponent')
         self.transunits = SegyHeaderItem(
             name='transunits', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=211,
             description='transduction_units',
-            is_signed=True,
-            map_bool=True, 
             map_dict=TRANSDUCTION_UNITS)
         self.deviceid = SegyHeaderItem(
             name='deviceid', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=213,
-            description='device_trace_identifier',
-            is_signed=True)
+            description='device_trace_identifier')
         self.timesclr = SegyHeaderItem(
             name='timesclr', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=215,
-            description='scalar_to_be_applied_to_times',
-            is_signed=True)
+            description='scalar_to_be_applied_to_times')
         self.srctypeor = SegyHeaderItem(
             name='srctypeor', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=217,
             description='source_type_orientation',
-            is_signed=True,
-            map_bool=True, 
             map_dict=SOURCE_TYPE_ORIENTATION)
         self.srcdirm = SegyHeaderItem(
             name='srcdirm', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=219,
-            description='source_energy_direction_mantissa',
-            is_signed=True)
+            description='source_energy_direction_mantissa')
         self.srcdire = SegyHeaderItem(
             name='srcdire', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=223,
-            description='source_energy_direction_exponent',
-            is_signed=True)
+            description='source_energy_direction_exponent')
         # The source measurement is encoded with the mantissa and the power of
         # the exponent, e.g.:
         # source_measurement =
         # source_measurement_mantissa * 10 ** source_measurement_exponent
         self.srcmeasm = SegyHeaderItem(
             name='srcmeasm', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=225,
-            description='source_measurement_mantissa',
-            is_signed=True)
+            description='source_measurement_mantissa')
         self.srcmease = SegyHeaderItem(
             name='srcmease', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=229,
-            description='source_measurement_exponent',
-            is_signed=True)
+            description='source_measurement_exponent')
         self.srcmeasu = SegyHeaderItem(
             name='srcmeasu', 
-            sample_format=DataSampleFormat.INT16, # nbytes=2, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, # nbytes=2, 
             start_byte=231,
             description='source_measurement_unit',
-            is_signed=True,
-            map_bool=True, 
             map_dict=SOURCE_MEASUREMENT_UNIT)
         self.unknown233 = SegyHeaderItem(
             name='unknown233', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=233,
-            description='unknown',
-            is_signed=True)
+            description='unknown')
         self.unknown237 = SegyHeaderItem(
             name='unknown237', 
-            sample_format=DataSampleFormat.INT32, # nbytes=4, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, # nbytes=4, 
             start_byte=237,
-            description='unknown',
-            is_signed=True)
+            description='unknown')
 
 
     # --- METHODS ---
