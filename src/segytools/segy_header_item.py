@@ -37,10 +37,8 @@ class SegyHeaderItem(object):
     has_mapping_dictionary
     """
 
-    def __init__(self, name:str, sample_format:DataSampleFormat, start_byte:int=0, description:str='',
-                 map_dict:dict={}, value=0):
-        self._name = name
-        self._sample_format = sample_format  # TODO: assert type DataSampleFormat Enum class
+    def __init__(self, sample_format:DataSampleFormat, start_byte:int=0, description:str='', map_dict:dict={}, value=0):
+        self._sample_format = sample_format  # TODO: assert derived from DataSampleFormat name tuple
         self._n_bytes = sample_format.size_in_bytes  # length of the header in bytes; default to 4, but may be 2
         self._start_byte = start_byte      # the relative byte location to start reading
         self._description = description  # defualt to empty string
@@ -52,29 +50,11 @@ class SegyHeaderItem(object):
             self._mapped_value = map_dict[value]
 
     def __str__(self):
-        s = 'name: ' + self.name + ', '
-        s += 'description: ' + self.description + ', '
-        s += 'start byte: ' + str(self.start_byte) + ', '
-        s += 'byte length: ' + str(self.n_bytes) + ', '
-        s += 'value: ' + str(self.value)
+        s += 'description: ' + self._description + ', '
+        s += 'start byte: ' + str(self._start_byte) + ', '
+        s += 'byte length: ' + str(self._n_bytes) + ', '
+        s += 'value: ' + str(self._value)
         return s
-
-    @property
-    def name(self) -> str:
-        """Return the item's name."""
-        return self._name
-
-    @name.setter
-    def name(self, name:str):
-        """Set the item's name.
-
-        Parameters
-        ----------
-        name : str
-            The name to be set.
-        """
-        # TODO: name validation: must be a string; raise ValueError
-        self._name = name
 
     @property
     def sample_format(self) -> DataSampleFormat:
@@ -212,29 +192,6 @@ class SegyHeaderItem(object):
             bout = struct.pack(fmt, self._value)
         return bout
 
-        # # TODO: endianess validation; must be either 'little' or 'big'
-        # if self._sample_format == DataSampleFormat.INT8 or \
-        #     self._sample_format == DataSampleFormat.INT16 or \
-        #         self._sample_format == DataSampleFormat.INT32:
-        #     tmp_value = self._value
-        #     if self._map_dict:
-        #         # this item has a mapping dictionary defined, map in reverse order back to an int so it can be converted to a bytes object
-        #         for key, val in self._map_dict.items():
-        #             if self._value == val:
-        #                 tmp_value = key
-        #                 break
-        #     try:
-        #         int_val = int(tmp_value)
-        #     except ValueError as err:
-        #         print(f"SegyHeaderItem unable to convert value {tmp_value} to an integer. Please check mapping and sample format.")
-        #         raise err
-
-        #     bout = int.to_bytes(int_val, length=self._nbytes, byteorder=endianess, signed=self._is_signed)
-        # else:
-        #     raise NotImplementedError("Converting to a non-integer value is not yet supported.")
-        # return bout
-        
-
     @staticmethod
     def value_from_buffer(buf:bytes, endianess:str, sample_format:DataSampleFormat):
         """Unpack value from buffer.
@@ -260,7 +217,7 @@ class SegyHeaderItem(object):
     
     
     @classmethod
-    def from_bytes(cls, buf:bytes, endianess: str, name:str, sample_format:DataSampleFormat, start_byte:int=0, description:str='', map_dict:dict={}):
+    def from_bytes(cls, buf:bytes, endianess: str, sample_format:DataSampleFormat, start_byte:int=0, description:str='', map_dict:dict={}):
         """Create a segy header item from a bytes object.
 
         Parameters
@@ -270,104 +227,7 @@ class SegyHeaderItem(object):
         endianess : str
             '>' for big endian, '<' for little
         """
-        header_item = SegyHeaderItem(name=name, sample_format=sample_format, start_byte=start_byte, description=description, map_dict=map_dict)
+        header_item = SegyHeaderItem(sample_format=sample_format, start_byte=start_byte, description=description, map_dict=map_dict)
         header_item.value = cls.value_from_buffer(buf=buf, endianess=endianess, sample_format=sample_format)
 
         return header_item
-    
-    
-    
-    # # ACCESSORS
-    # def field(self, field_id):
-    #     """Likely to be depreciated in favor of property decorators."""
-    #     if field_id == 'name':
-    #         return self.name
-    #     elif field_id == 'nbytes':
-    #         return self.nbytes
-    #     elif field_id == 'startbyte':
-    #         return self.startbyte
-    #     elif field_id == 'description':
-    #         return self.description
-    #     elif field_id == 'signed':
-    #         return self.signed
-    #     elif field_id == 'value':
-    #         return self.value
-    #     elif field_id == 'supplementary':
-    #         return self.supplementary
-    #     elif field_id == 'map_bool':
-    #         return self.map_bool
-    #     elif field_id == 'map_dict':
-    #         return self.map_dict
-    #     else:
-    #         print('field not found')
-    #         return None
-
-    # def header_name(self):
-    #     """Likely to be depreciated in favor of property decorators."""
-    #     return self.name
-
-    # def number_of_bytes(self):
-    #     """Likely to be depreciated in favor of property decorators."""
-    #     return self.nbytes
-
-    # def start_byte(self):
-    #     """Likely to be depreciated in favor of property decorators."""
-    #     return self.startbyte
-
-    # # def description(self):
-    # #     return self.description
-
-    # def is_signed(self):
-    #     """Likely to be depreciated in favor of property decorators."""
-    #     return self.signed
-
-    # # def value(self):
-    # #     return self.value
-
-    # # def supplementary(self):
-    # #     return self.supplementary
-
-    # # MUTATORS 
-    # def set_field(self, field, value):
-    #     if field == 'name':
-    #         self.name = value
-    #     elif field == 'nbytes':
-    #         self.nbytes = value
-    #     elif field == 'startbyte':
-    #         self.startbyte = value
-    #     elif field == 'description':
-    #         self.description = value
-    #     elif field == 'signed':
-    #         self.signed = value
-    #     elif field == 'value':
-    #         self.value = value
-    #     elif field == 'supplementary':
-    #         self.supplementary = value
-    #     elif field == 'map_bool':
-    #         self.map_bool = value
-    #     elif field == 'map_dict':
-    #         self.map_dict = value
-    #     else:
-    #         print('field not found')
-
-
-    # def set_name(self, name:str):
-    #     self.name = name
-
-    # def set_number_of_bytes(self, nbytes:int):
-    #     self.nbytes = nbytes
-
-    # def set_start_byte(self, startbyte:int):
-    #     self.startbyte = startbyte
-
-    # def set_description(self, description:str):
-    #     self.description = description
-
-    # def set_signed(self, signed:bool):
-    #     self.signed = signed
-
-    # def set_value(self, value):
-    #     self.value = value
-
-    # def set_supplementary_text(self, supplementary:str):
-    #     self.supplementary = supplementary

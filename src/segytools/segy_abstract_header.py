@@ -52,8 +52,7 @@ class SegyAbstractHeader(object):
         """
         Returns a list of header item objects.
         """
-        return [key for key, value in self.__dict__.items() if
-                              not isinstance(value, (FunctionType, MethodType))]
+        return [key for key, obj in self.__dict__.items() if isinstance(obj, SegyHeaderItem)]
 
 
     def key_object_dict(self) -> dict:
