@@ -330,7 +330,8 @@ class SegyFileHeaderRev2(SegyAbstractHeader):
             name='segyrev', 
             sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=301,
-            description='seg_y_format_revision_number')
+            description='seg_y_format_revision_number',
+            value=2)
         self.fixedlen = SegyHeaderItem(
             name='fixedlen', 
             sample_format=DATA_SAMPLE_FORMAT_INT16, 
