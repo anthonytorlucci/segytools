@@ -47,64 +47,64 @@ def test_segy_file_header_initialization_jobid_value():
     actual = file_header.jobid.value
     assert actual == expected
 
-def test_segy_file_header_initialization_lineno_value():
+def test_segy_file_header_initialization_line_number_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.lineno.value
+    actual = file_header.line_number.value
     assert actual == expected
 
-def test_segy_file_header_initialization_reelno_value():
+def test_segy_file_header_initialization_reel_number_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.reelno.value
+    actual = file_header.reel_number.value
     assert actual == expected
 
-def test_segy_file_header_initialization_ntrcens_value():
+def test_segy_file_header_initialization_num_traces_per_ensemble_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.ntrcens.value
+    actual = file_header.num_traces_per_ensemble.value
     assert actual == expected
 
-def test_segy_file_header_initialization_ntrcaux_value():
+def test_segy_file_header_initialization_num_aux_traces_per_ensemble_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.ntrcaux.value
+    actual = file_header.num_aux_traces_per_ensemble.value
     assert actual == expected
 
-def test_segy_file_header_initialization_smpint_value():
+def test_segy_file_header_initialization_sample_interval_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.smpint.value
+    actual = file_header.sample_interval.value
     assert actual == expected
 
-def test_segy_file_header_initialization_smpinto_value():
+def test_segy_file_header_initialization_original_sample_interval_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.smpinto.value
+    actual = file_header.original_sample_interval.value
     assert actual == expected
 
-def test_segy_file_header_initialization_numsmp_value():
+def test_segy_file_header_initialization_num_samples_per_trace_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.numsmp.value
+    actual = file_header.num_samples_per_trace.value
     assert actual == expected
 
-def test_segy_file_header_initialization_numsmpo_value():
+def test_segy_file_header_initialization_original_num_samples_per_trace_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.numsmpo.value
+    actual = file_header.original_num_samples_per_trace.value
     assert actual == expected
 
-def test_segy_file_header_initialization_dsfmt_value():
+def test_segy_file_header_initialization_data_sample_format_code_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.dsfmt.value
+    actual = file_header.data_sample_format_code.value
     assert actual == expected
 
-def test_segy_file_header_initialization_dsfmt_mapped_value():
+def test_segy_file_header_initialization_data_sample_format_code_mapped_value():
     expected = "undefined"
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.dsfmt.mapped_value
+    actual = file_header.data_sample_format_code.mapped_value
     assert actual == expected
 
 def test_segy_file_header_initialization_fold_value():
@@ -113,130 +113,130 @@ def test_segy_file_header_initialization_fold_value():
     actual = file_header.fold.value
     assert actual == expected
 
-def test_segy_file_header_initialization_sortcode_value():
+def test_segy_file_header_initialization_sort_code_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.sortcode.value
+    actual = file_header.sort_code.value
     assert actual == expected
 
-def test_segy_file_header_initialization_sortcode_mapped_value():
+def test_segy_file_header_initialization_sort_code_mapped_value():
     expected = "Unknown"
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.sortcode.mapped_value
+    actual = file_header.sort_code.mapped_value
     assert actual == expected
 
-def test_segy_file_header_initialization_vsumcode_value():
+def test_segy_file_header_initialization_vertical_sum_code_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.vsumcode.value
+    actual = file_header.vertical_sum_code.value
     assert actual == expected
 
-def test_segy_file_header_initialization_sweepfs_value():
+def test_segy_file_header_initialization_sweep_freq_start_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.sweepfs.value
+    actual = file_header.sweep_freq_start.value
     assert actual == expected
 
-def test_segy_file_header_initialization_sweepfe_value():
+def test_segy_file_header_initialization_sweep_freq_end_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.sweepfe.value
+    actual = file_header.sweep_freq_end.value
     assert actual == expected
 
-def test_segy_file_header_initialization_sweeplen_value():
+def test_segy_file_header_initialization_sweep_length_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.sweeplen.value
+    actual = file_header.sweep_length.value
     assert actual == expected
 
-def test_segy_file_header_initialization_sweepcode_value():
+def test_segy_file_header_initialization_sweep_code_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.sweepcode.value
+    actual = file_header.sweep_code.value
     assert actual == expected
 
-def test_segy_file_header_initialization_sweepcode_mapped_value():
+def test_segy_file_header_initialization_sweep_code_mapped_value():
     expected = "undefined"
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.sweepcode.mapped_value
+    actual = file_header.sweep_code.mapped_value
     assert actual == expected
 
-def test_segy_file_header_initialization_sweepchan_value():
+def test_segy_file_header_initialization_sweep_chan_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.sweepchan.value
+    actual = file_header.sweep_chan.value
     assert actual == expected
 
-def test_segy_file_header_initialization_sweeptprs_value():
+def test_segy_file_header_initialization_sweep_taper_length_start_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.sweeptprs.value
+    actual = file_header.sweep_taper_length_start.value
     assert actual == expected
 
-def test_segy_file_header_initialization_sweeptpre_value():
+def test_segy_file_header_initialization_sweep_taper_length_end_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.sweeptpre.value
+    actual = file_header.sweep_taper_length_end.value
     assert actual == expected
 
-def test_segy_file_header_initialization_tprtype_value():
+def test_segy_file_header_initialization_taper_type_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.tprtype.value
+    actual = file_header.taper_type.value
     assert actual == expected
 
-def test_segy_file_header_initialization_tprtype_mapped_value():
+def test_segy_file_header_initialization_taper_type_mapped_value():
     expected = "undefined"
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.tprtype.mapped_value
+    actual = file_header.taper_type.mapped_value
     assert actual == expected
 
-def test_segy_file_header_initialization_corrtrc_value():
+def test_segy_file_header_initialization_correlated_traces_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.corrtrc.value
+    actual = file_header.correlated_traces.value
     assert actual == expected
 
-def test_segy_file_header_initialization_corrtrc_mapped_value():
+def test_segy_file_header_initialization_correlated_traces_mapped_value():
     expected = "undefined"
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.corrtrc.mapped_value
+    actual = file_header.correlated_traces.mapped_value
     assert actual == expected
 
-def test_segy_file_header_initialization_bingain_value():
+def test_segy_file_header_initialization_binary_gain_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.bingain.value
+    actual = file_header.binary_gain.value
     assert actual == expected
 
-def test_segy_file_header_initialization_bingain_mapped_value():
+def test_segy_file_header_initialization_binary_gain_mapped_value():
     expected = "undefined"
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.bingain.mapped_value
+    actual = file_header.binary_gain.mapped_value
     assert actual == expected
 
-def test_segy_file_header_initialization_amprec_value():
+def test_segy_file_header_initialization_amp_recovery_method_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.amprec.value
+    actual = file_header.amp_recovery_method.value
     assert actual == expected
 
-def test_segy_file_header_initialization_amprec_mapped_value():
+def test_segy_file_header_initialization_amp_recovery_method_mapped_value():
     expected = "undefined"
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.amprec.mapped_value
+    actual = file_header.amp_recovery_method.mapped_value
     assert actual == expected
 
-def test_segy_file_header_initialization_meassys_value():
+def test_segy_file_header_initialization_measurement_system_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.meassys.value
+    actual = file_header.measurement_system.value
     assert actual == expected
 
-def test_segy_file_header_initialization_meassys_mapped_value():
+def test_segy_file_header_initialization_measurement_system_mapped_value():
     expected = "undefined"
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.meassys.mapped_value
+    actual = file_header.measurement_system.mapped_value
     assert actual == expected
 
 def test_segy_file_header_initialization_polarity_value():
@@ -251,41 +251,41 @@ def test_segy_file_header_initialization_polarity_mapped_value():
     actual = file_header.polarity.mapped_value
     assert actual == expected
 
-def test_segy_file_header_initialization_vpolarity_value():
+def test_segy_file_header_initialization_vibe_polarity_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.vpolarity.value
+    actual = file_header.vibe_polarity.value
     assert actual == expected
 
-def test_segy_file_header_initialization_vpolarity_mapped_value():
+def test_segy_file_header_initialization_vibe_polarity_mapped_value():
     expected = "undefined"
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.vpolarity.mapped_value
+    actual = file_header.vibe_polarity.mapped_value
     assert actual == expected
 
-def test_segy_file_header_initialization_segyrev_value():
+def test_segy_file_header_initialization_segy_revision_value():
     expected = 2
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.segyrev.value
+    actual = file_header.segy_revision.value
     assert actual == expected
 
-def test_segy_file_header_initialization_fixedlen_value():
+def test_segy_file_header_initialization_fixed_length_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.fixedlen.value
+    actual = file_header.fixed_length.value
     assert actual == expected
 
-def test_segy_file_header_initialization_ntxthead_value():
+def test_segy_file_header_initialization_num_txt_headers_value():
     expected = 0
     file_header = segytools.SegyFileHeaderRev2()
-    actual = file_header.ntxthead.value
+    actual = file_header.num_txt_headers.value
     assert actual == expected
 
 def test_segy_file_header_mapped_sample_format():
     expected = 'ibm'
     file_header = segytools.segy_file_header.SegyFileHeaderRev2()
     file_header.set_header_values(buf=bytes(file_header_bytearray), endianess='<')
-    actual = file_header.dsfmt.mapped_value
+    actual = file_header.data_sample_format_code.mapped_value
     assert actual == expected
 
 def test_segy_file_header_segy_type():
