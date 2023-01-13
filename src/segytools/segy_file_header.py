@@ -10,12 +10,12 @@ segy file header aka binary header
 
 # import local python
 from segytools.datatypes import DataSampleFormat, \
-    DataSampleFormat_INT16, DataSampleFormat_INT32
+    DATA_SAMPLE_FORMAT_INT16, DATA_SAMPLE_FORMAT_INT32
 from segytools.segy_header_item import SegyHeaderItem
 from segytools.segy_abstract_header import SegyAbstractHeader
 
 
-
+# --- Mappings
 # bytes 25-26
 DATA_SAMPLE_FORMAT_CODE = {
     0: 'undefined',
@@ -175,20 +175,6 @@ class SegyFileHeaderRev2(SegyAbstractHeader):
         fixed length trace flag
     ntxthead : SegyHeaderItem
         number of 3200 byte ext file header records following
-            
-
-    Methods
-    -------
-    segy_type
-        Returns the value of the data sample format. Result is one of `ibm`, `int32`, `int16`, `float32`, or `int8`. (see segpy datatypes)
-    ctype
-        Returns the format character used by the python standard library. (see segpy datatypes).
-    bytes_per_sample
-        Returns the number of bytes for a given datatype.
-    number_of_samples
-        Returns the number of samples from the `numsmp` header item.
-    to_bytes
-        Converts the container class to a bytes object usually for exporting a new segy file.
     """
 
     def __init__(self):
@@ -196,163 +182,163 @@ class SegyFileHeaderRev2(SegyAbstractHeader):
         self.byte_length = 400
         self.jobid = SegyHeaderItem(
             name='jobid', 
-            sample_format=DataSampleFormat_INT32, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, 
             start_byte=1,
             description='job identification number')
         self.lineno = SegyHeaderItem(
             name='lineno', 
-            sample_format=DataSampleFormat_INT32, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, 
             start_byte=5,
             description='line number')
         self.reelno = SegyHeaderItem(
             name='reelno', 
-            sample_format=DataSampleFormat_INT32, 
+            sample_format=DATA_SAMPLE_FORMAT_INT32, 
             start_byte=9,
             description='reel number')
         self.ntrcens = SegyHeaderItem(
             name='ntrcens', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=13,
             description='number of data traces per ensemble')
         self.ntrcaux = SegyHeaderItem(
             name='ntrcaux', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=15,
             description='number of auxiliary traces per ensemble')
         self.smpint = SegyHeaderItem(
             name='smpint', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=17,
             description='sample interval in microseconds')
         self.smpinto = SegyHeaderItem(
             name='smpinto', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=19,
             description='sample interval in microseconds or original recording')
         self.numsmp = SegyHeaderItem(
             name='numsmp', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=21,
             description='number of samples per data trace')
         self.numsmpo = SegyHeaderItem(
             name='numsmpo', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=23,
             description='number of samples per data trace or original recording')
         self.dsfmt = SegyHeaderItem(
             name='dsfmt', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=25,
             description='data sample format code',
             map_dict=DATA_SAMPLE_FORMAT_CODE)
         self.fold = SegyHeaderItem(
             name='fold', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=27,
             description='ensemble fold')
         self.sortcode = SegyHeaderItem(
             name='sortcode', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=29,
             description='trace sorting code',
             map_dict=TRACE_SORTING_CODE)
         self.vsumcode = SegyHeaderItem(
             name='vsumcode', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=31,
             description='vertical sum code')
         self.sweepfs = SegyHeaderItem(
             name='sweepfs', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=33,
             description='sweep_frequency_at_start')
         self.sweepfe = SegyHeaderItem(
             name='sweepfe', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=35,
             description='sweep_frequency_at_end')
         self.sweeplen = SegyHeaderItem(
             name='sweeplen', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=37,
             description='sweep_length')
         self.sweepcode = SegyHeaderItem(
             name='sweepcode', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=39,
             description='sweep_type_code',
             map_dict=SWEEP_TYPE_CODE)
         self.sweepchan = SegyHeaderItem(
             name='sweepchan', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=41,
             description='trace_number_of_sweep_channel')
         self.sweeptprs = SegyHeaderItem(
             name='sweeptprs', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=43,
             description='sweep_trace_taper_length_in_ms_at_start')
         self.sweeptpre = SegyHeaderItem(
             name='sweeptpre', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=45,
             description='sweep_trace_taper_length_in_ms_at_end')
         self.tprtype = SegyHeaderItem(
             name='tprtype', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=47,
             description='taper_type',
             map_dict=TAPER_TYPE)
         self.corrtrc = SegyHeaderItem(
             name='corrtrc', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=49,
             description='correlated_data_traces',
             map_dict=CORRELATED_DATA_TRACES)
         self.bingain = SegyHeaderItem(
             name='bingain', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=51,
             description='binary_gain_recovered',
             map_dict=BINARY_GAIN_RECOVERED)
         self.amprec = SegyHeaderItem(
             name='amprec', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=53,
             description='amplitude_recovery_method',
             map_dict=AMPLITUDE_RECOVERY_METHOD)
         self.meassys = SegyHeaderItem(
             name='meassys', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=55,
             description='measurement_system',
             map_dict=MEASUREMENT_SYSTEM)
         self.polarity = SegyHeaderItem(
             name='polarity', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=57,
             description='impulse_signal_polarity',
             map_dict=IMPULSE_SIGNAL_POLARITY)
         self.vpolarity = SegyHeaderItem(
             name='vpolarity', 
-            sample_format=DataSampleFormat_INT16,
+            sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=59,
             description='vibratory_polarity_code',
             map_dict=VIBRATORY_POLARITY_CODE)
         # unassigned
         self.segyrev = SegyHeaderItem(
             name='segyrev', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=301,
             description='seg_y_format_revision_number')
         self.fixedlen = SegyHeaderItem(
             name='fixedlen', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=303,
             description='fixed_length_trace_flag')
         self.ntxthead = SegyHeaderItem(
             name='ntxthead', 
-            sample_format=DataSampleFormat_INT16, 
+            sample_format=DATA_SAMPLE_FORMAT_INT16, 
             start_byte=305,
             description='number_of_3200_byte_ext_file_header_records_following')
         # unassigned
