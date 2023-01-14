@@ -315,11 +315,30 @@ class SegyFileHeaderRev2(SegyAbstractHeader):
         # unassigned
 
     # --- METHODS ---
-    def segy_type(self):
-        """Return the segy type, e.g. 'ibm', 'int32', 'int16'.
+    def segy_type(self) -> str:
+        """Return the segy type, e.g. 'ibm', 'int32', 'int16', 'float32', or 'int8'.
         """
-        return self.data_sample_format_code.mapped_value
+        return self.data_sample_format_code._mapped_value
 
+    def sample_format_size_in_bytes(self) -> int:
+        """Return the number of bytes in each sample based on the `data_sample_format_code`.
+        """
+        fmt = self.data_sample_format_code._mapped_value
+        byte_size = 4  # default
+        if fmt == 'ibm':
+            byte_size = 4
+        elif fmt == 'float32':
+            byte_size = 4
+        elif fmt == 'int32':
+            byte_size = 4
+        elif fmt == 'int16':
+            byte_size = 2
+        elif fmt == 'int8':
+            byte_size = 1
+        else:
+            raise ValueError("Unable to determine sample format size in bytes as sample format is undefined.")
+        return byte_size
+    
     # TODO: def is_fixed_length(self):
     #     if self.fixedlen == ??:
     #         return True
