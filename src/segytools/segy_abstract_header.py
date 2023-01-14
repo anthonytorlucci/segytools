@@ -125,7 +125,7 @@ class SegyAbstractHeader(object):
     #     obj.set_field(field_id, value)
 
     def set_header_values(self, buf: bytes, endianess: str):
-        """Set the value for each heaer item in the container.
+        """Set the value for each header item in the container.
 
         Parameters
         ----------
@@ -142,7 +142,7 @@ class SegyAbstractHeader(object):
             endianess != 'little' or endianess != 'big'
         """
         if len(buf) != self.byte_length:
-            raise ValueError(f"Number of bytes given {len(bsgy)} not equal to header container byte length {self.byte_length}")
+            raise ValueError(f"Number of bytes given {len(buf)} not equal to header container byte length {self.byte_length}")
         if endianess != '<' and endianess != '>':
             raise ValueError(f"Provided endian parameter must be either '<' or '>'.")
         
@@ -152,7 +152,7 @@ class SegyAbstractHeader(object):
             
 
 
-    def to_bytes(self, endianess: str, byte_length: int = 240) -> bytes:
+    def to_bytes(self, endianess: str) -> bytes:
         """
         Converts each header item to a byte object and returns the complete 
         bytes object of length `byte_length`.
@@ -161,14 +161,12 @@ class SegyAbstractHeader(object):
         ----------
         endianess : str
             Either 'big' or 'little'
-        byte_length : int
-            the number of bytes in the output bytes object. default is 240.
 
         Returns
         -------
         bytes
         """
-        barr = bytearray(byte_length)  # TODO: initialize to zero
+        barr = bytearray(self.byte_length)  # TODO: initialize to zero
         file_key_obj_dict = self.key_object_dict()
         for _, obj in file_key_obj_dict.items():
             barr[obj.start_byte-1:obj.start_byte + obj.n_bytes - 1] = obj.to_bytes(endianess=endianess)
