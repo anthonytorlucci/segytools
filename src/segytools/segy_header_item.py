@@ -134,7 +134,10 @@ class SegyHeaderItem(object):
         # TODO: if this item is mapped to another value, assert this value assigned matches the type in the mapping.
         self._value = value
         if self._map_dict:
-            self._mapped_value = self._map_dict[value]
+            try:
+                self._mapped_value = self._map_dict[value]
+            except KeyError as err:
+                print(f"Unable to map value with error {err}")
 
     @property
     def supplementary(self) -> str:
