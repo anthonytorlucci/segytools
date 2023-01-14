@@ -50,7 +50,7 @@ class SegyHeaderItem(object):
             self._mapped_value = map_dict[value]
 
     def __str__(self):
-        s += 'description: ' + self._description + ', '
+        s = 'description: ' + self._description + ', '
         s += 'start byte: ' + str(self._start_byte) + ', '
         s += 'byte length: ' + str(self._n_bytes) + ', '
         s += 'value: ' + str(self._value)
@@ -136,8 +136,8 @@ class SegyHeaderItem(object):
         if self._map_dict:
             try:
                 self._mapped_value = self._map_dict[value]
-            except KeyError as err:
-                print(f"Unable to map value with error {err}")
+            except KeyError:
+                print(f"Unable to map value {value} to header item {self._description}")
 
     @property
     def supplementary(self) -> str:
