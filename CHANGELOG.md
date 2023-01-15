@@ -11,6 +11,7 @@ First minor revision.
 ### Fix
 
 ### Feature
+- toolkit: format_text_header_string() function to format a text header string to 80 characters per line.
 
 ### Testing
 - test_segy_header_item: value test
