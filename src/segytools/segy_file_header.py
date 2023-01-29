@@ -7,11 +7,10 @@ segy file header aka binary header
 # import 3rd party libraries
 
 # import local python
-from segytools.datatypes import DATA_SAMPLE_FORMAT_INT16, \
-    DATA_SAMPLE_FORMAT_INT32
-from segytools.segy_header_item import SegyHeaderItem
+from segytools.datatypes import (DATA_SAMPLE_FORMAT_INT16,
+                                 DATA_SAMPLE_FORMAT_INT32)
 from segytools.segy_abstract_header import SegyAbstractHeader
-
+from segytools.segy_header_item import SegyHeaderItem
 
 # --- Mappings
 # bytes 25-26
