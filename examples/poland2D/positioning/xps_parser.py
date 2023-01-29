@@ -25,6 +25,7 @@ from pandas import DataFrame, Series
 # H26 Receiver index                80-80           A1       none
 # H26
 
+
 class XPSLineItem(object):
     def __init__(self, s: str):
         self.field_tape_number = s[1:7].strip()
@@ -59,6 +60,7 @@ class XPSLineItem(object):
         srep += 'To receiver            : ' + self.to_receiver + '\n'
         srep += 'Receiver index         : ' + self.receiver_index
         return srep
+
 
 class XPS(object):
     def __init__(self, f: str):
@@ -118,7 +120,8 @@ class XPS(object):
         return self._df
 
     def source_point(self, ffid: int):
-        tmpi = self._df.loc[self._df['field_record_number'] == ffid].index.values
+        tmpi = self._df.loc[
+            self._df['field_record_number'] == ffid].index.values
         return self._df.loc[tmpi[0], 'point_number']
 
     def reciever_station(self, ffid: int, chan: int):
@@ -127,8 +130,18 @@ class XPS(object):
         last_chan = self._df.loc[tmpi[0], 'to_channel']
         first_rec = self._df.loc[tmpi[0], 'from_receiver']
         last_rec = self._df.loc[tmpi[0], 'to_receiver']
-        chan_linspace = numpy.linspace(start=first_chan, stop=last_chan, num=last_chan-first_chan+1, endpoint=True, dtype=numpy.dtype(int))
-        recs_linspace = numpy.linspace(start=first_rec, stop=last_rec, num=last_chan-first_chan+1, endpoint=True, dtype=numpy.dtype(int))
+        chan_linspace = numpy.linspace(
+            start=first_chan, 
+            stop=last_chan, 
+            num=last_chan-first_chan+1, 
+            endpoint=True, 
+            dtype=numpy.dtype(int))
+        recs_linspace = numpy.linspace(
+            start=first_rec, 
+            stop=last_rec, 
+            num=last_chan-first_chan+1, 
+            endpoint=True, 
+            dtype=numpy.dtype(int))
         recstation = recs_linspace[numpy.nonzero(chan_linspace == chan)]
         if not recstation.size == 0:
             rvalue = recstation[0]
@@ -142,8 +155,18 @@ class XPS(object):
         last_chan = self._df.loc[tmpi[0], 'to_channel']
         first_rec = self._df.loc[tmpi[0], 'from_receiver']
         last_rec = self._df.loc[tmpi[0], 'to_receiver']
-        chan_linspace = numpy.linspace(start=first_chan, stop=last_chan, num=last_chan - first_chan + 1, endpoint=True, dtype=numpy.dtype(int))
-        recs_linspace = numpy.linspace(start=first_rec, stop=last_rec, num=last_chan - first_chan + 1, endpoint=True, dtype=numpy.dtype(int))
+        chan_linspace = numpy.linspace(
+            start=first_chan, 
+            stop=last_chan, 
+            num=last_chan - first_chan + 1, 
+            endpoint=True, 
+            dtype=numpy.dtype(int))
+        recs_linspace = numpy.linspace(
+            start=first_rec, 
+            stop=last_rec, 
+            num=last_chan - first_chan + 1, 
+            endpoint=True, 
+            dtype=numpy.dtype(int))
         sr = Series(data=recs_linspace, index=chan_linspace)
         return sr
 

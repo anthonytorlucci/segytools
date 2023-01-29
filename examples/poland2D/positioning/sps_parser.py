@@ -24,6 +24,7 @@ from pandas import DataFrame
 # H26 Time hhmmss                   75-80          3I2       none
 # H26
 
+
 class SPSLineItem(object):
     def __init__(self, s: str):
         self.line_name = s[1:17].strip()
@@ -54,6 +55,7 @@ class SPSLineItem(object):
         srep += "Map grid northing : " + self.map_grid_northing + '\n'
         srep += "Surface elevation : " + self.surface_elevation
         return srep
+
 
 class SPS(object):
     def __init__(self, f: str):
@@ -107,19 +109,23 @@ class SPS(object):
         return self._df
 
     def source_x(self, source_point: int):
-        tmpi = self._df.loc[self._df['point_number'] == source_point].index.values
+        tmpi = self._df.loc[
+            self._df['point_number'] == source_point].index.values
         return self._df.loc[tmpi[0], 'map_grid_easting']
 
     def source_y(self, source_point: int):
-        tmpi = self._df.loc[self._df['point_number'] == source_point].index.values
+        tmpi = self._df.loc[
+            self._df['point_number'] == source_point].index.values
         return self._df.loc[tmpi[0], 'map_grid_northing']
 
     def source_elevation(self, source_point: int):
-        tmpi = self._df.loc[self._df['point_number'] == source_point].index.values
+        tmpi = self._df.loc[
+            self._df['point_number'] == source_point].index.values
         return self._df.loc[tmpi[0], 'surface_elevation']
 
     def source_static(self, source_point: int):
-        tmpi = self._df.loc[self._df['point_number'] == source_point].index.values
+        tmpi = self._df.loc[
+            self._df['point_number'] == source_point].index.values
         return self._df.loc[tmpi[0], 'static_correction']
 
 # END

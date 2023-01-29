@@ -1,7 +1,7 @@
 """segytools"""
 
-from importlib.metadata import version
-__version__ = version("segytools")
+# from importlib.metadata import version
+# __version__ = version("segytools")
 
 from .segy_header_item import SegyHeaderItem
 from .segy_abstract_header import SegyAbstractHeader
