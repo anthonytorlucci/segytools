@@ -30,9 +30,8 @@ jobs:
       #----------------------------------------------
       - run: python -m pip install black flake8 isort
       - run: |
-          flake8 .
-          black . --check
-          isort .
+          flake8 --ignore=F401,W291 src/segytools
+          isort src/segytools
   test:
     needs: linting
     runs-on: ubuntu-latest

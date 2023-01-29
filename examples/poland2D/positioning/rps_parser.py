@@ -25,6 +25,7 @@ from pandas import DataFrame
 # H26 Time hhmmss                   75-80          3I2       none
 # H26
 
+
 class RPSLineItem(object):
     def __init__(self, s: str):
         self.line_name = s[1:17].strip()
@@ -55,6 +56,7 @@ class RPSLineItem(object):
         srep += 'Map grid northing : ' + self.map_grid_northing + '\n'
         srep += 'Surface elevation : ' + self.surface_elevation
         return srep
+
 
 class RPS(object):
     def __init__(self, f: str):
@@ -108,19 +110,21 @@ class RPS(object):
         return self._df
 
     def receiver_x(self, receiver_point: int):
-        tmpi = self._df.loc[self._df['point_number'] == receiver_point].index.values
+        tmpi = self._df.loc[
+            self._df['point_number'] == receiver_point].index.values
         return self._df.loc[tmpi[0], 'map_grid_easting']
 
     def receiver_y(self, receiver_point: int):
-        tmpi = self._df.loc[self._df['point_number'] == receiver_point].index.values
+        tmpi = self._df.loc[
+            self._df['point_number'] == receiver_point].index.values
         return self._df.loc[tmpi[0], 'map_grid_northing']
 
     def receiver_elevation(self, receiver_point: int):
-        tmpi = self._df.loc[self._df['point_number'] == receiver_point].index.values
+        tmpi = self._df.loc[
+            self._df['point_number'] == receiver_point].index.values
         return self._df.loc[tmpi[0], 'surface_elevation']
 
     def receiver_static(self, receiver_point: int):
-        tmpi = self._df.loc[self._df['point_number'] == receiver_point].index.values
+        tmpi = self._df.loc[
+            self._df['point_number'] == receiver_point].index.values
         return self._df.loc[tmpi[0], 'static_correction']
-
-# END
