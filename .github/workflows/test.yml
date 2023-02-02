@@ -28,7 +28,7 @@ jobs:
       #----------------------------------------------
       #  install and run linters
       #----------------------------------------------
-      - run: python -m pip install black flake8 isort
+      - run: python -m pip install flake8
       - run: flake8 --ignore=F401,W291 src/segytools
   test:
     needs: linting
@@ -76,4 +76,6 @@ jobs:
       #----------------------------------------------
       #  run test suite with pytest + codecov
       #----------------------------------------------
+      - name: test with pytest
+        run: poetry run pytest tests/ --cov=segytools
       
