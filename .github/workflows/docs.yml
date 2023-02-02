@@ -50,8 +50,7 @@ jobs:
       # build docs with sphinx
       #----------------------------------------------
       - name: Build documentation
-      #-run: poetry run make html --directory docs/
-      run: poetry run sphinx-build docs docs/_build
+        run: poetry run sphinx-build docs docs/_build
       #----------------------------------------------
       # deploy to github pages
       #----------------------------------------------
