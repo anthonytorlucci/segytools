@@ -29,9 +29,7 @@ jobs:
       #  install and run linters
       #----------------------------------------------
       - run: python -m pip install black flake8 isort
-      - run: |
-          flake8 --ignore=F401,W291 src/segytools
-          isort src/segytools
+      - run: flake8 --ignore=F401,W291 src/segytools
   test:
     needs: linting
     runs-on: ubuntu-latest
