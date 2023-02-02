@@ -1,0 +1,36 @@
+:py:mod:`segytools.toolkit`
+===========================
+
+.. py:module:: segytools.toolkit
+
+.. autoapi-nested-parse::
+
+   Collection of tools for working with segy data
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   segytools.toolkit.format_textheader_string
+
+
+
+.. py:function:: format_textheader_string(textheader)
+
+   Format the textheader to have each line be 80 characters long and
+   return a single string.
+
+   :param textheader: The textual header string after decoding.
+   :type textheader: str
+
+   :returns: Textual header with 80 characters per line.
+   :rtype: str
+
+

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>segytools.segy_header_item &mdash; segytools 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> segytools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">segytools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">segytools.segy_header_item</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for segytools.segy_header_item</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">segy header item</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="c1"># import python standard modules</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+
+<span class="c1"># import 3rd party libraries</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">ibm2ieee</span> <span class="kn">import</span> <span class="n">ibm2float32</span>
+
+<span class="c1"># import local python</span>
+<span class="kn">from</span> <span class="nn">segytools.datatypes</span> <span class="kn">import</span> <span class="n">DataSampleFormat</span>
+
+
+<div class="viewcode-block" id="SegyHeaderItem"><a class="viewcode-back" href="../../autoapi/segytools/segy_header_item/index.html#segytools.SegyHeaderItem">[docs]</a><span class="k">class</span> <span class="nc">SegyHeaderItem</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Used to describe a single header item or field in a segy file header \</span>
+<span class="sd">        or trace header.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Header item identifier.</span>
+<span class="sd">    sample_format : DataSampleFormat</span>
+<span class="sd">        data sample format that tells the system how to interpret the bytes</span>
+<span class="sd">    start_byte : int</span>
+<span class="sd">        Index of the first byte to read. Uses SEGY standard notation which \</span>
+<span class="sd">            starts a header container at one, not zero.</span>
+<span class="sd">        For example, reading a 4-byte integer header from a bytes or \</span>
+<span class="sd">            bytearray object, b[0:4] would have a start_byte = 1.</span>
+<span class="sd">    description : str</span>
+<span class="sd">        Description of the header item.</span>
+<span class="sd">    map_dict : `dict`</span>
+<span class="sd">        Dictionary in which the key is the interpreted value. Required if \</span>
+<span class="sd">            map_bool is True.</span>
+<span class="sd">    value : Any</span>
+<span class="sd">        Header item value.</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    has_mapping_dictionary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_format</span><span class="p">:</span> <span class="n">DataSampleFormat</span><span class="p">,</span> <span class="n">start_byte</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                 <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">map_dict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
+        <span class="c1"># TODO: assert derived from DataSampleFormat name tuple</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sample_format</span> <span class="o">=</span> <span class="n">sample_format</span>
+        <span class="c1"># length of the header in bytes; default to 4, but may be 2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_bytes</span> <span class="o">=</span> <span class="n">sample_format</span><span class="o">.</span><span class="n">size_in_bytes</span>
+        <span class="c1"># the relative byte location to start reading</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_byte</span> <span class="o">=</span> <span class="n">start_byte</span>
+        <span class="c1"># defualt to empty string</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="c1"># the value obtained from the segy file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="c1"># any additional supplementary material</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_supplementary</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="c1"># name of the dictionary to map to</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_map_dict</span> <span class="o">=</span> <span class="n">map_dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mapped_value</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">map_dict</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mapped_value</span> <span class="o">=</span> <span class="n">map_dict</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
+
+<div class="viewcode-block" id="SegyHeaderItem.__str__"><a class="viewcode-back" href="../../autoapi/segytools/segy_header_item/index.html#segytools.SegyHeaderItem.__str__">[docs]</a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;description: &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39;start byte: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_byte</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39;byte length: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_bytes</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39;value: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">s</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sample_format</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataSampleFormat</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the sample format of the data.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_format</span>
+
+    <span class="nd">@sample_format</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">sample_format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_format</span><span class="p">:</span> <span class="n">DataSampleFormat</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the item&#39;s data sample format.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sample_format : DataSampleFormat</span>
+<span class="sd">            The format to be set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: sample format validation; must be a valid</span>
+        <span class="c1">#   DataSampleFormat Enum Type</span>
+        <span class="c1"># TODO: convert the value to this format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sample_format</span> <span class="o">=</span> <span class="n">sample_format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_bytes</span> <span class="o">=</span> <span class="n">sample_format</span><span class="o">.</span><span class="n">size_in_bytes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">n_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the item&#39;s number of bytes.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_bytes</span>
+
+    <span class="c1"># NOTE: no _nbytes setter; must be set with data_sample_format()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">start_byte</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the item&#39;s start byte.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_byte</span>
+
+    <span class="nd">@start_byte</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">start_byte</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_byte</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the item&#39;s start byte.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        start_byte : int</span>
+<span class="sd">            start byte value to be set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: start_byte validation; must be non-negative integer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_byte</span> <span class="o">=</span> <span class="n">start_byte</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the item&#39;s description.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_description</span>
+
+    <span class="nd">@description</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the item&#39;s description.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        description : str</span>
+<span class="sd">            Description of item to be set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: description validation; assert is string.</span>
+        <span class="c1"># should be short, but doesn&#39;t have to be. A very long string</span>
+        <span class="c1">#   may indicate something is being improperly set.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">description</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the item&#39;s value.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
+
+    <span class="nd">@value</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the item&#39;s value.</span>
+
+<span class="sd">        Parameter</span>
+<span class="sd">        ---------</span>
+<span class="sd">        value : Any</span>
+<span class="sd">            The value to be set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: if this item is mapped to another value, assert this value</span>
+        <span class="c1">#   assigned matches the type in the mapping.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_dict</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_mapped_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_dict</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to map value </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> to header </span><span class="se">\</span>
+<span class="s2">                    item </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">supplementary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the item&#39;s supplementary content.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_supplementary</span>
+
+    <span class="nd">@supplementary</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">supplementary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">supplementary</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the item&#39;s supplementary content.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        supplementary : str</span>
+<span class="sd">            The supplementary content to be set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_supplementary</span> <span class="o">=</span> <span class="n">supplementary</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">map_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the item&#39;s mapping dictionary. If not mapping dictionary \</span>
+<span class="sd">            provided, returns an empty dict.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_dict</span>
+
+    <span class="nd">@map_dict</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">map_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapping_dictionary</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the item&#39;s mapping dictionary.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_map_dict</span> <span class="o">=</span> <span class="n">mapping_dictionary</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mapped_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mapped_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the item&#39;s mapped_value.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mapped_value</span>
+
+<div class="viewcode-block" id="SegyHeaderItem.has_mapping_dictionary"><a class="viewcode-back" href="../../autoapi/segytools/segy_header_item/index.html#segytools.SegyHeaderItem.has_mapping_dictionary">[docs]</a>    <span class="k">def</span> <span class="nf">has_mapping_dictionary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True if there is a mapping dictionary provided to map the \</span>
+<span class="sd">            interpreted value to another value. Otherwise, returns False.&quot;&quot;&quot;</span>
+        <span class="n">tmp_out</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_dict</span><span class="p">:</span>
+            <span class="n">tmp_out</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">tmp_out</span></div>
+
+<div class="viewcode-block" id="SegyHeaderItem.to_bytes"><a class="viewcode-back" href="../../autoapi/segytools/segy_header_item/index.html#segytools.SegyHeaderItem.to_bytes">[docs]</a>    <span class="k">def</span> <span class="nf">to_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endianess</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the segy header item to a bytes object for writing back \</span>
+<span class="sd">            out to segy format.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        endianess : str</span>
+<span class="sd">            &#39;&gt;&#39; for big endian, &#39;&lt;&#39; for little.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_format</span> <span class="o">==</span> <span class="s1">&#39;ibm&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;IBM floats are not supported for </span><span class="se">\</span>
+<span class="s2">                writing to bytes. Use DataSampleFormat_FLOAT32.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">endianess</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_format</span><span class="o">.</span><span class="n">format</span><span class="p">])</span>
+            <span class="c1"># val = self._value</span>
+            <span class="n">bout</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">bout</span></div>
+
+<div class="viewcode-block" id="SegyHeaderItem.value_from_buffer"><a class="viewcode-back" href="../../autoapi/segytools/segy_header_item/index.html#segytools.SegyHeaderItem.value_from_buffer">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">value_from_buffer</span><span class="p">(</span><span class="n">buf</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">endianess</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                          <span class="n">sample_format</span><span class="p">:</span> <span class="n">DataSampleFormat</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Unpack value from buffer.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        buf : bytes</span>
+<span class="sd">            buffer</span>
+<span class="sd">        endianess : str</span>
+<span class="sd">            either &#39;&lt;&#39; for little or &#39;&gt;&#39; for big endian</span>
+<span class="sd">        sample_format : DataSampleFormat</span>
+<span class="sd">            data sample format used for interpreting bytes object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">sample_format</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s1">&#39;ibm&#39;</span><span class="p">:</span>
+            <span class="c1"># NOTE: only 32-bit ibm floats currently tested and supported</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">endianess</span><span class="p">,</span> <span class="s1">&#39;u4&#39;</span><span class="p">])</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">ibm2float32</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;&gt;u4&#39;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">endianess</span><span class="p">,</span> <span class="n">sample_format</span><span class="o">.</span><span class="n">format</span><span class="p">])</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">buf</span><span class="p">)</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># unpack always returns a tuple</span>
+        <span class="k">return</span> <span class="n">val</span></div>
+
+<div class="viewcode-block" id="SegyHeaderItem.from_bytes"><a class="viewcode-back" href="../../autoapi/segytools/segy_header_item/index.html#segytools.SegyHeaderItem.from_bytes">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_bytes</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">buf</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">endianess</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                   <span class="n">sample_format</span><span class="p">:</span> <span class="n">DataSampleFormat</span><span class="p">,</span> <span class="n">start_byte</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                   <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">map_dict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a segy header item from a bytes object.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        buf : bytes</span>
+<span class="sd">            The byte data.</span>
+<span class="sd">        endianess : str</span>
+<span class="sd">            &#39;&gt;&#39; for big endian, &#39;&lt;&#39; for little</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">header_item</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">sample_format</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="n">start_byte</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">map_dict</span><span class="p">)</span>
+        <span class="n">header_item</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">value_from_buffer</span><span class="p">(</span>
+            <span class="n">buf</span><span class="o">=</span><span class="n">buf</span><span class="p">,</span>
+            <span class="n">endianess</span><span class="o">=</span><span class="n">endianess</span><span class="p">,</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">sample_format</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">header_item</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Anthony Torlucci.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

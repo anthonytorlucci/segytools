@@ -1,0 +1,161 @@
+:py:mod:`segytools.segy_file_header`
+====================================
+
+.. py:module:: segytools.segy_file_header
+
+.. autoapi-nested-parse::
+
+   segy file header aka binary header
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   segytools.segy_file_header.SegyFileHeaderRev2
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   segytools.segy_file_header.DATA_SAMPLE_FORMAT_CODE
+   segytools.segy_file_header.TRACE_SORTING_CODE
+   segytools.segy_file_header.SWEEP_TYPE_CODE
+   segytools.segy_file_header.TAPER_TYPE
+   segytools.segy_file_header.CORRELATED_DATA_TRACES
+   segytools.segy_file_header.BINARY_GAIN_RECOVERED
+   segytools.segy_file_header.AMPLITUDE_RECOVERY_METHOD
+   segytools.segy_file_header.MEASUREMENT_SYSTEM
+   segytools.segy_file_header.IMPULSE_SIGNAL_POLARITY
+   segytools.segy_file_header.VIBRATORY_POLARITY_CODE
+
+
+.. py:data:: DATA_SAMPLE_FORMAT_CODE
+
+   
+
+.. py:data:: TRACE_SORTING_CODE
+
+   
+
+.. py:data:: SWEEP_TYPE_CODE
+
+   
+
+.. py:data:: TAPER_TYPE
+
+   
+
+.. py:data:: CORRELATED_DATA_TRACES
+
+   
+
+.. py:data:: BINARY_GAIN_RECOVERED
+
+   
+
+.. py:data:: AMPLITUDE_RECOVERY_METHOD
+
+   
+
+.. py:data:: MEASUREMENT_SYSTEM
+
+   
+
+.. py:data:: IMPULSE_SIGNAL_POLARITY
+
+   
+
+.. py:data:: VIBRATORY_POLARITY_CODE
+
+   
+
+.. py:class:: SegyFileHeaderRev2
+
+   Bases: :py:obj:`segytools.segy_abstract_header.SegyAbstractHeader`
+
+   File or binary header definition of a segy file.
+
+   :param jobid: job identification number
+   :type jobid: SegyHeaderItem
+   :param line_number: line number
+   :type line_number: SegyHeaderItem
+   :param reel_number: reel number
+   :type reel_number: SegyHeaderItem
+   :param num_traces_per_ensemble: number of data traces per ensemble
+   :type num_traces_per_ensemble: SegyHeaderItem
+   :param num_aux_traces_per_ensemble: number of auxiliary traces per ensemble
+   :type num_aux_traces_per_ensemble: SegyHeaderItem
+   :param sample_interval: sample interval in microseconds
+   :type sample_interval: SegyHeaderItem
+   :param original_sample_interval: sample interval in microseconds or original recording
+   :type original_sample_interval: SegyHeaderItem
+   :param num_samples_per_trace: number of samples per data trace
+   :type num_samples_per_trace: SegyHeaderItem
+   :param original_num_samples_per_trace: number of samples per data trace or original recording
+   :type original_num_samples_per_trace: SegyHeaderItem
+   :param data_sample_format_code: data sample format code
+   :type data_sample_format_code: SegyHeaderItem
+   :param fold: ensemble fold
+   :type fold: SegyHeaderItem
+   :param sort_code: trace sorting code
+   :type sort_code: SegyHeaderItem
+   :param vertical_sum_code: vertical sum code
+   :type vertical_sum_code: SegyHeaderItem
+   :param sweep_freq_start: sweep frequency at start
+   :type sweep_freq_start: SegyHeaderItem
+   :param sweep_freq_end: sweep frequency at end
+   :type sweep_freq_end: SegyHeaderItem
+   :param sweep_length: sweep length
+   :type sweep_length: SegyHeaderItem
+   :param sweep_code: sweep type code
+   :type sweep_code: SegyHeaderItem
+   :param sweep_chan: trace_number of sweep channel
+   :type sweep_chan: SegyHeaderItem
+   :param sweep_taper_length_start: sweep_trace taper length in ms at start
+   :type sweep_taper_length_start: SegyHeaderItem
+   :param sweep_taper_length_end: sweep trace taper length in ms at end
+   :type sweep_taper_length_end: SegyHeaderItem
+   :param taper_type: taper type
+   :type taper_type: SegyHeaderItem
+   :param correlated_traces: correlated data traces
+   :type correlated_traces: SegyHeaderItem
+   :param binary_gain: binary gain recovered
+   :type binary_gain: SegyHeaderItem
+   :param amp_recovery_method: amplitude recovery method
+   :type amp_recovery_method: SegyHeaderItem
+   :param measurement_system: measurement system
+   :type measurement_system: SegyHeaderItem
+   :param polarity: impulse signal polarity
+   :type polarity: SegyHeaderItem
+   :param vibe_polarity: vibratory polarity code
+   :type vibe_polarity: SegyHeaderItem
+   :param segy_revision: seg y format revision number
+   :type segy_revision: SegyHeaderItem
+   :param fixed_length: fixed length trace flag
+   :type fixed_length: SegyHeaderItem
+   :param num_txt_headers: number of 3200 byte ext file header records following
+   :type num_txt_headers: SegyHeaderItem
+
+   .. py:method:: segy_type() -> str
+
+      Return the segy type, e.g. 'ibm', 'int32', 'int16', 'float32', or             'int8'.
+
+
+
+   .. py:method:: sample_format_size_in_bytes() -> int
+
+      Return the number of bytes in each sample based on the             `data_sample_format_code`.
+
+
+
+

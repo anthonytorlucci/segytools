@@ -1,0 +1,129 @@
+:py:mod:`segytools.segy_header_item`
+====================================
+
+.. py:module:: segytools.segy_header_item
+
+.. autoapi-nested-parse::
+
+   segy header item
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   segytools.segy_header_item.SegyHeaderItem
+
+
+
+
+.. py:class:: SegyHeaderItem(sample_format: segytools.datatypes.DataSampleFormat, start_byte: int = 0, description: str = '', map_dict: dict = {}, value=0)
+
+   Bases: :py:obj:`object`
+
+   Used to describe a single header item or field in a segy file header         or trace header.
+
+   :param name: Header item identifier.
+   :type name: str
+   :param sample_format: data sample format that tells the system how to interpret the bytes
+   :type sample_format: DataSampleFormat
+   :param start_byte: Index of the first byte to read. Uses SEGY standard notation which             starts a header container at one, not zero.
+                      For example, reading a 4-byte integer header from a bytes or             bytearray object, b[0:4] would have a start_byte = 1.
+   :type start_byte: int
+   :param description: Description of the header item.
+   :type description: str
+   :param map_dict: Dictionary in which the key is the interpreted value. Required if             map_bool is True.
+   :type map_dict: `dict`
+   :param value: Header item value.
+   :type value: Any
+
+   .. method:: has_mapping_dictionary
+
+
+
+   .. py:property:: sample_format
+      :type: segytools.datatypes.DataSampleFormat
+
+      Get the sample format of the data.
+
+   .. py:property:: n_bytes
+      :type: int
+
+      Get the item's number of bytes.
+
+   .. py:property:: start_byte
+      :type: int
+
+      Get the item's start byte.
+
+   .. py:property:: description
+      :type: str
+
+      Get the item's description.
+
+   .. py:property:: value
+
+      Get the item's value.
+
+   .. py:property:: supplementary
+      :type: str
+
+      Get the item's supplementary content.
+
+   .. py:property:: map_dict
+      :type: dict
+
+      Get the item's mapping dictionary. If not mapping dictionary             provided, returns an empty dict.
+
+   .. py:property:: mapped_value
+
+      Get the item's mapped_value.
+
+   .. py:method:: __str__()
+
+      Return str(self).
+
+
+   .. py:method:: has_mapping_dictionary() -> bool
+
+      Returns True if there is a mapping dictionary provided to map the             interpreted value to another value. Otherwise, returns False.
+
+
+   .. py:method:: to_bytes(endianess: str) -> bytes
+
+      Convert the segy header item to a bytes object for writing back             out to segy format.
+
+      :param endianess: '>' for big endian, '<' for little.
+      :type endianess: str
+
+
+   .. py:method:: value_from_buffer(buf: bytes, endianess: str, sample_format: segytools.datatypes.DataSampleFormat)
+      :staticmethod:
+
+      Unpack value from buffer.
+
+      :param buf: buffer
+      :type buf: bytes
+      :param endianess: either '<' for little or '>' for big endian
+      :type endianess: str
+      :param sample_format: data sample format used for interpreting bytes object.
+      :type sample_format: DataSampleFormat
+
+
+   .. py:method:: from_bytes(buf: bytes, endianess: str, sample_format: segytools.datatypes.DataSampleFormat, start_byte: int = 0, description: str = '', map_dict: dict = {})
+      :classmethod:
+
+      Create a segy header item from a bytes object.
+
+      :param buf: The byte data.
+      :type buf: bytes
+      :param endianess: '>' for big endian, '<' for little
+      :type endianess: str
+
+
+

@@ -1,0 +1,113 @@
+:py:mod:`segytools.segy_abstract_header`
+========================================
+
+.. py:module:: segytools.segy_abstract_header
+
+.. autoapi-nested-parse::
+
+   segy abstract header
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   segytools.segy_abstract_header.SegyAbstractHeader
+
+
+
+
+.. py:class:: SegyAbstractHeader
+
+   Bases: :py:obj:`object`
+
+   Base class for Segy Headers.
+
+   SegyAbstractHeader is a container of SegyHeaderItem objects and inherited
+   by SegyFileHeader and SegyTraceHeader. Any custom trace headers classes
+   should inherit this class.
+
+   .. attribute:: byte_length
+
+      The number of bytes of the header. This must be overwritten is
+      converting back to bytes object.
+
+      :type: int
+
+   .. method:: header_list()
+
+      Returns a list of header item objects.
+
+   .. method:: key_object_dict()
+
+      Returns a dictionary of header items identifiers and header item
+      objects.
+
+   .. method:: key_property(name:str, field_id: str)
+
+      Returns a property (field_id) of a segy header item based on the
+      identifier `name`.
+
+   .. method:: mapped_value(name: str)
+
+      Returns the mapped value of the header item with identifier `name` if
+      the header item value is mapped.
+
+   .. method:: set_key_property(self, name: str, field_id: str, value: Any)
+
+      Sets the value of the field of a header item based on the identifier
+      `name`.
+
+
+   .. py:attribute:: byte_length
+      :value: 0
+
+      
+
+   .. py:method:: __str__() -> str
+
+      Return str(self).
+
+
+   .. py:method:: header_list() -> list
+
+      Returns a list of header item objects.
+
+
+   .. py:method:: key_object_dict() -> dict
+
+      Returns a dictionary of header items identifiers and header item
+      objects.
+
+
+   .. py:method:: set_header_values(buf: bytes, endianess: str)
+
+      Set the value for each header item in the container.
+
+      :param buf: The byte data used to set the values. len(bsgy) must be equal to
+                  the `byte_length` attribute.
+      :type buf: bytes
+      :param endianess: Used to decode the byte data. Must be either 'little' or 'big'.
+      :type endianess: str
+
+      :raises ValueError: len(bsgy) != byte_length
+      :raises ValueError: endianess != 'little' or endianess != 'big'
+
+
+   .. py:method:: to_bytes(endianess: str) -> bytes
+
+      Converts each header item to a byte object and returns the complete
+      bytes object of length `byte_length`.
+
+      :param endianess: Either 'big' or 'little'
+      :type endianess: str
+
+      :rtype: bytes
+
+
+

@@ -1,0 +1,509 @@
+:py:mod:`segytools`
+===================
+
+.. py:module:: segytools
+
+.. autoapi-nested-parse::
+
+   segytools
+
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   datatypes/index.rst
+   segy_abstract_header/index.rst
+   segy_file_header/index.rst
+   segy_header_item/index.rst
+   segy_trace_header/index.rst
+   toolkit/index.rst
+   utils/index.rst
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   segytools.SegyAbstractHeader
+   segytools.SegyFileHeaderRev2
+   segytools.SegyHeaderItem
+   segytools.SegyTraceHeaderRev2
+
+
+
+
+.. py:class:: SegyAbstractHeader
+
+   Bases: :py:obj:`object`
+
+   Base class for Segy Headers.
+
+   SegyAbstractHeader is a container of SegyHeaderItem objects and inherited
+   by SegyFileHeader and SegyTraceHeader. Any custom trace headers classes
+   should inherit this class.
+
+   .. attribute:: byte_length
+
+      The number of bytes of the header. This must be overwritten is
+      converting back to bytes object.
+
+      :type: int
+
+   .. method:: header_list()
+
+      Returns a list of header item objects.
+
+   .. method:: key_object_dict()
+
+      Returns a dictionary of header items identifiers and header item
+      objects.
+
+   .. method:: key_property(name:str, field_id: str)
+
+      Returns a property (field_id) of a segy header item based on the
+      identifier `name`.
+
+   .. method:: mapped_value(name: str)
+
+      Returns the mapped value of the header item with identifier `name` if
+      the header item value is mapped.
+
+   .. method:: set_key_property(self, name: str, field_id: str, value: Any)
+
+      Sets the value of the field of a header item based on the identifier
+      `name`.
+
+
+   .. py:attribute:: byte_length
+      :value: 0
+
+      
+
+   .. py:method:: __str__() -> str
+
+      Return str(self).
+
+
+   .. py:method:: header_list() -> list
+
+      Returns a list of header item objects.
+
+
+   .. py:method:: key_object_dict() -> dict
+
+      Returns a dictionary of header items identifiers and header item
+      objects.
+
+
+   .. py:method:: set_header_values(buf: bytes, endianess: str)
+
+      Set the value for each header item in the container.
+
+      :param buf: The byte data used to set the values. len(bsgy) must be equal to
+                  the `byte_length` attribute.
+      :type buf: bytes
+      :param endianess: Used to decode the byte data. Must be either 'little' or 'big'.
+      :type endianess: str
+
+      :raises ValueError: len(bsgy) != byte_length
+      :raises ValueError: endianess != 'little' or endianess != 'big'
+
+
+   .. py:method:: to_bytes(endianess: str) -> bytes
+
+      Converts each header item to a byte object and returns the complete
+      bytes object of length `byte_length`.
+
+      :param endianess: Either 'big' or 'little'
+      :type endianess: str
+
+      :rtype: bytes
+
+
+
+.. py:class:: SegyFileHeaderRev2
+
+   Bases: :py:obj:`segytools.segy_abstract_header.SegyAbstractHeader`
+
+   File or binary header definition of a segy file.
+
+   :param jobid: job identification number
+   :type jobid: SegyHeaderItem
+   :param line_number: line number
+   :type line_number: SegyHeaderItem
+   :param reel_number: reel number
+   :type reel_number: SegyHeaderItem
+   :param num_traces_per_ensemble: number of data traces per ensemble
+   :type num_traces_per_ensemble: SegyHeaderItem
+   :param num_aux_traces_per_ensemble: number of auxiliary traces per ensemble
+   :type num_aux_traces_per_ensemble: SegyHeaderItem
+   :param sample_interval: sample interval in microseconds
+   :type sample_interval: SegyHeaderItem
+   :param original_sample_interval: sample interval in microseconds or original recording
+   :type original_sample_interval: SegyHeaderItem
+   :param num_samples_per_trace: number of samples per data trace
+   :type num_samples_per_trace: SegyHeaderItem
+   :param original_num_samples_per_trace: number of samples per data trace or original recording
+   :type original_num_samples_per_trace: SegyHeaderItem
+   :param data_sample_format_code: data sample format code
+   :type data_sample_format_code: SegyHeaderItem
+   :param fold: ensemble fold
+   :type fold: SegyHeaderItem
+   :param sort_code: trace sorting code
+   :type sort_code: SegyHeaderItem
+   :param vertical_sum_code: vertical sum code
+   :type vertical_sum_code: SegyHeaderItem
+   :param sweep_freq_start: sweep frequency at start
+   :type sweep_freq_start: SegyHeaderItem
+   :param sweep_freq_end: sweep frequency at end
+   :type sweep_freq_end: SegyHeaderItem
+   :param sweep_length: sweep length
+   :type sweep_length: SegyHeaderItem
+   :param sweep_code: sweep type code
+   :type sweep_code: SegyHeaderItem
+   :param sweep_chan: trace_number of sweep channel
+   :type sweep_chan: SegyHeaderItem
+   :param sweep_taper_length_start: sweep_trace taper length in ms at start
+   :type sweep_taper_length_start: SegyHeaderItem
+   :param sweep_taper_length_end: sweep trace taper length in ms at end
+   :type sweep_taper_length_end: SegyHeaderItem
+   :param taper_type: taper type
+   :type taper_type: SegyHeaderItem
+   :param correlated_traces: correlated data traces
+   :type correlated_traces: SegyHeaderItem
+   :param binary_gain: binary gain recovered
+   :type binary_gain: SegyHeaderItem
+   :param amp_recovery_method: amplitude recovery method
+   :type amp_recovery_method: SegyHeaderItem
+   :param measurement_system: measurement system
+   :type measurement_system: SegyHeaderItem
+   :param polarity: impulse signal polarity
+   :type polarity: SegyHeaderItem
+   :param vibe_polarity: vibratory polarity code
+   :type vibe_polarity: SegyHeaderItem
+   :param segy_revision: seg y format revision number
+   :type segy_revision: SegyHeaderItem
+   :param fixed_length: fixed length trace flag
+   :type fixed_length: SegyHeaderItem
+   :param num_txt_headers: number of 3200 byte ext file header records following
+   :type num_txt_headers: SegyHeaderItem
+
+   .. py:method:: segy_type() -> str
+
+      Return the segy type, e.g. 'ibm', 'int32', 'int16', 'float32', or             'int8'.
+
+
+
+   .. py:method:: sample_format_size_in_bytes() -> int
+
+      Return the number of bytes in each sample based on the             `data_sample_format_code`.
+
+
+
+
+.. py:class:: SegyHeaderItem(sample_format: segytools.datatypes.DataSampleFormat, start_byte: int = 0, description: str = '', map_dict: dict = {}, value=0)
+
+   Bases: :py:obj:`object`
+
+   Used to describe a single header item or field in a segy file header         or trace header.
+
+   :param name: Header item identifier.
+   :type name: str
+   :param sample_format: data sample format that tells the system how to interpret the bytes
+   :type sample_format: DataSampleFormat
+   :param start_byte: Index of the first byte to read. Uses SEGY standard notation which             starts a header container at one, not zero.
+                      For example, reading a 4-byte integer header from a bytes or             bytearray object, b[0:4] would have a start_byte = 1.
+   :type start_byte: int
+   :param description: Description of the header item.
+   :type description: str
+   :param map_dict: Dictionary in which the key is the interpreted value. Required if             map_bool is True.
+   :type map_dict: `dict`
+   :param value: Header item value.
+   :type value: Any
+
+   .. method:: has_mapping_dictionary
+
+
+
+   .. py:property:: sample_format
+      :type: segytools.datatypes.DataSampleFormat
+
+      Get the sample format of the data.
+
+   .. py:property:: n_bytes
+      :type: int
+
+      Get the item's number of bytes.
+
+   .. py:property:: start_byte
+      :type: int
+
+      Get the item's start byte.
+
+   .. py:property:: description
+      :type: str
+
+      Get the item's description.
+
+   .. py:property:: value
+
+      Get the item's value.
+
+   .. py:property:: supplementary
+      :type: str
+
+      Get the item's supplementary content.
+
+   .. py:property:: map_dict
+      :type: dict
+
+      Get the item's mapping dictionary. If not mapping dictionary             provided, returns an empty dict.
+
+   .. py:property:: mapped_value
+
+      Get the item's mapped_value.
+
+   .. py:method:: __str__()
+
+      Return str(self).
+
+
+   .. py:method:: has_mapping_dictionary() -> bool
+
+      Returns True if there is a mapping dictionary provided to map the             interpreted value to another value. Otherwise, returns False.
+
+
+   .. py:method:: to_bytes(endianess: str) -> bytes
+
+      Convert the segy header item to a bytes object for writing back             out to segy format.
+
+      :param endianess: '>' for big endian, '<' for little.
+      :type endianess: str
+
+
+   .. py:method:: value_from_buffer(buf: bytes, endianess: str, sample_format: segytools.datatypes.DataSampleFormat)
+      :staticmethod:
+
+      Unpack value from buffer.
+
+      :param buf: buffer
+      :type buf: bytes
+      :param endianess: either '<' for little or '>' for big endian
+      :type endianess: str
+      :param sample_format: data sample format used for interpreting bytes object.
+      :type sample_format: DataSampleFormat
+
+
+   .. py:method:: from_bytes(buf: bytes, endianess: str, sample_format: segytools.datatypes.DataSampleFormat, start_byte: int = 0, description: str = '', map_dict: dict = {})
+      :classmethod:
+
+      Create a segy header item from a bytes object.
+
+      :param buf: The byte data.
+      :type buf: bytes
+      :param endianess: '>' for big endian, '<' for little
+      :type endianess: str
+
+
+
+.. py:class:: SegyTraceHeaderRev2
+
+   Bases: :py:obj:`segytools.segy_abstract_header.SegyAbstractHeader`
+
+   Segy Trace Header container based on segy format revision 2.
+
+   :param trc_seq_num_within_line: Trace sequence number within line.
+   :type trc_seq_num_within_line: SegyHeaderItem
+   :param trc_seq_num_within_file: Trace sequence number within segy file.
+   :type trc_seq_num_within_file: SegyHeaderItem
+   :param field_record_number: Original field record number.
+   :type field_record_number: SegyHeaderItem
+   :param trc_num_within_field_record: Trace number within the original field record.
+   :type trc_num_within_field_record: SegyHeaderItem
+   :param energy_src_num: Energy source point number.
+   :type energy_src_num: SegyHeaderItem
+   :param ensemble_number: Ensemble number.
+   :type ensemble_number: SegyHeaderItem
+   :param trc_num_within_ensemble: Trace number within ensemble.
+   :type trc_num_within_ensemble: SegyHeaderItem
+   :param trc_identification_code: Trace identification code. See TRACE_IDENTIFICATION_CODE for mapping.
+   :type trc_identification_code: SegyHeaderItem
+   :param num_vert_summed_traces: Number of vertically stacked traces yielding this trace.
+   :type num_vert_summed_traces: SegyHeaderItem
+   :param num_horz_summed_traces: Number of horizontally stacked traces yielding this trace.
+   :type num_horz_summed_traces: SegyHeaderItem
+   :param data_use: Data use. See DATA_USE for mapping.
+   :type data_use: SegyHeaderItem
+   :param offset: Distance from center of the source point to the center of the receiver
+                  group.
+   :type offset: SegyHeaderItem
+   :param rcv_elevation: Receiver group elevation.
+   :type rcv_elevation: SegyHeaderItem
+   :param src_elevation: Surface elevation at source.
+   :type src_elevation: SegyHeaderItem
+   :param src_depth: Source depth below surface.
+   :type src_depth: SegyHeaderItem
+   :param rcv_datum_elevation: Datum elevation at receiver group.
+   :type rcv_datum_elevation: SegyHeaderItem
+   :param src_datum_elevation: Datum elevation at source.
+   :type src_datum_elevation: SegyHeaderItem
+   :param src_water_depth: Water depth at source.
+   :type src_water_depth: SegyHeaderItem
+   :param rcv_water_depth: Water depth at group.
+   :type rcv_water_depth: SegyHeaderItem
+   :param z_scalar: Scalar to be applied to all elevations and depths.
+   :type z_scalar: SegyHeaderItem
+   :param xy_scalar: Scalar to be applied to all coordinates.
+   :type xy_scalar: SegyHeaderItem
+   :param src_x_coord: Source coordinate x.
+   :type src_x_coord: SegyHeaderItem
+   :param src_y_coord: Source coordinate y.
+   :type src_y_coord: SegyHeaderItem
+   :param rcv_x_coord: Group coordinate x.
+   :type rcv_x_coord: SegyHeaderItem
+   :param rcv_y_coord: Group coordinate y.
+   :type rcv_y_coord: SegyHeaderItem
+   :param coord_units: Coordinate units. See COORDINATE_UNITS for mapping.
+   :type coord_units: SegyHeaderItem
+   :param weathering_velocity: Weathering velocity.
+   :type weathering_velocity: SegyHeaderItem
+   :param subweathering_velocity: Subweathering velocity.
+   :type subweathering_velocity: SegyHeaderItem
+   :param src_uphole_time: Uphole time at source in ms.
+   :type src_uphole_time: SegyHeaderItem
+   :param rcv_uphole_time: Uphole time at group in ms.
+   :type rcv_uphole_time: SegyHeaderItem
+   :param src_static_correction: Source static correction in ms.
+   :type src_static_correction: SegyHeaderItem
+   :param rcv_static_correction: Group static correction in ms.
+   :type rcv_static_correction: SegyHeaderItem
+   :param total_static_applied: Total static applied in ms.
+   :type total_static_applied: SegyHeaderItem
+   :param lag_time_A: Lag time B.
+   :type lag_time_A: SegyHeaderItem
+   :param lag_time_B: Lag time A.
+   :type lag_time_B: SegyHeaderItem
+   :param delay_recording_time: Delay recording time.
+   :type delay_recording_time: SegyHeaderItem
+   :param mute_start_time: Mute time start time in ms.
+   :type mute_start_time: SegyHeaderItem
+   :param mute_end_time: Mute time end time in ms.
+   :type mute_end_time: SegyHeaderItem
+   :param num_samples: Number of samples in this trace.
+   :type num_samples: SegyHeaderItem
+   :param sample_interval: Sample interval in ms for this trace.
+   :type sample_interval: SegyHeaderItem
+   :param gain_type: Gain type of field instruments.
+   :type gain_type: SegyHeaderItem
+   :param gain_const: Instrument gain constant.
+   :type gain_const: SegyHeaderItem
+   :param initial_gain: Instrument early or initial gain.
+   :type initial_gain: SegyHeaderItem
+   :param correlated: Whether the trace is correlated or not. See CORRELATED for mapping.
+   :type correlated: SegyHeaderItem
+   :param sweep_freq_start: Sweep frequency at start.
+   :type sweep_freq_start: SegyHeaderItem
+   :param sweep_freq_end: Sweep frequency at end.
+   :type sweep_freq_end: SegyHeaderItem
+   :param sweep_length: Sweep length.
+   :type sweep_length: SegyHeaderItem
+   :param sweep_type: Sweep type. See SWEEP_TYPE for mapping.
+   :type sweep_type: SegyHeaderItem
+   :param sweep_taper_length_start: Sweep taper length at start.
+   :type sweep_taper_length_start: SegyHeaderItem
+   :param sweep_taper_length_end: Sweep taper length at end.
+   :type sweep_taper_length_end: SegyHeaderItem
+   :param taper_type: Taper type. See TAPER_TYPE for mapping.
+   :type taper_type: SegyHeaderItem
+   :param alias_filter_freq: Alias filter frequency.
+   :type alias_filter_freq: SegyHeaderItem
+   :param alias_filter_slope: Alias filter slope.
+   :type alias_filter_slope: SegyHeaderItem
+   :param notch_filter_freq: Notch filter frequency.
+   :type notch_filter_freq: SegyHeaderItem
+   :param notch_filter_slope: Notch filter slope.
+   :type notch_filter_slope: SegyHeaderItem
+   :param low_cut_freq: Low cut frequency.
+   :type low_cut_freq: SegyHeaderItem
+   :param high_cut_freq: High cut frequency.
+   :type high_cut_freq: SegyHeaderItem
+   :param low_cut_slope: Loow cut slope.
+   :type low_cut_slope: SegyHeaderItem
+   :param high_cut_slope: High cut slope.
+   :type high_cut_slope: SegyHeaderItem
+   :param year: Year data recorded.
+   :type year: SegyHeaderItem
+   :param day: Day of year.
+   :type day: SegyHeaderItem
+   :param hour: Hour of day.
+   :type hour: SegyHeaderItem
+   :param minute: Minute of hour.
+   :type minute: SegyHeaderItem
+   :param second: Second of minute.
+   :type second: SegyHeaderItem
+   :param time_basis: Time basis code. See TIME_BASIS_CODE for mapping.
+   :type time_basis: SegyHeaderItem
+   :param trc_weight: Trace weighting factor.
+   :type trc_weight: SegyHeaderItem
+   :param group_num: Geophone group number of roll switch position one.
+   :type group_num: SegyHeaderItem
+   :param first_group_num: Geophone group number of trace number one.
+   :type first_group_num: SegyHeaderItem
+   :param last_group_num: Geophone group number of last trace.
+   :type last_group_num: SegyHeaderItem
+   :param gap_size: Gap size.
+   :type gap_size: SegyHeaderItem
+   :param over_travel: Over travel associated with taper. See
+                       OVER_TRAVEL_ASSOCIATED_TAPER_AT_BEGINNING_OR_END_OF_LINE for mapping.
+   :type over_travel: SegyHeaderItem
+   :param ens_x_coord: X coordinate of ensemble position of this trace.
+   :type ens_x_coord: SegyHeaderItem
+   :param ens_y_coord: Y coordinate of ensemble position of this trace.
+   :type ens_y_coord: SegyHeaderItem
+   :param in_line: For 3D poststack data this field is for in line number.
+   :type in_line: SegyHeaderItem
+   :param cross_line: For 3D poststack data this field is for cross line number.
+   :type cross_line: SegyHeaderItem
+   :param shotpoint: Shotpoint number.
+   :type shotpoint: SegyHeaderItem
+   :param shotpoint_scalar: Scalar to be applied to the shotpoint number.
+   :type shotpoint_scalar: SegyHeaderItem
+   :param trc_value_measurement_unit: Trace value measurement unit. See TRACE_VALUE_MEASUREMENT_UNIT for
+                                      mapping.
+   :type trc_value_measurement_unit: SegyHeaderItem
+   :param transduction_constant_mantissa: Transduction constant mantissa.
+   :type transduction_constant_mantissa: SegyHeaderItem
+   :param transduction_constant_exponent: Transduction constant exponent.
+   :type transduction_constant_exponent: SegyHeaderItem
+   :param transduction_units: Transduction_units.
+   :type transduction_units: SegyHeaderItem
+   :param device_identifier: Device trace identifier.
+   :type device_identifier: SegyHeaderItem
+   :param time_scalar: Scalar to be applied to times.
+   :type time_scalar: SegyHeaderItem
+   :param source_type_orientation: Source type orientation. See SOURCE_TYPE_ORIENTATION for mapping.
+   :type source_type_orientation: SegyHeaderItem
+   :param source_energy_direction_mantissa: Source energy direction mantissa.
+   :type source_energy_direction_mantissa: SegyHeaderItem
+   :param source_energy_direction_exponent: Source energy direction exponent.
+   :type source_energy_direction_exponent: SegyHeaderItem
+   :param source_measurement_mantissa: Source measurement mantissa.
+   :type source_measurement_mantissa: SegyHeaderItem
+   :param source_measurement_exponent: Source measurement exponent.
+   :type source_measurement_exponent: SegyHeaderItem
+   :param source_measurement_unit: Source measurement unit. See SOURCE_MEASUREMENT_UNIT for mapping.
+   :type source_measurement_unit: SegyHeaderItem
+   :param undefined233: Undefined.
+   :type undefined233: SegyHeaderItem
+   :param undefined237: Undefined.
+   :type undefined237: SegyHeaderItem
+
+

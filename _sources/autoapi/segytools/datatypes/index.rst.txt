@@ -1,0 +1,54 @@
+:py:mod:`segytools.datatypes`
+=============================
+
+.. py:module:: segytools.datatypes
+
+.. autoapi-nested-parse::
+
+   Mappings between the coding systems used for sample types.
+
+
+
+Module Contents
+---------------
+
+.. py:data:: DataSampleFormat
+
+   
+
+.. py:data:: DATA_SAMPLE_FORMAT_INT8
+
+   
+
+.. py:data:: DATA_SAMPLE_FORMAT_UINT8
+
+   
+
+.. py:data:: DATA_SAMPLE_FORMAT_INT16
+
+   
+
+.. py:data:: DATA_SAMPLE_FORMAT_UINT16
+
+   
+
+.. py:data:: DATA_SAMPLE_FORMAT_INT32
+
+   
+
+.. py:data:: DATA_SAMPLE_FORMAT_UINT32
+
+   
+
+.. py:data:: DATA_SAMPLE_FORMAT_FLOAT32
+
+   
+
+.. py:data:: DATA_SAMPLE_FORMAT_FLOAT64
+
+   
+
+.. py:data:: DATA_SAMPLE_FORMAT_IBM
+
+   
+

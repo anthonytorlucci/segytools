@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>segytools.segy_trace_header &mdash; segytools 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> segytools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">segytools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">segytools.segy_trace_header</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for segytools.segy_trace_header</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;segy trace header&quot;&quot;&quot;</span>
+
+<span class="c1"># import python standard modules</span>
+
+<span class="c1"># import 3rd party libraries</span>
+
+<span class="c1"># import local python</span>
+<span class="kn">from</span> <span class="nn">segytools.datatypes</span> <span class="kn">import</span> <span class="p">(</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+                                 <span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">segytools.segy_abstract_header</span> <span class="kn">import</span> <span class="n">SegyAbstractHeader</span>
+<span class="kn">from</span> <span class="nn">segytools.segy_header_item</span> <span class="kn">import</span> <span class="n">SegyHeaderItem</span>
+
+<span class="c1"># --- Mappings</span>
+<span class="c1"># bytes 29-30</span>
+<span class="n">TRACE_IDENTIFICATION_CODE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Other&quot;</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Seismic Data&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;Dead&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;Dummy&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;Time break&quot;</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;Uphole&quot;</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;Sweep&quot;</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="s2">&quot;Timing&quot;</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="s2">&quot;Waterbreak&quot;</span><span class="p">,</span>
+    <span class="mi">9</span><span class="p">:</span> <span class="s2">&quot;Near-field gun signature&quot;</span><span class="p">,</span>
+    <span class="mi">10</span><span class="p">:</span> <span class="s2">&quot;Far-field gun signature&quot;</span><span class="p">,</span>
+    <span class="mi">11</span><span class="p">:</span> <span class="s2">&quot;Seismic pressure sensor&quot;</span><span class="p">,</span>
+    <span class="mi">12</span><span class="p">:</span> <span class="s2">&quot;Multi-component seismic sensor - Vertical component&quot;</span><span class="p">,</span>
+    <span class="mi">13</span><span class="p">:</span> <span class="s2">&quot;Multi-component seismic sensor - Cross-line component&quot;</span><span class="p">,</span>
+    <span class="mi">14</span><span class="p">:</span> <span class="s2">&quot;Multi-component seismic sensor - In-line component&quot;</span><span class="p">,</span>
+    <span class="mi">15</span><span class="p">:</span> <span class="s2">&quot;Rotated multi-component seismic sensor - Vertical component&quot;</span><span class="p">,</span>
+    <span class="mi">16</span><span class="p">:</span> <span class="s2">&quot;Rotated multi-component seismic sensor - Transverse component&quot;</span><span class="p">,</span>
+    <span class="mi">17</span><span class="p">:</span> <span class="s2">&quot;Rotated multi-component seismic sensor - Radial component&quot;</span><span class="p">,</span>
+    <span class="mi">18</span><span class="p">:</span> <span class="s2">&quot;Vibrator reaction mass&quot;</span><span class="p">,</span>
+    <span class="mi">19</span><span class="p">:</span> <span class="s2">&quot;Vibrator baseplate&quot;</span><span class="p">,</span>
+    <span class="mi">20</span><span class="p">:</span> <span class="s2">&quot;Vibrator estimated ground force&quot;</span><span class="p">,</span>
+    <span class="mi">21</span><span class="p">:</span> <span class="s2">&quot;Vibrator reference&quot;</span><span class="p">,</span>
+    <span class="mi">22</span><span class="p">:</span> <span class="s2">&quot;Time-Velocity Pairs&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 35-36</span>
+<span class="n">DATA_USE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Production&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;Test&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 69-70 and 71-72</span>
+<span class="n">COORDINATE_SCALAR_MULTIPLIER</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">-</span><span class="mi">10000</span><span class="p">:</span> <span class="mf">0.0001</span><span class="p">,</span>
+    <span class="o">-</span><span class="mi">1000</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+    <span class="o">-</span><span class="mi">100</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="o">-</span><span class="mi">10</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="mi">10</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="mi">100</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="mi">1000</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="mi">10000</span><span class="p">:</span> <span class="mi">10000</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 89-90</span>
+<span class="n">COORDINATE_UNITS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Length (meters or feet)&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;Seconds or arc&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;Decimal degrees&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;Degrees, minutes, seconds (DMS)&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="c1"># TODO: properly handle anything other than length; most routines are based on</span>
+<span class="c1"># Cartesian system</span>
+
+<span class="c1"># bytes 119-120</span>
+<span class="n">GAIN_TYPE_OF_FIELD_INSTRUMENTS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;fixed&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;binary&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;floating point&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;optional use&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 125-126</span>
+<span class="n">CORRELATED</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;yes&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;no&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 133-134</span>
+<span class="n">SWEEP_TYPE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;parabolic&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;exponential&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;other&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 139-140</span>
+<span class="n">TAPER_TYPE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;cos**2&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;other&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 167-168</span>
+<span class="n">TIME_BASIS_CODE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Local&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;GMT (Greenwich Mean Time)&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;Other&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;UTC (Coordinated Universal Time)&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 179-180</span>
+<span class="n">OVER_TRAVEL_ASSOCIATED_TAPER_AT_BEGINNING_OR_END_OF_LINE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;down (or behind)&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;up (or ahead)&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 203-204</span>
+<span class="n">TRACE_VALUE_MEASUREMENT_UNIT</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Other&quot;</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Pascal (Pa)&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;Volts (v)&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;Millivolts (mV)&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;Amperes (A)&quot;</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;Meters (m)&quot;</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;Meters per second (m/s)&quot;</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="s2">&quot;Meters per second squared (m/(s**2))&quot;</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="s2">&quot;Newton (N)&quot;</span><span class="p">,</span>
+    <span class="mi">9</span><span class="p">:</span> <span class="s2">&quot;Watt (W)&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 211-212</span>
+<span class="n">TRANSDUCTION_UNITS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Other&quot;</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Pascal (Pa)&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;Volts (v)&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;Millivolts (mV)&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;Amperes (A)&quot;</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;Meters (m)&quot;</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;Meters per second (m/s)&quot;</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="s2">&quot;Meters per second squared (m/(s**2))&quot;</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="s2">&quot;Newton (N)&quot;</span><span class="p">,</span>
+    <span class="mi">9</span><span class="p">:</span> <span class="s2">&quot;Watt (W)&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 217-218</span>
+<span class="n">SOURCE_TYPE_ORIENTATION</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Other&quot;</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Vibratory - Vertical orientation&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;Vibratory - Cross-line orientation&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;Vibratory - In-line-orientation&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;Impulsive - Vertical orientation&quot;</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;Impulsive - Cross-line orientation&quot;</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;Impulsive - In-line-orientation&quot;</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="s2">&quot;Distributed Impulsive - Vertical orientation&quot;</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="s2">&quot;Distributed Impulsive - Cross-line orientation&quot;</span><span class="p">,</span>
+    <span class="mi">9</span><span class="p">:</span> <span class="s2">&quot;Distributed Impulsive - In-line-orientation&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 231-232</span>
+<span class="n">SOURCE_MEASUREMENT_UNIT</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Other&quot;</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Joule (J)&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;Kilowatt (kW)&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;Pascal (P)&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;Bar (Bar)&quot;</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;Newton (N)&quot;</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;Kilograms (kg)&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="SegyTraceHeaderRev2"><a class="viewcode-back" href="../../autoapi/segytools/segy_trace_header/index.html#segytools.SegyTraceHeaderRev2">[docs]</a><span class="k">class</span> <span class="nc">SegyTraceHeaderRev2</span><span class="p">(</span><span class="n">SegyAbstractHeader</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Segy Trace Header container based on segy format revision 2.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    trc_seq_num_within_line : SegyHeaderItem</span>
+<span class="sd">        Trace sequence number within line.</span>
+<span class="sd">    trc_seq_num_within_file : SegyHeaderItem</span>
+<span class="sd">        Trace sequence number within segy file.</span>
+<span class="sd">    field_record_number : SegyHeaderItem</span>
+<span class="sd">        Original field record number.</span>
+<span class="sd">    trc_num_within_field_record : SegyHeaderItem</span>
+<span class="sd">        Trace number within the original field record.</span>
+<span class="sd">    energy_src_num : SegyHeaderItem</span>
+<span class="sd">        Energy source point number.</span>
+<span class="sd">    ensemble_number : SegyHeaderItem</span>
+<span class="sd">        Ensemble number.</span>
+<span class="sd">    trc_num_within_ensemble : SegyHeaderItem</span>
+<span class="sd">        Trace number within ensemble.</span>
+<span class="sd">    trc_identification_code : SegyHeaderItem</span>
+<span class="sd">        Trace identification code. See TRACE_IDENTIFICATION_CODE for mapping.</span>
+<span class="sd">    num_vert_summed_traces : SegyHeaderItem</span>
+<span class="sd">        Number of vertically stacked traces yielding this trace.</span>
+<span class="sd">    num_horz_summed_traces : SegyHeaderItem</span>
+<span class="sd">        Number of horizontally stacked traces yielding this trace.</span>
+<span class="sd">    data_use : SegyHeaderItem</span>
+<span class="sd">        Data use. See DATA_USE for mapping.</span>
+<span class="sd">    offset : SegyHeaderItem</span>
+<span class="sd">        Distance from center of the source point to the center of the receiver</span>
+<span class="sd">        group.</span>
+<span class="sd">    rcv_elevation : SegyHeaderItem</span>
+<span class="sd">        Receiver group elevation.</span>
+<span class="sd">    src_elevation : SegyHeaderItem</span>
+<span class="sd">        Surface elevation at source.</span>
+<span class="sd">    src_depth : SegyHeaderItem</span>
+<span class="sd">        Source depth below surface.</span>
+<span class="sd">    rcv_datum_elevation : SegyHeaderItem</span>
+<span class="sd">        Datum elevation at receiver group.</span>
+<span class="sd">    src_datum_elevation : SegyHeaderItem</span>
+<span class="sd">        Datum elevation at source.</span>
+<span class="sd">    src_water_depth : SegyHeaderItem</span>
+<span class="sd">        Water depth at source.</span>
+<span class="sd">    rcv_water_depth : SegyHeaderItem</span>
+<span class="sd">        Water depth at group.</span>
+<span class="sd">    z_scalar : SegyHeaderItem</span>
+<span class="sd">        Scalar to be applied to all elevations and depths.</span>
+<span class="sd">    xy_scalar : SegyHeaderItem</span>
+<span class="sd">        Scalar to be applied to all coordinates.</span>
+<span class="sd">    src_x_coord : SegyHeaderItem</span>
+<span class="sd">        Source coordinate x.</span>
+<span class="sd">    src_y_coord : SegyHeaderItem</span>
+<span class="sd">        Source coordinate y.</span>
+<span class="sd">    rcv_x_coord : SegyHeaderItem</span>
+<span class="sd">        Group coordinate x.</span>
+<span class="sd">    rcv_y_coord : SegyHeaderItem</span>
+<span class="sd">        Group coordinate y.</span>
+<span class="sd">    coord_units : SegyHeaderItem</span>
+<span class="sd">        Coordinate units. See COORDINATE_UNITS for mapping.</span>
+<span class="sd">    weathering_velocity : SegyHeaderItem</span>
+<span class="sd">        Weathering velocity.</span>
+<span class="sd">    subweathering_velocity : SegyHeaderItem</span>
+<span class="sd">        Subweathering velocity.</span>
+<span class="sd">    src_uphole_time : SegyHeaderItem</span>
+<span class="sd">        Uphole time at source in ms.</span>
+<span class="sd">    rcv_uphole_time : SegyHeaderItem</span>
+<span class="sd">        Uphole time at group in ms.</span>
+<span class="sd">    src_static_correction : SegyHeaderItem</span>
+<span class="sd">        Source static correction in ms.</span>
+<span class="sd">    rcv_static_correction : SegyHeaderItem</span>
+<span class="sd">        Group static correction in ms.</span>
+<span class="sd">    total_static_applied : SegyHeaderItem</span>
+<span class="sd">        Total static applied in ms.</span>
+<span class="sd">    lag_time_A : SegyHeaderItem</span>
+<span class="sd">        Lag time B.</span>
+<span class="sd">    lag_time_B : SegyHeaderItem</span>
+<span class="sd">        Lag time A.</span>
+<span class="sd">    delay_recording_time : SegyHeaderItem</span>
+<span class="sd">        Delay recording time.</span>
+<span class="sd">    mute_start_time : SegyHeaderItem</span>
+<span class="sd">        Mute time start time in ms.</span>
+<span class="sd">    mute_end_time : SegyHeaderItem</span>
+<span class="sd">        Mute time end time in ms.</span>
+<span class="sd">    num_samples : SegyHeaderItem</span>
+<span class="sd">        Number of samples in this trace.</span>
+<span class="sd">    sample_interval : SegyHeaderItem</span>
+<span class="sd">        Sample interval in ms for this trace.</span>
+<span class="sd">    gain_type : SegyHeaderItem</span>
+<span class="sd">        Gain type of field instruments.</span>
+<span class="sd">    gain_const : SegyHeaderItem</span>
+<span class="sd">        Instrument gain constant.</span>
+<span class="sd">    initial_gain : SegyHeaderItem</span>
+<span class="sd">        Instrument early or initial gain.</span>
+<span class="sd">    correlated : SegyHeaderItem</span>
+<span class="sd">        Whether the trace is correlated or not. See CORRELATED for mapping.</span>
+<span class="sd">    sweep_freq_start : SegyHeaderItem</span>
+<span class="sd">        Sweep frequency at start.</span>
+<span class="sd">    sweep_freq_end : SegyHeaderItem</span>
+<span class="sd">        Sweep frequency at end.</span>
+<span class="sd">    sweep_length : SegyHeaderItem</span>
+<span class="sd">        Sweep length.</span>
+<span class="sd">    sweep_type : SegyHeaderItem</span>
+<span class="sd">        Sweep type. See SWEEP_TYPE for mapping.</span>
+<span class="sd">    sweep_taper_length_start : SegyHeaderItem</span>
+<span class="sd">        Sweep taper length at start.</span>
+<span class="sd">    sweep_taper_length_end : SegyHeaderItem</span>
+<span class="sd">        Sweep taper length at end.</span>
+<span class="sd">    taper_type : SegyHeaderItem</span>
+<span class="sd">        Taper type. See TAPER_TYPE for mapping.</span>
+<span class="sd">    alias_filter_freq : SegyHeaderItem</span>
+<span class="sd">        Alias filter frequency.</span>
+<span class="sd">    alias_filter_slope : SegyHeaderItem</span>
+<span class="sd">        Alias filter slope.</span>
+<span class="sd">    notch_filter_freq : SegyHeaderItem</span>
+<span class="sd">        Notch filter frequency.</span>
+<span class="sd">    notch_filter_slope : SegyHeaderItem</span>
+<span class="sd">        Notch filter slope.</span>
+<span class="sd">    low_cut_freq : SegyHeaderItem</span>
+<span class="sd">        Low cut frequency.</span>
+<span class="sd">    high_cut_freq : SegyHeaderItem</span>
+<span class="sd">        High cut frequency.</span>
+<span class="sd">    low_cut_slope : SegyHeaderItem</span>
+<span class="sd">        Loow cut slope.</span>
+<span class="sd">    high_cut_slope : SegyHeaderItem</span>
+<span class="sd">        High cut slope.</span>
+<span class="sd">    year : SegyHeaderItem</span>
+<span class="sd">        Year data recorded.</span>
+<span class="sd">    day : SegyHeaderItem</span>
+<span class="sd">        Day of year.</span>
+<span class="sd">    hour : SegyHeaderItem</span>
+<span class="sd">        Hour of day.</span>
+<span class="sd">    minute : SegyHeaderItem</span>
+<span class="sd">        Minute of hour.</span>
+<span class="sd">    second : SegyHeaderItem</span>
+<span class="sd">        Second of minute.</span>
+<span class="sd">    time_basis : SegyHeaderItem</span>
+<span class="sd">        Time basis code. See TIME_BASIS_CODE for mapping.</span>
+<span class="sd">    trc_weight : SegyHeaderItem</span>
+<span class="sd">        Trace weighting factor.</span>
+<span class="sd">    group_num : SegyHeaderItem</span>
+<span class="sd">        Geophone group number of roll switch position one.</span>
+<span class="sd">    first_group_num : SegyHeaderItem</span>
+<span class="sd">        Geophone group number of trace number one.</span>
+<span class="sd">    last_group_num : SegyHeaderItem</span>
+<span class="sd">        Geophone group number of last trace.</span>
+<span class="sd">    gap_size : SegyHeaderItem</span>
+<span class="sd">        Gap size.</span>
+<span class="sd">    over_travel : SegyHeaderItem</span>
+<span class="sd">        Over travel associated with taper. See</span>
+<span class="sd">        OVER_TRAVEL_ASSOCIATED_TAPER_AT_BEGINNING_OR_END_OF_LINE for mapping.</span>
+<span class="sd">    ens_x_coord : SegyHeaderItem</span>
+<span class="sd">        X coordinate of ensemble position of this trace.</span>
+<span class="sd">    ens_y_coord : SegyHeaderItem</span>
+<span class="sd">        Y coordinate of ensemble position of this trace.</span>
+<span class="sd">    in_line : SegyHeaderItem</span>
+<span class="sd">        For 3D poststack data this field is for in line number.</span>
+<span class="sd">    cross_line : SegyHeaderItem</span>
+<span class="sd">        For 3D poststack data this field is for cross line number.</span>
+<span class="sd">    shotpoint : SegyHeaderItem</span>
+<span class="sd">        Shotpoint number.</span>
+<span class="sd">    shotpoint_scalar : SegyHeaderItem</span>
+<span class="sd">        Scalar to be applied to the shotpoint number.</span>
+<span class="sd">    trc_value_measurement_unit : SegyHeaderItem</span>
+<span class="sd">        Trace value measurement unit. See TRACE_VALUE_MEASUREMENT_UNIT for</span>
+<span class="sd">        mapping.</span>
+<span class="sd">    transduction_constant_mantissa : SegyHeaderItem</span>
+<span class="sd">        Transduction constant mantissa.</span>
+<span class="sd">    transduction_constant_exponent : SegyHeaderItem</span>
+<span class="sd">        Transduction constant exponent.</span>
+<span class="sd">    transduction_units : SegyHeaderItem</span>
+<span class="sd">        Transduction_units.</span>
+<span class="sd">    device_identifier : SegyHeaderItem</span>
+<span class="sd">        Device trace identifier.</span>
+<span class="sd">    time_scalar : SegyHeaderItem</span>
+<span class="sd">        Scalar to be applied to times.</span>
+<span class="sd">    source_type_orientation : SegyHeaderItem</span>
+<span class="sd">        Source type orientation. See SOURCE_TYPE_ORIENTATION for mapping.</span>
+<span class="sd">    source_energy_direction_mantissa : SegyHeaderItem</span>
+<span class="sd">        Source energy direction mantissa.</span>
+<span class="sd">    source_energy_direction_exponent : SegyHeaderItem</span>
+<span class="sd">        Source energy direction exponent.</span>
+<span class="sd">    source_measurement_mantissa : SegyHeaderItem</span>
+<span class="sd">        Source measurement mantissa.</span>
+<span class="sd">    source_measurement_exponent : SegyHeaderItem</span>
+<span class="sd">        Source measurement exponent.</span>
+<span class="sd">    source_measurement_unit : SegyHeaderItem</span>
+<span class="sd">        Source measurement unit. See SOURCE_MEASUREMENT_UNIT for mapping.</span>
+<span class="sd">    undefined233 : SegyHeaderItem</span>
+<span class="sd">        Undefined.</span>
+<span class="sd">    undefined237 : SegyHeaderItem</span>
+<span class="sd">        Undefined.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">byte_length</span> <span class="o">=</span> <span class="mi">240</span>
+
+        <span class="c1"># HEADERS</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trc_seq_num_within_line</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;trace sequence number within line&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trc_seq_num_within_file</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;trace sequence number within segy file&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">field_record_number</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;original field record number&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trc_num_within_field_record</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;trace number within the original field record&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">energy_src_num</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;energy source point number&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ensemble_number</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;ensemble number&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trc_num_within_ensemble</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;trace number within the ensemble&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trc_identification_code</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">29</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;trace identification code&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">TRACE_IDENTIFICATION_CODE</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_vert_summed_traces</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">31</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;number of vertically summed traces yielding this </span><span class="se">\</span>
+<span class="s2">                trace&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_horz_summed_traces</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">33</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;number of horizontally stacked traces yielding this </span><span class="se">\</span>
+<span class="s2">                trace&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_use</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;data use&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">DATA_USE</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">37</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;distance from center of the source point to the </span><span class="se">\</span>
+<span class="s2">                center of the receiver group&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rcv_elevation</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">41</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;receiver group elevation&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src_elevation</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;surface elevation at source&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src_depth</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">49</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;source depth below surface&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rcv_datum_elevation</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">53</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;datum elevation at receiver group&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src_datum_elevation</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">57</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;datum elevation at source&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src_water_depth</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">61</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;water depth at source&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rcv_water_depth</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;water depth at group&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z_scalar</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">69</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;scalar to be applied to all elevations and depths&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">COORDINATE_SCALAR_MULTIPLIER</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xy_scalar</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">71</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;scalar to be applied to all coordinates&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">COORDINATE_SCALAR_MULTIPLIER</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src_x_coord</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">73</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;source coordinate x&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src_y_coord</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">77</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;source coordinate y&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rcv_x_coord</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">81</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;group coordinate x&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rcv_y_coord</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">85</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;group coordinate y&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coord_units</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">89</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;coordinate units&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">COORDINATE_UNITS</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weathering_velocity</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">91</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;weathering velocity&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subweathering_velocity</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">93</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;subweathering velocity&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src_uphole_time</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">95</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;uphole time at source in ms&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rcv_uphole_time</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">97</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;uphole time at group in ms&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src_static_correction</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">99</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;source static correction in ms&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rcv_static_correction</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">101</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;group static correction in ms&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_static_applied</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">103</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;total static applied in ms&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lag_time_A</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">105</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;lag time A&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lag_time_B</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">107</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;lag time B&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delay_recording_time</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">109</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;delay recording time&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mute_start_time</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">111</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;mute time start time in ms&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mute_end_time</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">113</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;mute time end time in ms&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_samples</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">115</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;number of samples in this trace&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_interval</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">117</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sample interval in ms for this trace&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gain_type</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">119</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;gain type of field instruments&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">GAIN_TYPE_OF_FIELD_INSTRUMENTS</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gain_const</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">121</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;instrument gain constant&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_gain</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;instrument early or initial gain&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">correlated</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">125</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;correlated&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">CORRELATED</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sweep_freq_start</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">127</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sweep frequency at start&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sweep_freq_end</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">129</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sweep frequency at end&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sweep_length</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">131</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sweep length in ms&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sweep_type</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">133</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sweep type&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">SWEEP_TYPE</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sweep_taper_length_start</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">135</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sweep trace taper length at start in ms&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sweep_taper_length_end</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">137</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sweep trace taper length at end in ms&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">taper_type</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">139</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;taper type&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">TAPER_TYPE</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alias_filter_freq</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">141</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;alias filter frequency&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alias_filter_slope</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">143</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;alias filter slope&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">notch_filter_freq</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">145</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;notch filter frequency&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">notch_filter_slope</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">147</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;notch filter slope&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">low_cut_freq</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">149</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;low cut frequency&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">high_cut_freq</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">151</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;high cut frequency&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">low_cut_slope</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">153</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;low cut slope&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">high_cut_slope</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">155</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;high cut_slope&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">157</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;year data recorded&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">day</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">159</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;day of year&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hour</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">161</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;hour of day&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minute</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">163</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;minute of hour&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">second</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">165</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;second of minute&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_basis</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">167</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;time basis code&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">TIME_BASIS_CODE</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trc_weight</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">169</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;trace weighting factor&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_num</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">171</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;geophone group number of roll switch position one&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">first_group_num</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">173</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;geophone group number of trace number one&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_group_num</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">175</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;geophone group number of last trace&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gap_size</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">177</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;gap size&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">over_travel</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">179</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;over travel associated with taper&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">OVER_TRAVEL_ASSOCIATED_TAPER_AT_BEGINNING_OR_END_OF_LINE</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ens_x_coord</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">181</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;x coordinate of ensemble position of this trace&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ens_y_coord</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">185</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;y coordinate of ensemble position of this trace&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_line</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">189</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;for 3D poststack data this field is for in line </span><span class="se">\</span>
+<span class="s2">                number&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cross_line</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">193</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;for 3D poststack data this field is for cross line </span><span class="se">\</span>
+<span class="s2">                number&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shotpoint</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">197</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;shotpoint number&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shotpoint_scalar</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">201</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;scalar to be applied to the shotpoint number&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trc_value_measurement_unit</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">203</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;trace value measurement unit&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">TRACE_VALUE_MEASUREMENT_UNIT</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># The transduction constant is encoded with the mantissa and the power</span>
+        <span class="c1"># of the exponent, e.g.:</span>
+        <span class="c1"># transduction_constant =</span>
+        <span class="c1"># transduction_constant_mantissa * 10 ** transduction_constant_exponent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transduction_constant_mantissa</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">205</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;transduction constant mantissa&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transduction_constant_exponent</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">209</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;transduction constant exponent&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transduction_units</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">211</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;transduction units&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">TRANSDUCTION_UNITS</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device_identifier</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">213</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;device trace identifier&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_scalar</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">215</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;scalar to be applied to times&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_type_orientation</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">217</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;source type orientation&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">SOURCE_TYPE_ORIENTATION</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_energy_direction_mantissa</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">219</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;source energy direction mantissa&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_energy_direction_exponent</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">223</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;source energy direction exponent&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># The source measurement is encoded with the mantissa and the power of</span>
+        <span class="c1"># the exponent, e.g.:</span>
+        <span class="c1"># source_measurement =</span>
+        <span class="c1"># source_measurement_mantissa * 10 ** source_measurement_exponent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_measurement_mantissa</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">225</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;source measurement mantissa&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_measurement_exponent</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">229</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;source measurement exponent&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_measurement_unit</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>  <span class="c1"># nbytes=2,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">231</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;source measurement unit&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">SOURCE_MEASUREMENT_UNIT</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">undefined233</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">233</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;undefined&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">undefined237</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>  <span class="c1"># nbytes=4,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">237</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;undefined&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Anthony Torlucci.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

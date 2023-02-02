@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>segytools.segy_file_header &mdash; segytools 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> segytools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">segytools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">segytools.segy_file_header</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for segytools.segy_file_header</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">segy file header aka binary header</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="c1"># import python standard modules</span>
+
+<span class="c1"># import 3rd party libraries</span>
+
+<span class="c1"># import local python</span>
+<span class="kn">from</span> <span class="nn">segytools.datatypes</span> <span class="kn">import</span> <span class="p">(</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+                                 <span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">segytools.segy_abstract_header</span> <span class="kn">import</span> <span class="n">SegyAbstractHeader</span>
+<span class="kn">from</span> <span class="nn">segytools.segy_header_item</span> <span class="kn">import</span> <span class="n">SegyHeaderItem</span>
+
+<span class="c1"># --- Mappings</span>
+<span class="c1"># bytes 25-26</span>
+<span class="n">DATA_SAMPLE_FORMAT_CODE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;undefined&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;ibm&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;float32&quot;</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="s2">&quot;int8&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 29-30</span>
+<span class="n">TRACE_SORTING_CODE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Other&quot;</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;As Recorded (no sorting)&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;CDP Ensemble&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;Single fold continuous profile&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;Horizontally stacked&quot;</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;Common source point&quot;</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;Common receiver point&quot;</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="s2">&quot;Common offset point&quot;</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="s2">&quot;Common mid-point&quot;</span><span class="p">,</span>
+    <span class="mi">9</span><span class="p">:</span> <span class="s2">&quot;Common Conversion point&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 39-40</span>
+<span class="n">SWEEP_TYPE_CODE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;undefined&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;parabolic&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;exponential&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;other&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 47-48</span>
+<span class="n">TAPER_TYPE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;undefined&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;cos**2&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;other&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 49-50</span>
+<span class="n">CORRELATED_DATA_TRACES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;undefined&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;no&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;yes&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 51-52</span>
+<span class="n">BINARY_GAIN_RECOVERED</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;undefined&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;yes&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;no&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 53-54</span>
+<span class="n">AMPLITUDE_RECOVERY_METHOD</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;undefined&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;spherical divergence&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;agc&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;other&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 55-56</span>
+<span class="n">MEASUREMENT_SYSTEM</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;undefined&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;meters&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;feet&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 57-58</span>
+<span class="n">IMPULSE_SIGNAL_POLARITY</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;undefined&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;incerase in pressure or upward geophone case movement gives negative </span><span class="se">\</span>
+<span class="s2">        number on tape&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;incerase in pressure or upward geophone case movement gives positive </span><span class="se">\</span>
+<span class="s2">        number on tape&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># bytes 59-60</span>
+<span class="n">VIBRATORY_POLARITY_CODE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;undefined&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;337.5 (deg) to 22.5 (deg)&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;22.5 (deg) to 67.5 (deg)&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;67.5 (deg) to 112.5 (deg)&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;112.5 (deg) to 157.5 (deg)&quot;</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;157.5 (deg) to 202.5 (deg)&quot;</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;202.5 (deg) to 247.5 (deg)&quot;</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="s2">&quot;247.5 (deg) to 292.5 (deg)&quot;</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="s2">&quot;292.5 (deg) to 337.5 (deg)&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="SegyFileHeaderRev2"><a class="viewcode-back" href="../../autoapi/segytools/segy_file_header/index.html#segytools.SegyFileHeaderRev2">[docs]</a><span class="k">class</span> <span class="nc">SegyFileHeaderRev2</span><span class="p">(</span><span class="n">SegyAbstractHeader</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;File or binary header definition of a segy file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    jobid : SegyHeaderItem</span>
+<span class="sd">        job identification number</span>
+<span class="sd">    line_number : SegyHeaderItem</span>
+<span class="sd">        line number</span>
+<span class="sd">    reel_number : SegyHeaderItem</span>
+<span class="sd">        reel number</span>
+<span class="sd">    num_traces_per_ensemble : SegyHeaderItem</span>
+<span class="sd">        number of data traces per ensemble</span>
+<span class="sd">    num_aux_traces_per_ensemble : SegyHeaderItem</span>
+<span class="sd">        number of auxiliary traces per ensemble</span>
+<span class="sd">    sample_interval : SegyHeaderItem</span>
+<span class="sd">        sample interval in microseconds</span>
+<span class="sd">    original_sample_interval : SegyHeaderItem</span>
+<span class="sd">        sample interval in microseconds or original recording</span>
+<span class="sd">    num_samples_per_trace : SegyHeaderItem</span>
+<span class="sd">        number of samples per data trace</span>
+<span class="sd">    original_num_samples_per_trace : SegyHeaderItem</span>
+<span class="sd">        number of samples per data trace or original recording</span>
+<span class="sd">    data_sample_format_code : SegyHeaderItem</span>
+<span class="sd">        data sample format code</span>
+<span class="sd">    fold : SegyHeaderItem</span>
+<span class="sd">        ensemble fold</span>
+<span class="sd">    sort_code : SegyHeaderItem</span>
+<span class="sd">        trace sorting code</span>
+<span class="sd">    vertical_sum_code : SegyHeaderItem</span>
+<span class="sd">        vertical sum code</span>
+<span class="sd">    sweep_freq_start : SegyHeaderItem</span>
+<span class="sd">        sweep frequency at start</span>
+<span class="sd">    sweep_freq_end : SegyHeaderItem</span>
+<span class="sd">        sweep frequency at end</span>
+<span class="sd">    sweep_length : SegyHeaderItem</span>
+<span class="sd">        sweep length</span>
+<span class="sd">    sweep_code : SegyHeaderItem</span>
+<span class="sd">        sweep type code</span>
+<span class="sd">    sweep_chan : SegyHeaderItem</span>
+<span class="sd">        trace_number of sweep channel</span>
+<span class="sd">    sweep_taper_length_start : SegyHeaderItem</span>
+<span class="sd">        sweep_trace taper length in ms at start</span>
+<span class="sd">    sweep_taper_length_end : SegyHeaderItem</span>
+<span class="sd">        sweep trace taper length in ms at end</span>
+<span class="sd">    taper_type : SegyHeaderItem</span>
+<span class="sd">        taper type</span>
+<span class="sd">    correlated_traces : SegyHeaderItem</span>
+<span class="sd">        correlated data traces</span>
+<span class="sd">    binary_gain : SegyHeaderItem</span>
+<span class="sd">        binary gain recovered</span>
+<span class="sd">    amp_recovery_method : SegyHeaderItem</span>
+<span class="sd">        amplitude recovery method</span>
+<span class="sd">    measurement_system : SegyHeaderItem</span>
+<span class="sd">        measurement system</span>
+<span class="sd">    polarity : SegyHeaderItem</span>
+<span class="sd">        impulse signal polarity</span>
+<span class="sd">    vibe_polarity : SegyHeaderItem</span>
+<span class="sd">        vibratory polarity code</span>
+<span class="sd">    segy_revision : SegyHeaderItem</span>
+<span class="sd">        seg y format revision number</span>
+<span class="sd">    fixed_length : SegyHeaderItem</span>
+<span class="sd">        fixed length trace flag</span>
+<span class="sd">    num_txt_headers : SegyHeaderItem</span>
+<span class="sd">        number of 3200 byte ext file header records following</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">byte_length</span> <span class="o">=</span> <span class="mi">400</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jobid</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;job identification number&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">line_number</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;line number&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reel_number</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;reel number&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_traces_per_ensemble</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;number of data traces per ensemble&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_aux_traces_per_ensemble</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;number of auxiliary traces per ensemble&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_interval</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sample interval in microseconds&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">original_sample_interval</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sample interval in microseconds or original </span><span class="se">\</span>
+<span class="s2">                recording&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_samples_per_trace</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;number of samples per data trace&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">original_num_samples_per_trace</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;number of samples per data trace or original </span><span class="se">\</span>
+<span class="s2">                recording&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_sample_format_code</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;data sample format code&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_CODE</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fold</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;ensemble fold&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sort_code</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">29</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;trace sorting code&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">TRACE_SORTING_CODE</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertical_sum_code</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">31</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;vertical sum code&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sweep_freq_start</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">33</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sweep frequency at start&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sweep_freq_end</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sweep frequency at end&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sweep_length</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">37</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sweep length&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sweep_code</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">39</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sweep type code&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">SWEEP_TYPE_CODE</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sweep_chan</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">41</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;trace number of sweep channel&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sweep_taper_length_start</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">43</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sweep trace taper length in ms at start&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sweep_taper_length_end</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sweep trace taper length in ms at end&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">taper_type</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">47</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;taper type&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">TAPER_TYPE</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">correlated_traces</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">49</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;correlated data traces&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">CORRELATED_DATA_TRACES</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binary_gain</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">51</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;binary gain recovered&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">BINARY_GAIN_RECOVERED</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">amp_recovery_method</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">53</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;amplitude recovery method&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">AMPLITUDE_RECOVERY_METHOD</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">measurement_system</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">55</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;measurement system&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">MEASUREMENT_SYSTEM</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">polarity</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">57</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;impulse signal polarity&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">IMPULSE_SIGNAL_POLARITY</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vibe_polarity</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">59</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;vibratory polarity code&quot;</span><span class="p">,</span>
+            <span class="n">map_dict</span><span class="o">=</span><span class="n">VIBRATORY_POLARITY_CODE</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># unassigned</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">segy_revision</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">301</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;segy format revision number&quot;</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fixed_length</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">303</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;fixed length trace flag&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_txt_headers</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
+            <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+            <span class="n">start_byte</span><span class="o">=</span><span class="mi">305</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;number of 3200 byte ext file header </span><span class="se">\</span>
+<span class="s2">                records following&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># unassigned</span>
+
+    <span class="c1"># --- METHODS ---</span>
+<div class="viewcode-block" id="SegyFileHeaderRev2.segy_type"><a class="viewcode-back" href="../../autoapi/segytools/segy_file_header/index.html#segytools.SegyFileHeaderRev2.segy_type">[docs]</a>    <span class="k">def</span> <span class="nf">segy_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the segy type, e.g. &#39;ibm&#39;, &#39;int32&#39;, &#39;int16&#39;, &#39;float32&#39;, or \</span>
+<span class="sd">            &#39;int8&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_sample_format_code</span><span class="o">.</span><span class="n">_mapped_value</span></div>
+
+<div class="viewcode-block" id="SegyFileHeaderRev2.sample_format_size_in_bytes"><a class="viewcode-back" href="../../autoapi/segytools/segy_file_header/index.html#segytools.SegyFileHeaderRev2.sample_format_size_in_bytes">[docs]</a>    <span class="k">def</span> <span class="nf">sample_format_size_in_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the number of bytes in each sample based on the \</span>
+<span class="sd">            `data_sample_format_code`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_sample_format_code</span><span class="o">.</span><span class="n">_mapped_value</span>
+        <span class="n">byte_size</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1"># default</span>
+        <span class="k">if</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;ibm&quot;</span><span class="p">:</span>
+            <span class="n">byte_size</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;float32&quot;</span><span class="p">:</span>
+            <span class="n">byte_size</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;int32&quot;</span><span class="p">:</span>
+            <span class="n">byte_size</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;int16&quot;</span><span class="p">:</span>
+            <span class="n">byte_size</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;int8&quot;</span><span class="p">:</span>
+            <span class="n">byte_size</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Unable to determine sample format size in bytes </span><span class="se">\</span>
+<span class="s2">                as sample format is undefined.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">byte_size</span></div></div>
+
+    <span class="c1"># TODO: def is_fixed_length(self):</span>
+    <span class="c1">#     if self.fixedlen == ??:</span>
+    <span class="c1">#         return True</span>
+    <span class="c1">#     else:</span>
+    <span class="c1">#         return False</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Anthony Torlucci.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

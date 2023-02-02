@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>segytools.segy_trace_header &mdash; segytools 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> segytools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">segytools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">segytools.segy_trace_header</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/segytools/segy_trace_header/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-segytools.segy_trace_header">
+<span id="segytools-segy-trace-header"></span><h1><a class="reference internal" href="#module-segytools.segy_trace_header" title="segytools.segy_trace_header"><code class="xref py py-mod docutils literal notranslate"><span class="pre">segytools.segy_trace_header</span></code></a><a class="headerlink" href="#module-segytools.segy_trace_header" title="Permalink to this heading"></a></h1>
+<p>segy trace header</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#segytools.segy_trace_header.SegyTraceHeaderRev2" title="segytools.segy_trace_header.SegyTraceHeaderRev2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SegyTraceHeaderRev2</span></code></a></p></td>
+<td><p>Segy Trace Header container based on segy format revision 2.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#segytools.segy_trace_header.TRACE_IDENTIFICATION_CODE" title="segytools.segy_trace_header.TRACE_IDENTIFICATION_CODE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TRACE_IDENTIFICATION_CODE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#segytools.segy_trace_header.DATA_USE" title="segytools.segy_trace_header.DATA_USE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DATA_USE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#segytools.segy_trace_header.COORDINATE_SCALAR_MULTIPLIER" title="segytools.segy_trace_header.COORDINATE_SCALAR_MULTIPLIER"><code class="xref py py-obj docutils literal notranslate"><span class="pre">COORDINATE_SCALAR_MULTIPLIER</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#segytools.segy_trace_header.COORDINATE_UNITS" title="segytools.segy_trace_header.COORDINATE_UNITS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">COORDINATE_UNITS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#segytools.segy_trace_header.GAIN_TYPE_OF_FIELD_INSTRUMENTS" title="segytools.segy_trace_header.GAIN_TYPE_OF_FIELD_INSTRUMENTS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GAIN_TYPE_OF_FIELD_INSTRUMENTS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#segytools.segy_trace_header.CORRELATED" title="segytools.segy_trace_header.CORRELATED"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CORRELATED</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#segytools.segy_trace_header.SWEEP_TYPE" title="segytools.segy_trace_header.SWEEP_TYPE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SWEEP_TYPE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#segytools.segy_trace_header.TAPER_TYPE" title="segytools.segy_trace_header.TAPER_TYPE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TAPER_TYPE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#segytools.segy_trace_header.TIME_BASIS_CODE" title="segytools.segy_trace_header.TIME_BASIS_CODE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TIME_BASIS_CODE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#segytools.segy_trace_header.OVER_TRAVEL_ASSOCIATED_TAPER_AT_BEGINNING_OR_END_OF_LINE" title="segytools.segy_trace_header.OVER_TRAVEL_ASSOCIATED_TAPER_AT_BEGINNING_OR_END_OF_LINE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OVER_TRAVEL_ASSOCIATED_TAPER_AT_BEGINNING_OR_END_OF_LINE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#segytools.segy_trace_header.TRACE_VALUE_MEASUREMENT_UNIT" title="segytools.segy_trace_header.TRACE_VALUE_MEASUREMENT_UNIT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TRACE_VALUE_MEASUREMENT_UNIT</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#segytools.segy_trace_header.TRANSDUCTION_UNITS" title="segytools.segy_trace_header.TRANSDUCTION_UNITS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TRANSDUCTION_UNITS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#segytools.segy_trace_header.SOURCE_TYPE_ORIENTATION" title="segytools.segy_trace_header.SOURCE_TYPE_ORIENTATION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SOURCE_TYPE_ORIENTATION</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#segytools.segy_trace_header.SOURCE_MEASUREMENT_UNIT" title="segytools.segy_trace_header.SOURCE_MEASUREMENT_UNIT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SOURCE_MEASUREMENT_UNIT</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_trace_header.TRACE_IDENTIFICATION_CODE">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_trace_header.</span></span><span class="sig-name descname"><span class="pre">TRACE_IDENTIFICATION_CODE</span></span><a class="headerlink" href="#segytools.segy_trace_header.TRACE_IDENTIFICATION_CODE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_trace_header.DATA_USE">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_trace_header.</span></span><span class="sig-name descname"><span class="pre">DATA_USE</span></span><a class="headerlink" href="#segytools.segy_trace_header.DATA_USE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_trace_header.COORDINATE_SCALAR_MULTIPLIER">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_trace_header.</span></span><span class="sig-name descname"><span class="pre">COORDINATE_SCALAR_MULTIPLIER</span></span><a class="headerlink" href="#segytools.segy_trace_header.COORDINATE_SCALAR_MULTIPLIER" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_trace_header.COORDINATE_UNITS">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_trace_header.</span></span><span class="sig-name descname"><span class="pre">COORDINATE_UNITS</span></span><a class="headerlink" href="#segytools.segy_trace_header.COORDINATE_UNITS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_trace_header.GAIN_TYPE_OF_FIELD_INSTRUMENTS">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_trace_header.</span></span><span class="sig-name descname"><span class="pre">GAIN_TYPE_OF_FIELD_INSTRUMENTS</span></span><a class="headerlink" href="#segytools.segy_trace_header.GAIN_TYPE_OF_FIELD_INSTRUMENTS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_trace_header.CORRELATED">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_trace_header.</span></span><span class="sig-name descname"><span class="pre">CORRELATED</span></span><a class="headerlink" href="#segytools.segy_trace_header.CORRELATED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_trace_header.SWEEP_TYPE">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_trace_header.</span></span><span class="sig-name descname"><span class="pre">SWEEP_TYPE</span></span><a class="headerlink" href="#segytools.segy_trace_header.SWEEP_TYPE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_trace_header.TAPER_TYPE">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_trace_header.</span></span><span class="sig-name descname"><span class="pre">TAPER_TYPE</span></span><a class="headerlink" href="#segytools.segy_trace_header.TAPER_TYPE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_trace_header.TIME_BASIS_CODE">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_trace_header.</span></span><span class="sig-name descname"><span class="pre">TIME_BASIS_CODE</span></span><a class="headerlink" href="#segytools.segy_trace_header.TIME_BASIS_CODE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_trace_header.OVER_TRAVEL_ASSOCIATED_TAPER_AT_BEGINNING_OR_END_OF_LINE">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_trace_header.</span></span><span class="sig-name descname"><span class="pre">OVER_TRAVEL_ASSOCIATED_TAPER_AT_BEGINNING_OR_END_OF_LINE</span></span><a class="headerlink" href="#segytools.segy_trace_header.OVER_TRAVEL_ASSOCIATED_TAPER_AT_BEGINNING_OR_END_OF_LINE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_trace_header.TRACE_VALUE_MEASUREMENT_UNIT">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_trace_header.</span></span><span class="sig-name descname"><span class="pre">TRACE_VALUE_MEASUREMENT_UNIT</span></span><a class="headerlink" href="#segytools.segy_trace_header.TRACE_VALUE_MEASUREMENT_UNIT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_trace_header.TRANSDUCTION_UNITS">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_trace_header.</span></span><span class="sig-name descname"><span class="pre">TRANSDUCTION_UNITS</span></span><a class="headerlink" href="#segytools.segy_trace_header.TRANSDUCTION_UNITS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_trace_header.SOURCE_TYPE_ORIENTATION">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_trace_header.</span></span><span class="sig-name descname"><span class="pre">SOURCE_TYPE_ORIENTATION</span></span><a class="headerlink" href="#segytools.segy_trace_header.SOURCE_TYPE_ORIENTATION" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_trace_header.SOURCE_MEASUREMENT_UNIT">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_trace_header.</span></span><span class="sig-name descname"><span class="pre">SOURCE_MEASUREMENT_UNIT</span></span><a class="headerlink" href="#segytools.segy_trace_header.SOURCE_MEASUREMENT_UNIT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="segytools.segy_trace_header.SegyTraceHeaderRev2">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">segytools.segy_trace_header.</span></span><span class="sig-name descname"><span class="pre">SegyTraceHeaderRev2</span></span><a class="reference internal" href="../../../_modules/segytools/segy_trace_header.html#SegyTraceHeaderRev2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#segytools.segy_trace_header.SegyTraceHeaderRev2" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../segy_abstract_header/index.html#segytools.segy_abstract_header.SegyAbstractHeader" title="segytools.segy_abstract_header.SegyAbstractHeader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">segytools.segy_abstract_header.SegyAbstractHeader</span></code></a></p>
+<p>Segy Trace Header container based on segy format revision 2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trc_seq_num_within_line</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Trace sequence number within line.</p></li>
+<li><p><strong>trc_seq_num_within_file</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Trace sequence number within segy file.</p></li>
+<li><p><strong>field_record_number</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Original field record number.</p></li>
+<li><p><strong>trc_num_within_field_record</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Trace number within the original field record.</p></li>
+<li><p><strong>energy_src_num</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Energy source point number.</p></li>
+<li><p><strong>ensemble_number</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Ensemble number.</p></li>
+<li><p><strong>trc_num_within_ensemble</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Trace number within ensemble.</p></li>
+<li><p><strong>trc_identification_code</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Trace identification code. See TRACE_IDENTIFICATION_CODE for mapping.</p></li>
+<li><p><strong>num_vert_summed_traces</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Number of vertically stacked traces yielding this trace.</p></li>
+<li><p><strong>num_horz_summed_traces</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Number of horizontally stacked traces yielding this trace.</p></li>
+<li><p><strong>data_use</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Data use. See DATA_USE for mapping.</p></li>
+<li><p><strong>offset</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Distance from center of the source point to the center of the receiver
+group.</p></li>
+<li><p><strong>rcv_elevation</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Receiver group elevation.</p></li>
+<li><p><strong>src_elevation</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Surface elevation at source.</p></li>
+<li><p><strong>src_depth</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Source depth below surface.</p></li>
+<li><p><strong>rcv_datum_elevation</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Datum elevation at receiver group.</p></li>
+<li><p><strong>src_datum_elevation</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Datum elevation at source.</p></li>
+<li><p><strong>src_water_depth</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Water depth at source.</p></li>
+<li><p><strong>rcv_water_depth</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Water depth at group.</p></li>
+<li><p><strong>z_scalar</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Scalar to be applied to all elevations and depths.</p></li>
+<li><p><strong>xy_scalar</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Scalar to be applied to all coordinates.</p></li>
+<li><p><strong>src_x_coord</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Source coordinate x.</p></li>
+<li><p><strong>src_y_coord</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Source coordinate y.</p></li>
+<li><p><strong>rcv_x_coord</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Group coordinate x.</p></li>
+<li><p><strong>rcv_y_coord</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Group coordinate y.</p></li>
+<li><p><strong>coord_units</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Coordinate units. See COORDINATE_UNITS for mapping.</p></li>
+<li><p><strong>weathering_velocity</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Weathering velocity.</p></li>
+<li><p><strong>subweathering_velocity</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Subweathering velocity.</p></li>
+<li><p><strong>src_uphole_time</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Uphole time at source in ms.</p></li>
+<li><p><strong>rcv_uphole_time</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Uphole time at group in ms.</p></li>
+<li><p><strong>src_static_correction</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Source static correction in ms.</p></li>
+<li><p><strong>rcv_static_correction</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Group static correction in ms.</p></li>
+<li><p><strong>total_static_applied</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Total static applied in ms.</p></li>
+<li><p><strong>lag_time_A</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Lag time B.</p></li>
+<li><p><strong>lag_time_B</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Lag time A.</p></li>
+<li><p><strong>delay_recording_time</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Delay recording time.</p></li>
+<li><p><strong>mute_start_time</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Mute time start time in ms.</p></li>
+<li><p><strong>mute_end_time</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Mute time end time in ms.</p></li>
+<li><p><strong>num_samples</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Number of samples in this trace.</p></li>
+<li><p><strong>sample_interval</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Sample interval in ms for this trace.</p></li>
+<li><p><strong>gain_type</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Gain type of field instruments.</p></li>
+<li><p><strong>gain_const</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Instrument gain constant.</p></li>
+<li><p><strong>initial_gain</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Instrument early or initial gain.</p></li>
+<li><p><strong>correlated</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Whether the trace is correlated or not. See CORRELATED for mapping.</p></li>
+<li><p><strong>sweep_freq_start</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Sweep frequency at start.</p></li>
+<li><p><strong>sweep_freq_end</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Sweep frequency at end.</p></li>
+<li><p><strong>sweep_length</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Sweep length.</p></li>
+<li><p><strong>sweep_type</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Sweep type. See SWEEP_TYPE for mapping.</p></li>
+<li><p><strong>sweep_taper_length_start</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Sweep taper length at start.</p></li>
+<li><p><strong>sweep_taper_length_end</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Sweep taper length at end.</p></li>
+<li><p><strong>taper_type</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Taper type. See TAPER_TYPE for mapping.</p></li>
+<li><p><strong>alias_filter_freq</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Alias filter frequency.</p></li>
+<li><p><strong>alias_filter_slope</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Alias filter slope.</p></li>
+<li><p><strong>notch_filter_freq</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Notch filter frequency.</p></li>
+<li><p><strong>notch_filter_slope</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Notch filter slope.</p></li>
+<li><p><strong>low_cut_freq</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Low cut frequency.</p></li>
+<li><p><strong>high_cut_freq</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – High cut frequency.</p></li>
+<li><p><strong>low_cut_slope</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Loow cut slope.</p></li>
+<li><p><strong>high_cut_slope</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – High cut slope.</p></li>
+<li><p><strong>year</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Year data recorded.</p></li>
+<li><p><strong>day</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Day of year.</p></li>
+<li><p><strong>hour</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Hour of day.</p></li>
+<li><p><strong>minute</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Minute of hour.</p></li>
+<li><p><strong>second</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Second of minute.</p></li>
+<li><p><strong>time_basis</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Time basis code. See TIME_BASIS_CODE for mapping.</p></li>
+<li><p><strong>trc_weight</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Trace weighting factor.</p></li>
+<li><p><strong>group_num</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Geophone group number of roll switch position one.</p></li>
+<li><p><strong>first_group_num</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Geophone group number of trace number one.</p></li>
+<li><p><strong>last_group_num</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Geophone group number of last trace.</p></li>
+<li><p><strong>gap_size</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Gap size.</p></li>
+<li><p><strong>over_travel</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Over travel associated with taper. See
+OVER_TRAVEL_ASSOCIATED_TAPER_AT_BEGINNING_OR_END_OF_LINE for mapping.</p></li>
+<li><p><strong>ens_x_coord</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – X coordinate of ensemble position of this trace.</p></li>
+<li><p><strong>ens_y_coord</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Y coordinate of ensemble position of this trace.</p></li>
+<li><p><strong>in_line</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – For 3D poststack data this field is for in line number.</p></li>
+<li><p><strong>cross_line</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – For 3D poststack data this field is for cross line number.</p></li>
+<li><p><strong>shotpoint</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Shotpoint number.</p></li>
+<li><p><strong>shotpoint_scalar</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Scalar to be applied to the shotpoint number.</p></li>
+<li><p><strong>trc_value_measurement_unit</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Trace value measurement unit. See TRACE_VALUE_MEASUREMENT_UNIT for
+mapping.</p></li>
+<li><p><strong>transduction_constant_mantissa</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Transduction constant mantissa.</p></li>
+<li><p><strong>transduction_constant_exponent</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Transduction constant exponent.</p></li>
+<li><p><strong>transduction_units</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Transduction_units.</p></li>
+<li><p><strong>device_identifier</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Device trace identifier.</p></li>
+<li><p><strong>time_scalar</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Scalar to be applied to times.</p></li>
+<li><p><strong>source_type_orientation</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Source type orientation. See SOURCE_TYPE_ORIENTATION for mapping.</p></li>
+<li><p><strong>source_energy_direction_mantissa</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Source energy direction mantissa.</p></li>
+<li><p><strong>source_energy_direction_exponent</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Source energy direction exponent.</p></li>
+<li><p><strong>source_measurement_mantissa</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Source measurement mantissa.</p></li>
+<li><p><strong>source_measurement_exponent</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Source measurement exponent.</p></li>
+<li><p><strong>source_measurement_unit</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Source measurement unit. See SOURCE_MEASUREMENT_UNIT for mapping.</p></li>
+<li><p><strong>undefined233</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Undefined.</p></li>
+<li><p><strong>undefined237</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – Undefined.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Anthony Torlucci.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

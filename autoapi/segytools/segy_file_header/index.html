@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>segytools.segy_file_header &mdash; segytools 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> segytools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">segytools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">segytools.segy_file_header</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/segytools/segy_file_header/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-segytools.segy_file_header">
+<span id="segytools-segy-file-header"></span><h1><a class="reference internal" href="#module-segytools.segy_file_header" title="segytools.segy_file_header"><code class="xref py py-mod docutils literal notranslate"><span class="pre">segytools.segy_file_header</span></code></a><a class="headerlink" href="#module-segytools.segy_file_header" title="Permalink to this heading"></a></h1>
+<p>segy file header aka binary header</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#segytools.segy_file_header.SegyFileHeaderRev2" title="segytools.segy_file_header.SegyFileHeaderRev2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SegyFileHeaderRev2</span></code></a></p></td>
+<td><p>File or binary header definition of a segy file.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#segytools.segy_file_header.DATA_SAMPLE_FORMAT_CODE" title="segytools.segy_file_header.DATA_SAMPLE_FORMAT_CODE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DATA_SAMPLE_FORMAT_CODE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#segytools.segy_file_header.TRACE_SORTING_CODE" title="segytools.segy_file_header.TRACE_SORTING_CODE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TRACE_SORTING_CODE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#segytools.segy_file_header.SWEEP_TYPE_CODE" title="segytools.segy_file_header.SWEEP_TYPE_CODE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SWEEP_TYPE_CODE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#segytools.segy_file_header.TAPER_TYPE" title="segytools.segy_file_header.TAPER_TYPE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TAPER_TYPE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#segytools.segy_file_header.CORRELATED_DATA_TRACES" title="segytools.segy_file_header.CORRELATED_DATA_TRACES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CORRELATED_DATA_TRACES</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#segytools.segy_file_header.BINARY_GAIN_RECOVERED" title="segytools.segy_file_header.BINARY_GAIN_RECOVERED"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BINARY_GAIN_RECOVERED</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#segytools.segy_file_header.AMPLITUDE_RECOVERY_METHOD" title="segytools.segy_file_header.AMPLITUDE_RECOVERY_METHOD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AMPLITUDE_RECOVERY_METHOD</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#segytools.segy_file_header.MEASUREMENT_SYSTEM" title="segytools.segy_file_header.MEASUREMENT_SYSTEM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MEASUREMENT_SYSTEM</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#segytools.segy_file_header.IMPULSE_SIGNAL_POLARITY" title="segytools.segy_file_header.IMPULSE_SIGNAL_POLARITY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IMPULSE_SIGNAL_POLARITY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#segytools.segy_file_header.VIBRATORY_POLARITY_CODE" title="segytools.segy_file_header.VIBRATORY_POLARITY_CODE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VIBRATORY_POLARITY_CODE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_file_header.DATA_SAMPLE_FORMAT_CODE">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_file_header.</span></span><span class="sig-name descname"><span class="pre">DATA_SAMPLE_FORMAT_CODE</span></span><a class="headerlink" href="#segytools.segy_file_header.DATA_SAMPLE_FORMAT_CODE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_file_header.TRACE_SORTING_CODE">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_file_header.</span></span><span class="sig-name descname"><span class="pre">TRACE_SORTING_CODE</span></span><a class="headerlink" href="#segytools.segy_file_header.TRACE_SORTING_CODE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_file_header.SWEEP_TYPE_CODE">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_file_header.</span></span><span class="sig-name descname"><span class="pre">SWEEP_TYPE_CODE</span></span><a class="headerlink" href="#segytools.segy_file_header.SWEEP_TYPE_CODE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_file_header.TAPER_TYPE">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_file_header.</span></span><span class="sig-name descname"><span class="pre">TAPER_TYPE</span></span><a class="headerlink" href="#segytools.segy_file_header.TAPER_TYPE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_file_header.CORRELATED_DATA_TRACES">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_file_header.</span></span><span class="sig-name descname"><span class="pre">CORRELATED_DATA_TRACES</span></span><a class="headerlink" href="#segytools.segy_file_header.CORRELATED_DATA_TRACES" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_file_header.BINARY_GAIN_RECOVERED">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_file_header.</span></span><span class="sig-name descname"><span class="pre">BINARY_GAIN_RECOVERED</span></span><a class="headerlink" href="#segytools.segy_file_header.BINARY_GAIN_RECOVERED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_file_header.AMPLITUDE_RECOVERY_METHOD">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_file_header.</span></span><span class="sig-name descname"><span class="pre">AMPLITUDE_RECOVERY_METHOD</span></span><a class="headerlink" href="#segytools.segy_file_header.AMPLITUDE_RECOVERY_METHOD" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_file_header.MEASUREMENT_SYSTEM">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_file_header.</span></span><span class="sig-name descname"><span class="pre">MEASUREMENT_SYSTEM</span></span><a class="headerlink" href="#segytools.segy_file_header.MEASUREMENT_SYSTEM" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_file_header.IMPULSE_SIGNAL_POLARITY">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_file_header.</span></span><span class="sig-name descname"><span class="pre">IMPULSE_SIGNAL_POLARITY</span></span><a class="headerlink" href="#segytools.segy_file_header.IMPULSE_SIGNAL_POLARITY" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="segytools.segy_file_header.VIBRATORY_POLARITY_CODE">
+<span class="sig-prename descclassname"><span class="pre">segytools.segy_file_header.</span></span><span class="sig-name descname"><span class="pre">VIBRATORY_POLARITY_CODE</span></span><a class="headerlink" href="#segytools.segy_file_header.VIBRATORY_POLARITY_CODE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="segytools.segy_file_header.SegyFileHeaderRev2">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">segytools.segy_file_header.</span></span><span class="sig-name descname"><span class="pre">SegyFileHeaderRev2</span></span><a class="reference internal" href="../../../_modules/segytools/segy_file_header.html#SegyFileHeaderRev2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#segytools.segy_file_header.SegyFileHeaderRev2" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../segy_abstract_header/index.html#segytools.segy_abstract_header.SegyAbstractHeader" title="segytools.segy_abstract_header.SegyAbstractHeader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">segytools.segy_abstract_header.SegyAbstractHeader</span></code></a></p>
+<p>File or binary header definition of a segy file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>jobid</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – job identification number</p></li>
+<li><p><strong>line_number</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – line number</p></li>
+<li><p><strong>reel_number</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – reel number</p></li>
+<li><p><strong>num_traces_per_ensemble</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – number of data traces per ensemble</p></li>
+<li><p><strong>num_aux_traces_per_ensemble</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – number of auxiliary traces per ensemble</p></li>
+<li><p><strong>sample_interval</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – sample interval in microseconds</p></li>
+<li><p><strong>original_sample_interval</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – sample interval in microseconds or original recording</p></li>
+<li><p><strong>num_samples_per_trace</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – number of samples per data trace</p></li>
+<li><p><strong>original_num_samples_per_trace</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – number of samples per data trace or original recording</p></li>
+<li><p><strong>data_sample_format_code</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – data sample format code</p></li>
+<li><p><strong>fold</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – ensemble fold</p></li>
+<li><p><strong>sort_code</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – trace sorting code</p></li>
+<li><p><strong>vertical_sum_code</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – vertical sum code</p></li>
+<li><p><strong>sweep_freq_start</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – sweep frequency at start</p></li>
+<li><p><strong>sweep_freq_end</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – sweep frequency at end</p></li>
+<li><p><strong>sweep_length</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – sweep length</p></li>
+<li><p><strong>sweep_code</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – sweep type code</p></li>
+<li><p><strong>sweep_chan</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – trace_number of sweep channel</p></li>
+<li><p><strong>sweep_taper_length_start</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – sweep_trace taper length in ms at start</p></li>
+<li><p><strong>sweep_taper_length_end</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – sweep trace taper length in ms at end</p></li>
+<li><p><strong>taper_type</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – taper type</p></li>
+<li><p><strong>correlated_traces</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – correlated data traces</p></li>
+<li><p><strong>binary_gain</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – binary gain recovered</p></li>
+<li><p><strong>amp_recovery_method</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – amplitude recovery method</p></li>
+<li><p><strong>measurement_system</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – measurement system</p></li>
+<li><p><strong>polarity</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – impulse signal polarity</p></li>
+<li><p><strong>vibe_polarity</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – vibratory polarity code</p></li>
+<li><p><strong>segy_revision</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – seg y format revision number</p></li>
+<li><p><strong>fixed_length</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – fixed length trace flag</p></li>
+<li><p><strong>num_txt_headers</strong> (<a class="reference internal" href="../index.html#segytools.SegyHeaderItem" title="segytools.SegyHeaderItem"><em>SegyHeaderItem</em></a>) – number of 3200 byte ext file header records following</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="segytools.segy_file_header.SegyFileHeaderRev2.segy_type">
+<span class="sig-name descname"><span class="pre">segy_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/segytools/segy_file_header.html#SegyFileHeaderRev2.segy_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#segytools.segy_file_header.SegyFileHeaderRev2.segy_type" title="Permalink to this definition"></a></dt>
+<dd><p>Return the segy type, e.g. ‘ibm’, ‘int32’, ‘int16’, ‘float32’, or             ‘int8’.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="segytools.segy_file_header.SegyFileHeaderRev2.sample_format_size_in_bytes">
+<span class="sig-name descname"><span class="pre">sample_format_size_in_bytes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../../_modules/segytools/segy_file_header.html#SegyFileHeaderRev2.sample_format_size_in_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#segytools.segy_file_header.SegyFileHeaderRev2.sample_format_size_in_bytes" title="Permalink to this definition"></a></dt>
+<dd><p>Return the number of bytes in each sample based on the             <cite>data_sample_format_code</cite>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Anthony Torlucci.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

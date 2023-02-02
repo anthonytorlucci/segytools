@@ -1,0 +1,11 @@
+:py:mod:`segytools.utils`
+=========================
+
+.. py:module:: segytools.utils
+
+.. autoapi-nested-parse::
+
+   Utility functions for segy data
+
+
+
