@@ -47,6 +47,16 @@ jobs:
       - name: Install project
         run: poetry install --no-interaction      
       #----------------------------------------------
-      #  publish
+      #  publish TEST_PYPI
       #----------------------------------------------
+      - run: poetry config repositories.testpypi https://test.pypi.org/legacy/
+      - run: poetry config pypi-token.test-pypi ${{ secrets.TEST_PYPI_API_TOKEN }}
+      - name: publish package
+        run: poetry publish --build -r testpypi
+      #----------------------------------------------
+      #  publish PYPI on release
+      #----------------------------------------------
+      - run: poetry config pypi-token.pypi ${{ secrets.PYPI_API_TOKEN }}
+      - name: publish package on release
+        run: poetry publish --build
       
