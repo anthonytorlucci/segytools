@@ -4,6 +4,7 @@ segy abstract header
 
 # import python standard modules
 # from typing import Any
+import logging
 
 # import 3rd party libraries
 
@@ -42,6 +43,9 @@ class SegyAbstractHeader(object):
         Sets the value of the field of a header item based on the identifier
         `name`.
     """
+    # default byte length; child objects must override this.
+    # segy standard file headers are 400 bytes in length
+    # segy standard trace headers are 240 bytes in length
     byte_length = 0
 
     def __str__(self) -> str:

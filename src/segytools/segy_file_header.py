@@ -175,155 +175,181 @@ class SegyFileHeaderRev2(SegyAbstractHeader):
         number of 3200 byte ext file header records following
     """
 
-    def __init__(self):
+    def __init__(self, segy_logger=None):
         super().__init__()
-        self.byte_length = 400
+        self.byte_length = 400  # segy standard byte length
+        self.segy_logger = segy_logger  # used for writing information to terminal or file; see https://docs.python.org/3.10/library/logging.html
         self.jobid = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,
             start_byte=1,
             description="job identification number",
+            segy_logger=self.segy_logger,
         )
         self.line_number = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,
             start_byte=5,
             description="line number",
+            segy_logger=self.segy_logger,
         )
         self.reel_number = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,
             start_byte=9,
             description="reel number",
+            segy_logger=self.segy_logger,
         )
         self.num_traces_per_ensemble = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=13,
             description="number of data traces per ensemble",
+            segy_logger=self.segy_logger,
         )
         self.num_aux_traces_per_ensemble = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=15,
             description="number of auxiliary traces per ensemble",
+            segy_logger=self.segy_logger,
         )
         self.sample_interval = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=17,
             description="sample interval in microseconds",
+            segy_logger=self.segy_logger,
         )
         self.original_sample_interval = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=19,
-            description="sample interval in microseconds or original \
-                recording",
+            description="sample interval in microseconds or original recording",
+            segy_logger=self.segy_logger,
         )
         self.num_samples_per_trace = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=21,
             description="number of samples per data trace",
+            segy_logger=self.segy_logger,
         )
         self.original_num_samples_per_trace = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=23,
-            description="number of samples per data trace or original \
-                recording",
+            description="number of samples per data trace or original recording",
+            segy_logger=self.segy_logger,
         )
         self.data_sample_format_code = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=25,
             description="data sample format code",
             map_dict=DATA_SAMPLE_FORMAT_CODE,
+            segy_logger=self.segy_logger,
         )
         self.fold = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=27,
             description="ensemble fold",
+            segy_logger=self.segy_logger,
         )
         self.sort_code = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=29,
             description="trace sorting code",
             map_dict=TRACE_SORTING_CODE,
+            segy_logger=self.segy_logger,
         )
         self.vertical_sum_code = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=31,
             description="vertical sum code",
+            segy_logger=self.segy_logger,
         )
         self.sweep_freq_start = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=33,
             description="sweep frequency at start",
+            segy_logger=self.segy_logger,
         )
         self.sweep_freq_end = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=35,
             description="sweep frequency at end",
+            segy_logger=self.segy_logger,
         )
         self.sweep_length = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=37,
             description="sweep length",
+            segy_logger=self.segy_logger,
         )
         self.sweep_code = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=39,
             description="sweep type code",
             map_dict=SWEEP_TYPE_CODE,
+            segy_logger=self.segy_logger,
         )
         self.sweep_chan = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=41,
             description="trace number of sweep channel",
+            segy_logger=self.segy_logger,
         )
         self.sweep_taper_length_start = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=43,
             description="sweep trace taper length in ms at start",
+            segy_logger=self.segy_logger,
         )
         self.sweep_taper_length_end = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=45,
             description="sweep trace taper length in ms at end",
+            segy_logger=self.segy_logger,
         )
         self.taper_type = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=47,
             description="taper type",
             map_dict=TAPER_TYPE,
+            segy_logger=self.segy_logger,
         )
         self.correlated_traces = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=49,
             description="correlated data traces",
             map_dict=CORRELATED_DATA_TRACES,
+            segy_logger=self.segy_logger,
         )
         self.binary_gain = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=51,
             description="binary gain recovered",
             map_dict=BINARY_GAIN_RECOVERED,
+            segy_logger=self.segy_logger,
         )
         self.amp_recovery_method = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=53,
             description="amplitude recovery method",
             map_dict=AMPLITUDE_RECOVERY_METHOD,
+            segy_logger=self.segy_logger,
         )
         self.measurement_system = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=55,
             description="measurement system",
             map_dict=MEASUREMENT_SYSTEM,
+            segy_logger=self.segy_logger,
         )
         self.polarity = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=57,
             description="impulse signal polarity",
             map_dict=IMPULSE_SIGNAL_POLARITY,
+            segy_logger=self.segy_logger,
         )
         self.vibe_polarity = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=59,
             description="vibratory polarity code",
             map_dict=VIBRATORY_POLARITY_CODE,
+            segy_logger=self.segy_logger,
         )
         # unassigned
         self.segy_revision = SegyHeaderItem(
@@ -331,17 +357,19 @@ class SegyFileHeaderRev2(SegyAbstractHeader):
             start_byte=301,
             description="segy format revision number",
             value=2,
+            segy_logger=self.segy_logger,
         )
         self.fixed_length = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=303,
             description="fixed length trace flag",
+            segy_logger=self.segy_logger,
         )
         self.num_txt_headers = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,
             start_byte=305,
-            description="number of 3200 byte ext file header \
-                records following",
+            description="number of 3200 byte ext file header records following",
+            segy_logger=self.segy_logger,
         )
         # unassigned
 
@@ -350,6 +378,8 @@ class SegyFileHeaderRev2(SegyAbstractHeader):
         """Return the segy type, e.g. 'ibm', 'int32', 'int16', 'float32', or \
             'int8'.
         """
+        # TODO: warning if unable to map value to DATA_SAMPLE_FORMAT_CODE; "segytools will not be able to unpack"
+        # if self.data_sample_format_code.value not in [0, 1, 2, 3, 5, 8]
         return self.data_sample_format_code._mapped_value
 
     def sample_format_size_in_bytes(self) -> int:
@@ -373,6 +403,7 @@ class SegyFileHeaderRev2(SegyAbstractHeader):
                 "Unable to determine sample format size in bytes \
                 as sample format is undefined."
             )
+        # self.segy_logger.debug(f'sample format {fmt} size in bytes is {byte_size}')
         return byte_size
 
     # TODO: def is_fixed_length(self):
