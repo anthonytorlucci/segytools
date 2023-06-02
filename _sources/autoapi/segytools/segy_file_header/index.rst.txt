@@ -79,7 +79,7 @@ Attributes
 
    
 
-.. py:class:: SegyFileHeaderRev2
+.. py:class:: SegyFileHeaderRev2(segy_logger=None)
 
    Bases: :py:obj:`segytools.segy_abstract_header.SegyAbstractHeader`
 

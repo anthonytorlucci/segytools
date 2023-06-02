@@ -129,7 +129,7 @@ Classes
 
 
 
-.. py:class:: SegyFileHeaderRev2
+.. py:class:: SegyFileHeaderRev2(segy_logger=None)
 
    Bases: :py:obj:`segytools.segy_abstract_header.SegyAbstractHeader`
 
@@ -209,7 +209,7 @@ Classes
 
 
 
-.. py:class:: SegyHeaderItem(sample_format: segytools.datatypes.DataSampleFormat, start_byte: int = 0, description: str = '', map_dict: dict = {}, value=0)
+.. py:class:: SegyHeaderItem(sample_format: segytools.datatypes.DataSampleFormat, start_byte: int = 0, description: str = '', map_dict: dict = {}, value=0, segy_logger=None)
 
    Bases: :py:obj:`object`
 
@@ -314,7 +314,7 @@ Classes
 
 
 
-.. py:class:: SegyTraceHeaderRev2
+.. py:class:: SegyTraceHeaderRev2(segy_logger=None)
 
    Bases: :py:obj:`segytools.segy_abstract_header.SegyAbstractHeader`
 

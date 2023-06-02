@@ -99,7 +99,7 @@ Attributes
 
    
 
-.. py:class:: SegyTraceHeaderRev2
+.. py:class:: SegyTraceHeaderRev2(segy_logger=None)
 
    Bases: :py:obj:`segytools.segy_abstract_header.SegyAbstractHeader`
 

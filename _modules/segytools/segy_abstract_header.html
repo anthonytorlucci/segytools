@@ -28,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> segytools
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            segytools
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -56,7 +60,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
       <li class="breadcrumb-item active">segytools.segy_abstract_header</li>
       <li class="wy-breadcrumbs-aside">
@@ -74,6 +78,7 @@
 
 <span class="c1"># import python standard modules</span>
 <span class="c1"># from typing import Any</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="c1"># import 3rd party libraries</span>
 
@@ -112,6 +117,9 @@
 <span class="sd">        Sets the value of the field of a header item based on the identifier</span>
 <span class="sd">        `name`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># default byte length; child objects must override this.</span>
+    <span class="c1"># segy standard file headers are 400 bytes in length</span>
+    <span class="c1"># segy standard trace headers are 240 bytes in length</span>
     <span class="n">byte_length</span> <span class="o">=</span> <span class="mi">0</span>
 
 <div class="viewcode-block" id="SegyAbstractHeader.__str__"><a class="viewcode-back" href="../../autoapi/segytools/segy_abstract_header/index.html#segytools.SegyAbstractHeader.__str__">[docs]</a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>

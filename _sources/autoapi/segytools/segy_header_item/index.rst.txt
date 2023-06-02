@@ -22,7 +22,7 @@ Classes
 
 
 
-.. py:class:: SegyHeaderItem(sample_format: segytools.datatypes.DataSampleFormat, start_byte: int = 0, description: str = '', map_dict: dict = {}, value=0)
+.. py:class:: SegyHeaderItem(sample_format: segytools.datatypes.DataSampleFormat, start_byte: int = 0, description: str = '', map_dict: dict = {}, value=0, segy_logger=None)
 
    Bases: :py:obj:`object`
 

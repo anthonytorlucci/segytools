@@ -28,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> segytools
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            segytools
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -56,7 +60,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
       <li class="breadcrumb-item active">segytools.segy_file_header</li>
       <li class="wy-breadcrumbs-aside">
@@ -245,155 +249,181 @@
 <span class="sd">        number of 3200 byte ext file header records following</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segy_logger</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">byte_length</span> <span class="o">=</span> <span class="mi">400</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">byte_length</span> <span class="o">=</span> <span class="mi">400</span>  <span class="c1"># segy standard byte length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span> <span class="o">=</span> <span class="n">segy_logger</span>  <span class="c1"># used for writing information to terminal or file; see https://docs.python.org/3.10/library/logging.html</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">jobid</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;job identification number&quot;</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">line_number</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;line number&quot;</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reel_number</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;reel number&quot;</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_traces_per_ensemble</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;number of data traces per ensemble&quot;</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_aux_traces_per_ensemble</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;number of auxiliary traces per ensemble&quot;</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sample_interval</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sample interval in microseconds&quot;</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">original_sample_interval</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sample interval in microseconds or original </span><span class="se">\</span>
-<span class="s2">                recording&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sample interval in microseconds or original recording&quot;</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_samples_per_trace</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;number of samples per data trace&quot;</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">original_num_samples_per_trace</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;number of samples per data trace or original </span><span class="se">\</span>
-<span class="s2">                recording&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;number of samples per data trace or original recording&quot;</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data_sample_format_code</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;data sample format code&quot;</span><span class="p">,</span>
             <span class="n">map_dict</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_CODE</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fold</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;ensemble fold&quot;</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sort_code</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">29</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;trace sorting code&quot;</span><span class="p">,</span>
             <span class="n">map_dict</span><span class="o">=</span><span class="n">TRACE_SORTING_CODE</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vertical_sum_code</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">31</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;vertical sum code&quot;</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sweep_freq_start</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">33</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sweep frequency at start&quot;</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sweep_freq_end</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sweep frequency at end&quot;</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sweep_length</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">37</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sweep length&quot;</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sweep_code</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">39</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sweep type code&quot;</span><span class="p">,</span>
             <span class="n">map_dict</span><span class="o">=</span><span class="n">SWEEP_TYPE_CODE</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sweep_chan</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">41</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;trace number of sweep channel&quot;</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sweep_taper_length_start</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">43</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sweep trace taper length in ms at start&quot;</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sweep_taper_length_end</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;sweep trace taper length in ms at end&quot;</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">taper_type</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">47</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;taper type&quot;</span><span class="p">,</span>
             <span class="n">map_dict</span><span class="o">=</span><span class="n">TAPER_TYPE</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">correlated_traces</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">49</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;correlated data traces&quot;</span><span class="p">,</span>
             <span class="n">map_dict</span><span class="o">=</span><span class="n">CORRELATED_DATA_TRACES</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">binary_gain</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">51</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;binary gain recovered&quot;</span><span class="p">,</span>
             <span class="n">map_dict</span><span class="o">=</span><span class="n">BINARY_GAIN_RECOVERED</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">amp_recovery_method</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">53</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;amplitude recovery method&quot;</span><span class="p">,</span>
             <span class="n">map_dict</span><span class="o">=</span><span class="n">AMPLITUDE_RECOVERY_METHOD</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">measurement_system</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">55</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;measurement system&quot;</span><span class="p">,</span>
             <span class="n">map_dict</span><span class="o">=</span><span class="n">MEASUREMENT_SYSTEM</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">polarity</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">57</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;impulse signal polarity&quot;</span><span class="p">,</span>
             <span class="n">map_dict</span><span class="o">=</span><span class="n">IMPULSE_SIGNAL_POLARITY</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vibe_polarity</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">59</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;vibratory polarity code&quot;</span><span class="p">,</span>
             <span class="n">map_dict</span><span class="o">=</span><span class="n">VIBRATORY_POLARITY_CODE</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="c1"># unassigned</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">segy_revision</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
@@ -401,17 +431,19 @@
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">301</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;segy format revision number&quot;</span><span class="p">,</span>
             <span class="n">value</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fixed_length</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">303</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;fixed length trace flag&quot;</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_txt_headers</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
             <span class="n">start_byte</span><span class="o">=</span><span class="mi">305</span><span class="p">,</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;number of 3200 byte ext file header </span><span class="se">\</span>
-<span class="s2">                records following&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;number of 3200 byte ext file header records following&quot;</span><span class="p">,</span>
+            <span class="n">segy_logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segy_logger</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="c1"># unassigned</span>
 
@@ -420,6 +452,8 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the segy type, e.g. &#39;ibm&#39;, &#39;int32&#39;, &#39;int16&#39;, &#39;float32&#39;, or \</span>
 <span class="sd">            &#39;int8&#39;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: warning if unable to map value to DATA_SAMPLE_FORMAT_CODE; &quot;segytools will not be able to unpack&quot;</span>
+        <span class="c1"># if self.data_sample_format_code.value not in [0, 1, 2, 3, 5, 8]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_sample_format_code</span><span class="o">.</span><span class="n">_mapped_value</span></div>
 
 <div class="viewcode-block" id="SegyFileHeaderRev2.sample_format_size_in_bytes"><a class="viewcode-back" href="../../autoapi/segytools/segy_file_header/index.html#segytools.SegyFileHeaderRev2.sample_format_size_in_bytes">[docs]</a>    <span class="k">def</span> <span class="nf">sample_format_size_in_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -443,6 +477,7 @@
                 <span class="s2">&quot;Unable to determine sample format size in bytes </span><span class="se">\</span>
 <span class="s2">                as sample format is undefined.&quot;</span>
             <span class="p">)</span>
+        <span class="c1"># self.segy_logger.debug(f&#39;sample format {fmt} size in bytes is {byte_size}&#39;)</span>
         <span class="k">return</span> <span class="n">byte_size</span></div></div>
 
     <span class="c1"># TODO: def is_fixed_length(self):</span>
