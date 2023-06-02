@@ -362,63 +362,72 @@ class SegyTraceHeaderRev2(SegyAbstractHeader):
         Undefined.
     """
 
-    def __init__(self):
+    def __init__(self, segy_logger=None):
         super().__init__()
         self.byte_length = 240
+        self.segy_logger = segy_logger  # used for writing information to terminal or file; see https://docs.python.org/3.10/library/logging.html
 
         # HEADERS
         self.trc_seq_num_within_line = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=1,
             description="trace sequence number within line",
+            segy_logger=self.segy_logger,
         )
         self.trc_seq_num_within_file = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=5,
             description="trace sequence number within segy file",
+            segy_logger=self.segy_logger,
         )
         self.field_record_number = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=9,
             description="original field record number",
+            segy_logger=self.segy_logger,
         )
         self.trc_num_within_field_record = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=13,
             description="trace number within the original field record",
+            segy_logger=self.segy_logger,
         )
         self.energy_src_num = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=17,
             description="energy source point number",
+            segy_logger=self.segy_logger,
         )
         self.ensemble_number = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=21,
             description="ensemble number",
+            segy_logger=self.segy_logger,
         )
         self.trc_num_within_ensemble = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=25,
             description="trace number within the ensemble",
+            segy_logger=self.segy_logger,
         )
         self.trc_identification_code = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=29,
             description="trace identification code",
             map_dict=TRACE_IDENTIFICATION_CODE,
+            segy_logger=self.segy_logger,
         )
         self.num_vert_summed_traces = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=31,
-            description="number of vertically summed traces yielding this \
-                trace",
+            description="number of vertically summed traces yielding this trace",
+            segy_logger=self.segy_logger,
         )
         self.num_horz_summed_traces = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=33,
-            description="number of horizontally stacked traces yielding this \
-                trace",
+            description="number of horizontally stacked traces yielding this trace",
+            segy_logger=self.segy_logger,
         )
         self.data_use = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
@@ -426,47 +435,55 @@ class SegyTraceHeaderRev2(SegyAbstractHeader):
             description="data use",
             map_dict=DATA_USE,
             value=1,
+            segy_logger=self.segy_logger,
         )
         self.offset = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=37,
-            description="distance from center of the source point to the \
-                center of the receiver group",
+            description="distance from center of the source point to the center of the receiver group",
+            segy_logger=self.segy_logger,
         )
         self.rcv_elevation = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=41,
             description="receiver group elevation",
+            segy_logger=self.segy_logger,
         )
         self.src_elevation = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=45,
             description="surface elevation at source",
+            segy_logger=self.segy_logger,
         )
         self.src_depth = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=49,
             description="source depth below surface",
+            segy_logger=self.segy_logger,
         )
         self.rcv_datum_elevation = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=53,
             description="datum elevation at receiver group",
+            segy_logger=self.segy_logger,
         )
         self.src_datum_elevation = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=57,
             description="datum elevation at source",
+            segy_logger=self.segy_logger,
         )
         self.src_water_depth = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=61,
             description="water depth at source",
+            segy_logger=self.segy_logger,
         )
         self.rcv_water_depth = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=65,
             description="water depth at group",
+            segy_logger=self.segy_logger,
         )
         self.z_scalar = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
@@ -474,6 +491,7 @@ class SegyTraceHeaderRev2(SegyAbstractHeader):
             description="scalar to be applied to all elevations and depths",
             map_dict=COORDINATE_SCALAR_MULTIPLIER,
             value=1,
+            segy_logger=self.segy_logger,
         )
         self.xy_scalar = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
@@ -481,26 +499,31 @@ class SegyTraceHeaderRev2(SegyAbstractHeader):
             description="scalar to be applied to all coordinates",
             map_dict=COORDINATE_SCALAR_MULTIPLIER,
             value=1,
+            segy_logger=self.segy_logger,
         )
         self.src_x_coord = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=73,
             description="source coordinate x",
+            segy_logger=self.segy_logger,
         )
         self.src_y_coord = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=77,
             description="source coordinate y",
+            segy_logger=self.segy_logger,
         )
         self.rcv_x_coord = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=81,
             description="group coordinate x",
+            segy_logger=self.segy_logger,
         )
         self.rcv_y_coord = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=85,
             description="group coordinate y",
+            segy_logger=self.segy_logger,
         )
         self.coord_units = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
@@ -508,76 +531,91 @@ class SegyTraceHeaderRev2(SegyAbstractHeader):
             description="coordinate units",
             map_dict=COORDINATE_UNITS,
             value=1,
+            segy_logger=self.segy_logger,
         )
         self.weathering_velocity = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=91,
             description="weathering velocity",
+            segy_logger=self.segy_logger,
         )
         self.subweathering_velocity = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=93,
             description="subweathering velocity",
+            segy_logger=self.segy_logger,
         )
         self.src_uphole_time = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=95,
             description="uphole time at source in ms",
+            segy_logger=self.segy_logger,
         )
         self.rcv_uphole_time = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=97,
             description="uphole time at group in ms",
+            segy_logger=self.segy_logger,
         )
         self.src_static_correction = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=99,
             description="source static correction in ms",
+            segy_logger=self.segy_logger,
         )
         self.rcv_static_correction = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=101,
             description="group static correction in ms",
+            segy_logger=self.segy_logger,
         )
         self.total_static_applied = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=103,
             description="total static applied in ms",
+            segy_logger=self.segy_logger,
         )
         self.lag_time_A = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=105,
             description="lag time A",
+            segy_logger=self.segy_logger,
         )
         self.lag_time_B = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=107,
             description="lag time B",
+            segy_logger=self.segy_logger,
         )
         self.delay_recording_time = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=109,
             description="delay recording time",
+            segy_logger=self.segy_logger,
         )
         self.mute_start_time = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=111,
             description="mute time start time in ms",
+            segy_logger=self.segy_logger,
         )
         self.mute_end_time = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=113,
             description="mute time end time in ms",
+            segy_logger=self.segy_logger,
         )
         self.num_samples = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=115,
             description="number of samples in this trace",
+            segy_logger=self.segy_logger,
         )
         self.sample_interval = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=117,
             description="sample interval in ms for this trace",
+            segy_logger=self.segy_logger,
         )
         self.gain_type = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
@@ -585,16 +623,19 @@ class SegyTraceHeaderRev2(SegyAbstractHeader):
             description="gain type of field instruments",
             map_dict=GAIN_TYPE_OF_FIELD_INSTRUMENTS,
             value=1,
+            segy_logger=self.segy_logger,
         )
         self.gain_const = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=121,
             description="instrument gain constant",
+            segy_logger=self.segy_logger,
         )
         self.initial_gain = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=123,
             description="instrument early or initial gain",
+            segy_logger=self.segy_logger,
         )
         self.correlated = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
@@ -602,21 +643,25 @@ class SegyTraceHeaderRev2(SegyAbstractHeader):
             description="correlated",
             map_dict=CORRELATED,
             value=1,
+            segy_logger=self.segy_logger,
         )
         self.sweep_freq_start = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=127,
             description="sweep frequency at start",
+            segy_logger=self.segy_logger,
         )
         self.sweep_freq_end = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=129,
             description="sweep frequency at end",
+            segy_logger=self.segy_logger,
         )
         self.sweep_length = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=131,
             description="sweep length in ms",
+            segy_logger=self.segy_logger,
         )
         self.sweep_type = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
@@ -624,16 +669,19 @@ class SegyTraceHeaderRev2(SegyAbstractHeader):
             description="sweep type",
             map_dict=SWEEP_TYPE,
             value=1,
+            segy_logger=self.segy_logger,
         )
         self.sweep_taper_length_start = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=135,
             description="sweep trace taper length at start in ms",
+            segy_logger=self.segy_logger,
         )
         self.sweep_taper_length_end = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=137,
             description="sweep trace taper length at end in ms",
+            segy_logger=self.segy_logger,
         )
         self.taper_type = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
@@ -641,71 +689,85 @@ class SegyTraceHeaderRev2(SegyAbstractHeader):
             description="taper type",
             map_dict=TAPER_TYPE,
             value=1,
+            segy_logger=self.segy_logger,
         )
         self.alias_filter_freq = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=141,
             description="alias filter frequency",
+            segy_logger=self.segy_logger,
         )
         self.alias_filter_slope = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=143,
             description="alias filter slope",
+            segy_logger=self.segy_logger,
         )
         self.notch_filter_freq = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=145,
             description="notch filter frequency",
+            segy_logger=self.segy_logger,
         )
         self.notch_filter_slope = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=147,
             description="notch filter slope",
+            segy_logger=self.segy_logger,
         )
         self.low_cut_freq = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=149,
             description="low cut frequency",
+            segy_logger=self.segy_logger,
         )
         self.high_cut_freq = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=151,
             description="high cut frequency",
+            segy_logger=self.segy_logger,
         )
         self.low_cut_slope = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=153,
             description="low cut slope",
+            segy_logger=self.segy_logger,
         )
         self.high_cut_slope = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=155,
             description="high cut_slope",
+            segy_logger=self.segy_logger,
         )
         self.year = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=157,
             description="year data recorded",
+            segy_logger=self.segy_logger,
         )
         self.day = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=159,
             description="day of year",
+            segy_logger=self.segy_logger,
         )
         self.hour = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=161,
             description="hour of day",
+            segy_logger=self.segy_logger,
         )
         self.minute = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=163,
             description="minute of hour",
+            segy_logger=self.segy_logger,
         )
         self.second = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=165,
             description="second of minute",
+            segy_logger=self.segy_logger,
         )
         self.time_basis = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
@@ -713,31 +775,37 @@ class SegyTraceHeaderRev2(SegyAbstractHeader):
             description="time basis code",
             map_dict=TIME_BASIS_CODE,
             value=1,
+            segy_logger=self.segy_logger,
         )
         self.trc_weight = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=169,
             description="trace weighting factor",
+            segy_logger=self.segy_logger,
         )
         self.group_num = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=171,
             description="geophone group number of roll switch position one",
+            segy_logger=self.segy_logger,
         )
         self.first_group_num = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=173,
             description="geophone group number of trace number one",
+            segy_logger=self.segy_logger,
         )
         self.last_group_num = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=175,
             description="geophone group number of last trace",
+            segy_logger=self.segy_logger,
         )
         self.gap_size = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=177,
             description="gap size",
+            segy_logger=self.segy_logger,
         )
         self.over_travel = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
@@ -745,44 +813,50 @@ class SegyTraceHeaderRev2(SegyAbstractHeader):
             description="over travel associated with taper",
             map_dict=OVER_TRAVEL_ASSOCIATED_TAPER_AT_BEGINNING_OR_END_OF_LINE,
             value=1,
+            segy_logger=self.segy_logger,
         )
         self.ens_x_coord = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=181,
             description="x coordinate of ensemble position of this trace",
+            segy_logger=self.segy_logger,
         )
         self.ens_y_coord = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=185,
             description="y coordinate of ensemble position of this trace",
+            segy_logger=self.segy_logger,
         )
         self.in_line = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=189,
-            description="for 3D poststack data this field is for in line \
-                number",
+            description="for 3D poststack data this field is for in line number",
+            segy_logger=self.segy_logger,
         )
         self.cross_line = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=193,
-            description="for 3D poststack data this field is for cross line \
-                number",
+            description="for 3D poststack data this field is for cross line number",
+            segy_logger=self.segy_logger,
         )
         self.shotpoint = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=197,
             description="shotpoint number",
+            segy_logger=self.segy_logger,
         )
         self.shotpoint_scalar = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=201,
             description="scalar to be applied to the shotpoint number",
+            segy_logger=self.segy_logger,
         )
         self.trc_value_measurement_unit = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=203,
             description="trace value measurement unit",
             map_dict=TRACE_VALUE_MEASUREMENT_UNIT,
+            segy_logger=self.segy_logger,
         )
         # The transduction constant is encoded with the mantissa and the power
         # of the exponent, e.g.:
@@ -792,43 +866,51 @@ class SegyTraceHeaderRev2(SegyAbstractHeader):
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=205,
             description="transduction constant mantissa",
+            segy_logger=self.segy_logger,
         )
         self.transduction_constant_exponent = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=209,
             description="transduction constant exponent",
+            segy_logger=self.segy_logger,
         )
         self.transduction_units = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=211,
             description="transduction units",
             map_dict=TRANSDUCTION_UNITS,
+            segy_logger=self.segy_logger,
         )
         self.device_identifier = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=213,
             description="device trace identifier",
+            segy_logger=self.segy_logger,
         )
         self.time_scalar = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=215,
             description="scalar to be applied to times",
+            segy_logger=self.segy_logger,
         )
         self.source_type_orientation = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=217,
             description="source type orientation",
             map_dict=SOURCE_TYPE_ORIENTATION,
+            segy_logger=self.segy_logger,
         )
         self.source_energy_direction_mantissa = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=219,
             description="source energy direction mantissa",
+            segy_logger=self.segy_logger,
         )
         self.source_energy_direction_exponent = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=223,
             description="source energy direction exponent",
+            segy_logger=self.segy_logger,
         )
         # The source measurement is encoded with the mantissa and the power of
         # the exponent, e.g.:
@@ -838,25 +920,30 @@ class SegyTraceHeaderRev2(SegyAbstractHeader):
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=225,
             description="source measurement mantissa",
+            segy_logger=self.segy_logger,
         )
         self.source_measurement_exponent = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=229,
             description="source measurement exponent",
+            segy_logger=self.segy_logger,
         )
         self.source_measurement_unit = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT16,  # nbytes=2,
             start_byte=231,
             description="source measurement unit",
             map_dict=SOURCE_MEASUREMENT_UNIT,
+            segy_logger=self.segy_logger,
         )
         self.undefined233 = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=233,
             description="undefined",
+            segy_logger=self.segy_logger,
         )
         self.undefined237 = SegyHeaderItem(
             sample_format=DATA_SAMPLE_FORMAT_INT32,  # nbytes=4,
             start_byte=237,
             description="undefined",
+            segy_logger=self.segy_logger,
         )

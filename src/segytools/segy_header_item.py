@@ -4,6 +4,7 @@ segy header item
 
 # import python standard modules
 import struct
+import logging
 
 # import 3rd party libraries
 import numpy
@@ -42,7 +43,7 @@ class SegyHeaderItem(object):
     """
 
     def __init__(self, sample_format: DataSampleFormat, start_byte: int = 0,
-                 description: str = '', map_dict: dict = {}, value=0):
+                 description: str = '', map_dict: dict = {}, value=0, segy_logger=None):
         """Constructor"""
         # TODO: assert derived from DataSampleFormat name tuple
         self._sample_format = sample_format
@@ -61,6 +62,7 @@ class SegyHeaderItem(object):
         self._mapped_value = None
         if map_dict:
             self._mapped_value = map_dict[value]
+        self.segy_logger = segy_logger
 
     def __str__(self):
         s = 'description: ' + self._description + ', '
@@ -153,8 +155,8 @@ class SegyHeaderItem(object):
             try:
                 self._mapped_value = self._map_dict[value]
             except KeyError:
-                print(f"Unable to map value {value} to header \
-                    item {self._description}")
+                if self.segy_logger:
+                    self.segy_logger.debug(f"Unable to map value {value} to header item {self._description}")
 
     @property
     def supplementary(self) -> str:
