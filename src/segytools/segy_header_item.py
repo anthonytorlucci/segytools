@@ -234,7 +234,7 @@ class SegyHeaderItem(object):
         if sample_format.format == 'ibm':
             # NOTE: only 32-bit ibm floats currently tested and supported
             fmt = ''.join([endianess, 'u4'])
-            val = ibm2float32(numpy.frombuffer(buffer=buf, dtype='>u4'))
+            val = ibm2float32(numpy.frombuffer(buffer=buf, dtype=fmt))
         else:
             fmt = ''.join([endianess, sample_format.format])
             val = struct.unpack(fmt, buf)

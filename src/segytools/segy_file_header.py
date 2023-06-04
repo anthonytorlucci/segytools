@@ -7,8 +7,12 @@ segy file header aka binary header
 # import 3rd party libraries
 
 # import local python
-from segytools.datatypes import (DATA_SAMPLE_FORMAT_INT16,
-                                 DATA_SAMPLE_FORMAT_INT32)
+from segytools.datatypes import (DataSampleFormat,
+                                 DATA_SAMPLE_FORMAT_INT8,
+                                 DATA_SAMPLE_FORMAT_INT16,
+                                 DATA_SAMPLE_FORMAT_INT32,
+                                 DATA_SAMPLE_FORMAT_FLOAT32,
+                                 DATA_SAMPLE_FORMAT_IBM)
 from segytools.segy_abstract_header import SegyAbstractHeader
 from segytools.segy_header_item import SegyHeaderItem
 
@@ -406,6 +410,27 @@ class SegyFileHeaderRev2(SegyAbstractHeader):
         # self.segy_logger.debug(f'sample format {fmt} size in bytes is {byte_size}')
         return byte_size
 
+    def sample_format_datatype(self) -> DataSampleFormat:
+        """Return the DataSampleFormat datatype from the data_sample_format_code member variable."""
+        fmt = self.data_sample_format_code._mapped_value
+        sample_format = DATA_SAMPLE_FORMAT_FLOAT32  # default
+        if fmt == "ibm":
+            sample_format = DATA_SAMPLE_FORMAT_IBM
+        elif fmt == "float32":
+            sample_format = DATA_SAMPLE_FORMAT_FLOAT32
+        elif fmt == "int32":
+            sample_format = DATA_SAMPLE_FORMAT_INT32
+        elif fmt == "int16":
+            sample_format = DATA_SAMPLE_FORMAT_INT16
+        elif fmt == "int8":
+            sample_format = DATA_SAMPLE_FORMAT_INT8
+        else:
+            raise ValueError(
+                "Unable to determine sample format."
+            )
+        # self.segy_logger.debug(f'sample format {fmt} size in bytes is {byte_size}')
+        return sample_format
+    
     # TODO: def is_fixed_length(self):
     #     if self.fixedlen == ??:
     #         return True
