@@ -208,6 +208,11 @@ Classes
 
 
 
+   .. py:method:: sample_format_datatype() -> segytools.datatypes.DataSampleFormat
+
+      Return the DataSampleFormat datatype from the data_sample_format_code member variable.
+
+
 
 .. py:class:: SegyHeaderItem(sample_format: segytools.datatypes.DataSampleFormat, start_byte: int = 0, description: str = '', map_dict: dict = {}, value=0, segy_logger=None)
 

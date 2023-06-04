@@ -78,9 +78,11 @@
 <span class="kn">import</span> <span class="nn">textwrap</span>
 
 <span class="c1"># third party</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">ibm2ieee</span> <span class="kn">import</span> <span class="n">ibm2float32</span><span class="p">,</span> <span class="n">ibm2float64</span>
 
 <span class="c1"># local</span>
-
+<span class="kn">from</span> <span class="nn">.datatypes</span> <span class="kn">import</span> <span class="n">DataSampleFormat</span>
 
 <div class="viewcode-block" id="format_textheader_string"><a class="viewcode-back" href="../../autoapi/segytools/toolkit/index.html#segytools.toolkit.format_textheader_string">[docs]</a><span class="k">def</span> <span class="nf">format_textheader_string</span><span class="p">(</span><span class="n">textheader</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Format the textheader to have each line be 80 characters long and</span>
@@ -97,6 +99,68 @@
 <span class="sd">        Textual header with 80 characters per line.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">textheader</span><span class="p">,</span> <span class="mi">80</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="read_trace_data"><a class="viewcode-back" href="../../autoapi/segytools/toolkit/index.html#segytools.toolkit.read_trace_data">[docs]</a><span class="k">def</span> <span class="nf">read_trace_data</span><span class="p">(</span><span class="n">buf</span><span class="p">:</span><span class="nb">bytes</span><span class="p">,</span> <span class="n">fmt</span><span class="p">:</span><span class="n">DataSampleFormat</span><span class="p">,</span> <span class="n">byteorder</span><span class="o">=</span><span class="s1">&#39;&lt;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;convert an input byte array to a numpy array.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    buf : bytearray</span>
+<span class="sd">        input byte array object</span>
+<span class="sd">    fmt : DataSampleFormat</span>
+<span class="sd">        Describes the format of the samples in the buffer</span>
+<span class="sd">    byteorder : str</span>
+<span class="sd">        Either &#39;&lt;&#39; for little endian or &#39;&gt;&#39; for big endian</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        1D array of trace data of length number of samples.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO: assert byteorder &#39;&lt;&#39; or &#39;&gt;&#39;</span>
+    <span class="k">if</span> <span class="n">fmt</span><span class="o">.</span><span class="n">ctype</span> <span class="o">==</span> <span class="s1">&#39;char&#39;</span><span class="p">:</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int8</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="n">byteorder</span><span class="p">)</span>
+        <span class="n">trc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">fmt</span><span class="o">.</span><span class="n">ctype</span> <span class="o">==</span> <span class="s1">&#39;unsigned char&#39;</span><span class="p">:</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">uint8</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="n">byteorder</span><span class="p">)</span>
+        <span class="n">trc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">fmt</span><span class="o">.</span><span class="n">ctype</span> <span class="o">==</span> <span class="s1">&#39;short&#39;</span><span class="p">:</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int16</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="n">byteorder</span><span class="p">)</span>
+        <span class="n">trc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">fmt</span><span class="o">.</span><span class="n">ctype</span> <span class="o">==</span> <span class="s1">&#39;unsigned short&#39;</span><span class="p">:</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">uint16</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="n">byteorder</span><span class="p">)</span>
+        <span class="n">trc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">fmt</span><span class="o">.</span><span class="n">ctype</span> <span class="o">==</span> <span class="s1">&#39;int&#39;</span><span class="p">:</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int32</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="n">byteorder</span><span class="p">)</span>
+        <span class="n">trc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">fmt</span><span class="o">.</span><span class="n">ctype</span> <span class="o">==</span> <span class="s1">&#39;unsigned int&#39;</span><span class="p">:</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">uint32</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="n">byteorder</span><span class="p">)</span>
+        <span class="n">trc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">fmt</span><span class="o">.</span><span class="n">ctype</span> <span class="o">==</span> <span class="s1">&#39;float&#39;</span><span class="p">:</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">float32</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="n">byteorder</span><span class="p">)</span>
+        <span class="n">trc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">fmt</span><span class="o">.</span><span class="n">ctype</span> <span class="o">==</span> <span class="s1">&#39;double&#39;</span><span class="p">:</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">float64</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="n">byteorder</span><span class="p">)</span>
+        <span class="n">trc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">fmt</span><span class="o">.</span><span class="n">ctype</span> <span class="o">==</span> <span class="s1">&#39;ibm&#39;</span><span class="p">:</span>
+        <span class="n">trc</span> <span class="o">=</span> <span class="n">ibm2float64</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">byteorder</span><span class="p">,</span><span class="s1">&#39;u4&#39;</span><span class="p">])))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;fmt is an unsupported DataSampleFormat.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">trc</span></div>
+
 </pre></div>
 
            </div>

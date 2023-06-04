@@ -19,6 +19,7 @@ Functions
 .. autoapisummary::
 
    segytools.toolkit.format_textheader_string
+   segytools.toolkit.read_trace_data
 
 
 
@@ -32,5 +33,22 @@ Functions
 
    :returns: Textual header with 80 characters per line.
    :rtype: str
+
+
+.. py:function:: read_trace_data(buf: bytes, fmt: segytools.datatypes.DataSampleFormat, byteorder='<') -> numpy.array
+
+   convert an input byte array to a numpy array.
+
+   :param buf: input byte array object
+   :type buf: bytearray
+   :param fmt: Describes the format of the samples in the buffer
+   :type fmt: DataSampleFormat
+   :param byteorder: Either '<' for little endian or '>' for big endian
+   :type byteorder: str
+
+   :returns: 1D array of trace data of length number of samples.
+   :rtype: numpy.ndarray
+
+   :raises ValueError:
 
 

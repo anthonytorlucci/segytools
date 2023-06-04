@@ -81,8 +81,12 @@
 <span class="c1"># import 3rd party libraries</span>
 
 <span class="c1"># import local python</span>
-<span class="kn">from</span> <span class="nn">segytools.datatypes</span> <span class="kn">import</span> <span class="p">(</span><span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
-                                 <span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">segytools.datatypes</span> <span class="kn">import</span> <span class="p">(</span><span class="n">DataSampleFormat</span><span class="p">,</span>
+                                 <span class="n">DATA_SAMPLE_FORMAT_INT8</span><span class="p">,</span>
+                                 <span class="n">DATA_SAMPLE_FORMAT_INT16</span><span class="p">,</span>
+                                 <span class="n">DATA_SAMPLE_FORMAT_INT32</span><span class="p">,</span>
+                                 <span class="n">DATA_SAMPLE_FORMAT_FLOAT32</span><span class="p">,</span>
+                                 <span class="n">DATA_SAMPLE_FORMAT_IBM</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">segytools.segy_abstract_header</span> <span class="kn">import</span> <span class="n">SegyAbstractHeader</span>
 <span class="kn">from</span> <span class="nn">segytools.segy_header_item</span> <span class="kn">import</span> <span class="n">SegyHeaderItem</span>
 
@@ -478,8 +482,29 @@
 <span class="s2">                as sample format is undefined.&quot;</span>
             <span class="p">)</span>
         <span class="c1"># self.segy_logger.debug(f&#39;sample format {fmt} size in bytes is {byte_size}&#39;)</span>
-        <span class="k">return</span> <span class="n">byte_size</span></div></div>
+        <span class="k">return</span> <span class="n">byte_size</span></div>
 
+<div class="viewcode-block" id="SegyFileHeaderRev2.sample_format_datatype"><a class="viewcode-back" href="../../autoapi/segytools/segy_file_header/index.html#segytools.SegyFileHeaderRev2.sample_format_datatype">[docs]</a>    <span class="k">def</span> <span class="nf">sample_format_datatype</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataSampleFormat</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the DataSampleFormat datatype from the data_sample_format_code member variable.&quot;&quot;&quot;</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_sample_format_code</span><span class="o">.</span><span class="n">_mapped_value</span>
+        <span class="n">sample_format</span> <span class="o">=</span> <span class="n">DATA_SAMPLE_FORMAT_FLOAT32</span>  <span class="c1"># default</span>
+        <span class="k">if</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;ibm&quot;</span><span class="p">:</span>
+            <span class="n">sample_format</span> <span class="o">=</span> <span class="n">DATA_SAMPLE_FORMAT_IBM</span>
+        <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;float32&quot;</span><span class="p">:</span>
+            <span class="n">sample_format</span> <span class="o">=</span> <span class="n">DATA_SAMPLE_FORMAT_FLOAT32</span>
+        <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;int32&quot;</span><span class="p">:</span>
+            <span class="n">sample_format</span> <span class="o">=</span> <span class="n">DATA_SAMPLE_FORMAT_INT32</span>
+        <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;int16&quot;</span><span class="p">:</span>
+            <span class="n">sample_format</span> <span class="o">=</span> <span class="n">DATA_SAMPLE_FORMAT_INT16</span>
+        <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;int8&quot;</span><span class="p">:</span>
+            <span class="n">sample_format</span> <span class="o">=</span> <span class="n">DATA_SAMPLE_FORMAT_INT8</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Unable to determine sample format.&quot;</span>
+            <span class="p">)</span>
+        <span class="c1"># self.segy_logger.debug(f&#39;sample format {fmt} size in bytes is {byte_size}&#39;)</span>
+        <span class="k">return</span> <span class="n">sample_format</span></div></div>
+    
     <span class="c1"># TODO: def is_fixed_length(self):</span>
     <span class="c1">#     if self.fixedlen == ??:</span>
     <span class="c1">#         return True</span>

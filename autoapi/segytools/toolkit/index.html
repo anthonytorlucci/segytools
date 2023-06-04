@@ -84,6 +84,9 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#segytools.toolkit.format_textheader_string" title="segytools.toolkit.format_textheader_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">format_textheader_string</span></code></a>(textheader)</p></td>
 <td><p>Format the textheader to have each line be 80 characters long and</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#segytools.toolkit.read_trace_data" title="segytools.toolkit.read_trace_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_trace_data</span></code></a>(→ numpy.array)</p></td>
+<td><p>convert an input byte array to a numpy array.</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py function">
@@ -100,6 +103,30 @@ return a single string.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="segytools.toolkit.read_trace_data">
+<span class="sig-prename descclassname"><span class="pre">segytools.toolkit.</span></span><span class="sig-name descname"><span class="pre">read_trace_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">segytools.datatypes.DataSampleFormat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'&lt;'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.array</span></span></span><a class="reference internal" href="../../../_modules/segytools/toolkit.html#read_trace_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#segytools.toolkit.read_trace_data" title="Permalink to this definition"></a></dt>
+<dd><p>convert an input byte array to a numpy array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>buf</strong> (<em>bytearray</em>) – input byte array object</p></li>
+<li><p><strong>fmt</strong> (<em>DataSampleFormat</em>) – Describes the format of the samples in the buffer</p></li>
+<li><p><strong>byteorder</strong> (<em>str</em>) – Either ‘&lt;’ for little endian or ‘&gt;’ for big endian</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>1D array of trace data of length number of samples.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – </p>
 </dd>
 </dl>
 </dd></dl>
