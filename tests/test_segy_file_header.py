@@ -386,7 +386,7 @@ def test_mapped_sample_format():
     expected = 'ibm'
     file_header = segytools.segy_file_header.SegyFileHeaderRev2()
     file_header.set_header_values(
-        buf=bytes(file_header_bytearray), endianess='<')
+        buf=bytes(file_header_bytearray), byteorder='<')
     actual = file_header.data_sample_format_code.mapped_value
     assert actual == expected
 
@@ -395,6 +395,6 @@ def test_segy_type():
     expected = 'ibm'
     file_header = segytools.segy_file_header.SegyFileHeaderRev2()
     file_header.set_header_values(
-        buf=bytes(file_header_bytearray), endianess='<')
+        buf=bytes(file_header_bytearray), byteorder='<')
     actual = file_header.segy_type()
     assert actual == expected

@@ -1,6 +1,14 @@
-'''
+"""
 segy header item
-'''
+
+Copyright 2022 Anthony Torlucci
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+"""
 
 # import python standard modules
 import struct
@@ -199,26 +207,26 @@ class SegyHeaderItem(object):
             tmp_out = True
         return tmp_out
 
-    def to_bytes(self, endianess: str) -> bytes:
+    def to_bytes(self, byteorder: str) -> bytes:
         """Convert the segy header item to a bytes object for writing back \
             out to segy format.
 
         Parameters
         ----------
-        endianess : str
+        byteorder : str
             '>' for big endian, '<' for little.
         """
         if self._sample_format == 'ibm':
             raise NotImplementedError("IBM floats are not supported for \
                 writing to bytes. Use DataSampleFormat_FLOAT32.")
         else:
-            fmt = ''.join([endianess, self._sample_format.format])
+            fmt = ''.join([byteorder, self._sample_format.format])
             # val = self._value
             bout = struct.pack(fmt, self._value)
         return bout
 
     @staticmethod
-    def value_from_buffer(buf: bytes, endianess: str,
+    def value_from_buffer(buf: bytes, byteorder: str,
                           sample_format: DataSampleFormat):
         """Unpack value from buffer.
 
@@ -226,23 +234,23 @@ class SegyHeaderItem(object):
         ----------
         buf : bytes
             buffer
-        endianess : str
+        byteorder : str
             either '<' for little or '>' for big endian
         sample_format : DataSampleFormat
             data sample format used for interpreting bytes object.
         """
         if sample_format.format == 'ibm':
             # NOTE: only 32-bit ibm floats currently tested and supported
-            fmt = ''.join([endianess, 'u4'])
+            fmt = ''.join([byteorder, 'u4'])
             val = ibm2float32(numpy.frombuffer(buffer=buf, dtype=fmt))
         else:
-            fmt = ''.join([endianess, sample_format.format])
+            fmt = ''.join([byteorder, sample_format.format])
             val = struct.unpack(fmt, buf)
             val = val[0]  # unpack always returns a tuple
         return val
 
     @classmethod
-    def from_bytes(cls, buf: bytes, endianess: str,
+    def from_bytes(cls, buf: bytes, byteorder: str,
                    sample_format: DataSampleFormat, start_byte: int = 0,
                    description: str = '', map_dict: dict = {}):
         """Create a segy header item from a bytes object.
@@ -251,7 +259,7 @@ class SegyHeaderItem(object):
         ----------
         buf : bytes
             The byte data.
-        endianess : str
+        byteorder : str
             '>' for big endian, '<' for little
         """
         header_item = SegyHeaderItem(
@@ -261,7 +269,7 @@ class SegyHeaderItem(object):
             map_dict=map_dict)
         header_item.value = cls.value_from_buffer(
             buf=buf,
-            endianess=endianess,
+            byteorder=byteorder,
             sample_format=sample_format)
 
         return header_item

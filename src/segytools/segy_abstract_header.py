@@ -1,6 +1,14 @@
-'''
+"""
 segy abstract header
-'''
+
+Copyright 2022 Anthony Torlucci
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+"""
 
 # import python standard modules
 # from typing import Any
@@ -73,7 +81,7 @@ class SegyAbstractHeader(object):
 
         return {name: val for (name, val) in SETLIST_HDR_OBJECT}
 
-    def set_header_values(self, buf: bytes, endianess: str):
+    def set_header_values(self, buf: bytes, byteorder: str):
         """Set the value for each header item in the container.
 
         Parameters
@@ -81,7 +89,7 @@ class SegyAbstractHeader(object):
         buf : bytes
             The byte data used to set the values. len(bsgy) must be equal to
             the `byte_length` attribute.
-        endianess : str
+        byteorder : str
             Used to decode the byte data. Must be either 'little' or 'big'.
 
         Raises
@@ -89,12 +97,12 @@ class SegyAbstractHeader(object):
         ValueError
             len(bsgy) != byte_length
         ValueError
-            endianess != 'little' or endianess != 'big'
+            byteorder != 'little' or byteorder != 'big'
         """
         if len(buf) != self.byte_length:
             raise ValueError(f"Number of bytes given {len(buf)} not equal to \
                 header container byte length {self.byte_length}")
-        if endianess != '<' and endianess != '>':
+        if byteorder != '<' and byteorder != '>':
             raise ValueError("Provided endian parameter must be either \
                 '<' or '>'.")
 
@@ -104,17 +112,17 @@ class SegyAbstractHeader(object):
             obj.value = \
                 SegyHeaderItem.value_from_buffer(
                     buf=buf_slice,
-                    endianess=endianess,
+                    byteorder=byteorder,
                     sample_format=obj.sample_format)
 
-    def to_bytes(self, endianess: str) -> bytes:
+    def to_bytes(self, byteorder: str) -> bytes:
         """
         Converts each header item to a byte object and returns the complete
         bytes object of length `byte_length`.
 
         Parameters
         ----------
-        endianess : str
+        byteorder : str
             Either 'big' or 'little'
 
         Returns
@@ -125,5 +133,5 @@ class SegyAbstractHeader(object):
         file_key_obj_dict = self.key_object_dict()
         for _, obj in file_key_obj_dict.items():
             barr[obj.start_byte - 1:obj.start_byte + obj.n_bytes - 1] = \
-                obj.to_bytes(endianess=endianess)
+                obj.to_bytes(byteorder=byteorder)
         return bytes(barr)

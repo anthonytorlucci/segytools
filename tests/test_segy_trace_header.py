@@ -948,7 +948,7 @@ def test_trid_vlue_setter_mapped_value():
 def test_set_header_values_num_samples():
     expected = 1200
     trace_header = segytools.SegyTraceHeaderRev2()
-    trace_header.set_header_values(buf=trace_header_bytes, endianess='<')
+    trace_header.set_header_values(buf=trace_header_bytes, byteorder='<')
     actual = trace_header.num_samples.value
     assert actual == expected
 
@@ -956,7 +956,7 @@ def test_set_header_values_num_samples():
 def test_set_header_values_sample_interval():
     expected = 2000
     trace_header = segytools.SegyTraceHeaderRev2()
-    trace_header.set_header_values(buf=trace_header_bytes, endianess='<')
+    trace_header.set_header_values(buf=trace_header_bytes, byteorder='<')
     actual = trace_header.sample_interval.value
     assert actual == expected
 
@@ -964,7 +964,7 @@ def test_set_header_values_sample_interval():
 def test_set_header_values_z_scalar():
     expected = 0.01
     trace_header = segytools.SegyTraceHeaderRev2()
-    trace_header.set_header_values(buf=trace_header_bytes, endianess='<')
+    trace_header.set_header_values(buf=trace_header_bytes, byteorder='<')
     actual = trace_header.z_scalar.mapped_value
     assert actual == expected
 
@@ -972,7 +972,7 @@ def test_set_header_values_z_scalar():
 def test_set_header_values_xy_scalar():
     expected = 0.01
     trace_header = segytools.SegyTraceHeaderRev2()
-    trace_header.set_header_values(buf=trace_header_bytes, endianess='<')
+    trace_header.set_header_values(buf=trace_header_bytes, byteorder='<')
     actual = trace_header.xy_scalar.mapped_value
     assert actual == expected
 
@@ -981,6 +981,6 @@ def test_set_header_values_xy_scalar():
 def test_set_header_values_trc_identification_code():
     expected = "Seismic Data"
     trace_header = segytools.SegyTraceHeaderRev2()
-    trace_header.set_header_values(buf=trace_header_bytes, endianess='<')
+    trace_header.set_header_values(buf=trace_header_bytes, byteorder='<')
     actual = trace_header.trc_identification_code.mapped_value
     assert actual == expected

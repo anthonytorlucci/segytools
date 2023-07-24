@@ -24,7 +24,7 @@ def test_from_bytes_INT8_ONE_LITTLE():
     buf = struct.pack("<b", expected)
     header_item = SegyHeaderItem.from_bytes(
         buf=buf,
-        endianess='<',
+        byteorder='<',
         sample_format=DATA_SAMPLE_FORMAT_INT8,
         start_byte=0)
     actual = header_item.value
@@ -36,7 +36,7 @@ def test_from_bytes_INT16_ONE_LITTLE():
     buf = struct.pack("<h", expected)
     header_item = SegyHeaderItem.from_bytes(
         buf=buf,
-        endianess='<',
+        byteorder='<',
         sample_format=DATA_SAMPLE_FORMAT_INT16,
         start_byte=0)
     actual = header_item.value
@@ -48,7 +48,7 @@ def test_from_bytes_INT32_ONE_LITTLE():
     buf = struct.pack("<i", expected)
     header_item = SegyHeaderItem.from_bytes(
         buf=buf,
-        endianess='<',
+        byteorder='<',
         sample_format=DATA_SAMPLE_FORMAT_INT32,
         start_byte=0)
     actual = header_item.value
@@ -60,7 +60,7 @@ def test_from_bytes_UINT8_ONE_LITTLE():
     buf = struct.pack("<B", expected)
     header_item = SegyHeaderItem.from_bytes(
         buf=buf,
-        endianess='<',
+        byteorder='<',
         sample_format=DATA_SAMPLE_FORMAT_UINT8,
         start_byte=0)
     actual = header_item.value
@@ -72,7 +72,7 @@ def test_from_bytes_UINT16_ONE_LITTLE():
     buf = struct.pack("<H", expected)
     header_item = SegyHeaderItem.from_bytes(
         buf=buf,
-        endianess='<',
+        byteorder='<',
         sample_format=DATA_SAMPLE_FORMAT_UINT16,
         start_byte=0)
     actual = header_item.value
@@ -84,7 +84,7 @@ def test_from_bytes_UINT32_ONE_LITTLE():
     buf = struct.pack("<I", expected)
     header_item = SegyHeaderItem.from_bytes(
         buf=buf,
-        endianess='<',
+        byteorder='<',
         sample_format=DATA_SAMPLE_FORMAT_UINT32,
         start_byte=0)
     actual = header_item.value
@@ -96,7 +96,7 @@ def test_from_bytes_FLOAT32_ONE_LITTLE():
     buf = struct.pack("<f", expected)
     header_item = SegyHeaderItem.from_bytes(
         buf=buf,
-        endianess='<',
+        byteorder='<',
         sample_format=DATA_SAMPLE_FORMAT_FLOAT32,
         start_byte=0)
     actual = header_item.value
@@ -108,7 +108,7 @@ def test_from_bytes_FLOAT64_ONE_LITTLE():
     buf = struct.pack("<d", expected)
     header_item = SegyHeaderItem.from_bytes(
         buf=buf,
-        endianess='<',
+        byteorder='<',
         sample_format=DATA_SAMPLE_FORMAT_FLOAT64,
         start_byte=0)
     actual = header_item.value
@@ -120,7 +120,7 @@ def test_from_bytes_FLOAT64_ONE_LITTLE():
 #     buf = b'A\x10\x00\x00'  # need correct byte string!
 #     header_item = SegyHeaderItem.from_bytes(
 #         buf=buf,
-#         endianess='<',
+#         byteorder='<',
 #         sample_format=DATA_SAMPLE_FORMAT_IBM,
 #         start_byte=0)
 #     actual = header_item.value
@@ -132,7 +132,7 @@ def test_from_bytes_FLOAT64_ONE_LITTLE():
 #     buf = b'\xc1\x10\x00\x00'  # need correct byte string!
 #     header_item = SegyHeaderItem.from_bytes(
 #         buf=buf,
-#         endianess='<',
+#         byteorder='<',
 #         sample_format=DATA_SAMPLE_FORMAT_IBM,
 #         start_byte=0)
 #     actual = header_item.value
@@ -144,7 +144,7 @@ def test_from_bytes_INT8_ONE_BIG():
     buf = struct.pack(">b", expected)
     header_item = SegyHeaderItem.from_bytes(
         buf=buf,
-        endianess='>',
+        byteorder='>',
         sample_format=DATA_SAMPLE_FORMAT_INT8,
         start_byte=0)
     actual = header_item.value
@@ -156,7 +156,7 @@ def test_from_bytes_INT16_ONE_BIG():
     buf = struct.pack(">h", expected)
     header_item = SegyHeaderItem.from_bytes(
         buf=buf,
-        endianess='>',
+        byteorder='>',
         sample_format=DATA_SAMPLE_FORMAT_INT16,
         start_byte=0)
     actual = header_item.value
@@ -168,7 +168,7 @@ def test_from_bytes_INT32_ONE_BIG():
     buf = struct.pack(">i", expected)
     header_item = SegyHeaderItem.from_bytes(
         buf=buf,
-        endianess='>',
+        byteorder='>',
         sample_format=DATA_SAMPLE_FORMAT_INT32,
         start_byte=0)
     actual = header_item.value
@@ -180,7 +180,7 @@ def test_from_bytes_UINT8_ONE_BIG():
     buf = struct.pack(">B", expected)
     header_item = SegyHeaderItem.from_bytes(
         buf=buf,
-        endianess='>',
+        byteorder='>',
         sample_format=DATA_SAMPLE_FORMAT_UINT8,
         start_byte=0)
     actual = header_item.value
@@ -192,7 +192,7 @@ def test_from_bytes_UINT16_ONE_BIG():
     buf = struct.pack(">H", expected)
     header_item = SegyHeaderItem.from_bytes(
         buf=buf,
-        endianess='>',
+        byteorder='>',
         sample_format=DATA_SAMPLE_FORMAT_UINT16,
         start_byte=0)
     actual = header_item.value
@@ -204,7 +204,7 @@ def test_from_bytes_UINT32_ONE_BIG():
     buf = struct.pack(">I", expected)
     header_item = SegyHeaderItem.from_bytes(
         buf=buf,
-        endianess='>',
+        byteorder='>',
         sample_format=DATA_SAMPLE_FORMAT_UINT32,
         start_byte=0)
     actual = header_item.value
@@ -216,7 +216,7 @@ def test_from_bytes_FLOAT32_ONE_BIG():
     buf = struct.pack(">f", expected)
     header_item = SegyHeaderItem.from_bytes(
         buf=buf,
-        endianess='>',
+        byteorder='>',
         sample_format=DATA_SAMPLE_FORMAT_FLOAT32,
         start_byte=0)
     actual = header_item.value
@@ -228,7 +228,7 @@ def test_from_bytes_FLOAT64_ONE_BIG():
     buf = struct.pack(">d", expected)
     header_item = SegyHeaderItem.from_bytes(
         buf=buf,
-        endianess='>',
+        byteorder='>',
         sample_format=DATA_SAMPLE_FORMAT_FLOAT64,
         start_byte=0)
     actual = header_item.value
@@ -240,7 +240,7 @@ def test_from_bytes_IBM_POS_ONE_BIG():
     buf = b'A\x10\x00\x00'
     header_item = SegyHeaderItem.from_bytes(
         buf=buf,
-        endianess='>',
+        byteorder='>',
         sample_format=DATA_SAMPLE_FORMAT_IBM,
         start_byte=0)
     actual = header_item.value
@@ -252,7 +252,7 @@ def test_from_bytes_IBM_NEG_ONE_BIG():
     buf = b'\xc1\x10\x00\x00'
     header_item = SegyHeaderItem.from_bytes(
         buf=buf,
-        endianess='>',
+        byteorder='>',
         sample_format=DATA_SAMPLE_FORMAT_IBM,
         start_byte=0)
     actual = header_item.value
@@ -264,7 +264,7 @@ def test_to_bytes_INT8_ONE_LITTLE():
     header_item = SegyHeaderItem(
         sample_format=DATA_SAMPLE_FORMAT_INT8,
         value=int(1))
-    actual = header_item.to_bytes(endianess='<')
+    actual = header_item.to_bytes(byteorder='<')
     assert actual == expected
 
 
@@ -273,7 +273,7 @@ def test_to_bytes_INT16_ONE_LITTLE():
     header_item = SegyHeaderItem(
         sample_format=DATA_SAMPLE_FORMAT_INT16,
         value=int(1))
-    actual = header_item.to_bytes(endianess='<')
+    actual = header_item.to_bytes(byteorder='<')
     assert actual == expected
 
 
@@ -282,7 +282,7 @@ def test_to_bytes_INT32_ONE_LITTLE():
     header_item = SegyHeaderItem(
         sample_format=DATA_SAMPLE_FORMAT_INT32,
         value=int(1))
-    actual = header_item.to_bytes(endianess='<')
+    actual = header_item.to_bytes(byteorder='<')
     assert actual == expected
 
 
@@ -291,7 +291,7 @@ def test_to_bytes_UINT8_ONE_LITTLE():
     header_item = SegyHeaderItem(
         sample_format=DATA_SAMPLE_FORMAT_UINT8,
         value=int(1))
-    actual = header_item.to_bytes(endianess='<')
+    actual = header_item.to_bytes(byteorder='<')
     assert actual == expected
 
 
@@ -300,7 +300,7 @@ def test_to_bytes_UINT16_ONE_LITTLE():
     header_item = SegyHeaderItem(
         sample_format=DATA_SAMPLE_FORMAT_UINT16,
         value=int(1))
-    actual = header_item.to_bytes(endianess='<')
+    actual = header_item.to_bytes(byteorder='<')
     assert actual == expected
 
 
@@ -309,7 +309,7 @@ def test_to_bytes_UINT32_ONE_LITTLE():
     header_item = SegyHeaderItem(
         sample_format=DATA_SAMPLE_FORMAT_UINT32,
         value=int(1))
-    actual = header_item.to_bytes(endianess='<')
+    actual = header_item.to_bytes(byteorder='<')
     assert actual == expected
 
 
@@ -318,7 +318,7 @@ def test_to_bytes_FLOAT32_ONE_LITTLE():
     header_item = SegyHeaderItem(
         sample_format=DATA_SAMPLE_FORMAT_FLOAT32,
         value=float(1.0))
-    actual = header_item.to_bytes(endianess='<')
+    actual = header_item.to_bytes(byteorder='<')
     assert actual == expected
 
 
