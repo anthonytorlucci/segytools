@@ -72,9 +72,17 @@
            <div itemprop="articleBody">
              
   <h1>Source code for segytools.segy_abstract_header</h1><div class="highlight"><pre>
-<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">segy abstract header</span>
-<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">Copyright 2022 Anthony Torlucci</span>
+
+<span class="sd">Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</span>
+
+<span class="sd">The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</span>
+
+<span class="sd">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># import python standard modules</span>
 <span class="c1"># from typing import Any</span>
@@ -147,7 +155,7 @@
 
         <span class="k">return</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">val</span> <span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="n">SETLIST_HDR_OBJECT</span><span class="p">}</span></div>
 
-<div class="viewcode-block" id="SegyAbstractHeader.set_header_values"><a class="viewcode-back" href="../../autoapi/segytools/segy_abstract_header/index.html#segytools.SegyAbstractHeader.set_header_values">[docs]</a>    <span class="k">def</span> <span class="nf">set_header_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buf</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">endianess</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="SegyAbstractHeader.set_header_values"><a class="viewcode-back" href="../../autoapi/segytools/segy_abstract_header/index.html#segytools.SegyAbstractHeader.set_header_values">[docs]</a>    <span class="k">def</span> <span class="nf">set_header_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buf</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">byteorder</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the value for each header item in the container.</span>
 
 <span class="sd">        Parameters</span>
@@ -155,7 +163,7 @@
 <span class="sd">        buf : bytes</span>
 <span class="sd">            The byte data used to set the values. len(bsgy) must be equal to</span>
 <span class="sd">            the `byte_length` attribute.</span>
-<span class="sd">        endianess : str</span>
+<span class="sd">        byteorder : str</span>
 <span class="sd">            Used to decode the byte data. Must be either &#39;little&#39; or &#39;big&#39;.</span>
 
 <span class="sd">        Raises</span>
@@ -163,12 +171,12 @@
 <span class="sd">        ValueError</span>
 <span class="sd">            len(bsgy) != byte_length</span>
 <span class="sd">        ValueError</span>
-<span class="sd">            endianess != &#39;little&#39; or endianess != &#39;big&#39;</span>
+<span class="sd">            byteorder != &#39;little&#39; or byteorder != &#39;big&#39;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">byte_length</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of bytes given </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span><span class="si">}</span><span class="s2"> not equal to </span><span class="se">\</span>
 <span class="s2">                header container byte length </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">byte_length</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">endianess</span> <span class="o">!=</span> <span class="s1">&#39;&lt;&#39;</span> <span class="ow">and</span> <span class="n">endianess</span> <span class="o">!=</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">byteorder</span> <span class="o">!=</span> <span class="s1">&#39;&lt;&#39;</span> <span class="ow">and</span> <span class="n">byteorder</span> <span class="o">!=</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Provided endian parameter must be either </span><span class="se">\</span>
 <span class="s2">                &#39;&lt;&#39; or &#39;&gt;&#39;.&quot;</span><span class="p">)</span>
 
@@ -178,17 +186,17 @@
             <span class="n">obj</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> \
                 <span class="n">SegyHeaderItem</span><span class="o">.</span><span class="n">value_from_buffer</span><span class="p">(</span>
                     <span class="n">buf</span><span class="o">=</span><span class="n">buf_slice</span><span class="p">,</span>
-                    <span class="n">endianess</span><span class="o">=</span><span class="n">endianess</span><span class="p">,</span>
+                    <span class="n">byteorder</span><span class="o">=</span><span class="n">byteorder</span><span class="p">,</span>
                     <span class="n">sample_format</span><span class="o">=</span><span class="n">obj</span><span class="o">.</span><span class="n">sample_format</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SegyAbstractHeader.to_bytes"><a class="viewcode-back" href="../../autoapi/segytools/segy_abstract_header/index.html#segytools.SegyAbstractHeader.to_bytes">[docs]</a>    <span class="k">def</span> <span class="nf">to_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endianess</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<div class="viewcode-block" id="SegyAbstractHeader.to_bytes"><a class="viewcode-back" href="../../autoapi/segytools/segy_abstract_header/index.html#segytools.SegyAbstractHeader.to_bytes">[docs]</a>    <span class="k">def</span> <span class="nf">to_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">byteorder</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Converts each header item to a byte object and returns the complete</span>
 <span class="sd">        bytes object of length `byte_length`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        endianess : str</span>
+<span class="sd">        byteorder : str</span>
 <span class="sd">            Either &#39;big&#39; or &#39;little&#39;</span>
 
 <span class="sd">        Returns</span>
@@ -199,7 +207,7 @@
         <span class="n">file_key_obj_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_object_dict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">file_key_obj_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">barr</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">start_byte</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span><span class="n">obj</span><span class="o">.</span><span class="n">start_byte</span> <span class="o">+</span> <span class="n">obj</span><span class="o">.</span><span class="n">n_bytes</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> \
-                <span class="n">obj</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="n">endianess</span><span class="o">=</span><span class="n">endianess</span><span class="p">)</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="n">byteorder</span><span class="o">=</span><span class="n">byteorder</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">barr</span><span class="p">)</span></div></div>
 </pre></div>
 

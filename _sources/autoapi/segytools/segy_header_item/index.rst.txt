@@ -7,6 +7,14 @@
 
    segy header item
 
+   Copyright 2022 Anthony Torlucci
+
+   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 
 
 Module Contents
@@ -23,6 +31,7 @@ Classes
 
 
 .. py:class:: SegyHeaderItem(sample_format: segytools.datatypes.DataSampleFormat, start_byte: int = 0, description: str = '', map_dict: dict = {}, value=0, segy_logger=None)
+
 
    Bases: :py:obj:`object`
 
@@ -94,36 +103,36 @@ Classes
       Returns True if there is a mapping dictionary provided to map the             interpreted value to another value. Otherwise, returns False.
 
 
-   .. py:method:: to_bytes(endianess: str) -> bytes
+   .. py:method:: to_bytes(byteorder: str) -> bytes
 
       Convert the segy header item to a bytes object for writing back             out to segy format.
 
-      :param endianess: '>' for big endian, '<' for little.
-      :type endianess: str
+      :param byteorder: '>' for big endian, '<' for little.
+      :type byteorder: str
 
 
-   .. py:method:: value_from_buffer(buf: bytes, endianess: str, sample_format: segytools.datatypes.DataSampleFormat)
+   .. py:method:: value_from_buffer(buf: bytes, byteorder: str, sample_format: segytools.datatypes.DataSampleFormat)
       :staticmethod:
 
       Unpack value from buffer.
 
       :param buf: buffer
       :type buf: bytes
-      :param endianess: either '<' for little or '>' for big endian
-      :type endianess: str
+      :param byteorder: either '<' for little or '>' for big endian
+      :type byteorder: str
       :param sample_format: data sample format used for interpreting bytes object.
       :type sample_format: DataSampleFormat
 
 
-   .. py:method:: from_bytes(buf: bytes, endianess: str, sample_format: segytools.datatypes.DataSampleFormat, start_byte: int = 0, description: str = '', map_dict: dict = {})
+   .. py:method:: from_bytes(buf: bytes, byteorder: str, sample_format: segytools.datatypes.DataSampleFormat, start_byte: int = 0, description: str = '', map_dict: dict = {})
       :classmethod:
 
       Create a segy header item from a bytes object.
 
       :param buf: The byte data.
       :type buf: bytes
-      :param endianess: '>' for big endian, '<' for little
-      :type endianess: str
+      :param byteorder: '>' for big endian, '<' for little
+      :type byteorder: str
 
 
 

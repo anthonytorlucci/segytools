@@ -72,9 +72,17 @@
            <div itemprop="articleBody">
              
   <h1>Source code for segytools.segy_header_item</h1><div class="highlight"><pre>
-<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">segy header item</span>
-<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">Copyright 2022 Anthony Torlucci</span>
+
+<span class="sd">Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</span>
+
+<span class="sd">The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</span>
+
+<span class="sd">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># import python standard modules</span>
 <span class="kn">import</span> <span class="nn">struct</span>
@@ -273,26 +281,26 @@
             <span class="n">tmp_out</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="n">tmp_out</span></div>
 
-<div class="viewcode-block" id="SegyHeaderItem.to_bytes"><a class="viewcode-back" href="../../autoapi/segytools/segy_header_item/index.html#segytools.SegyHeaderItem.to_bytes">[docs]</a>    <span class="k">def</span> <span class="nf">to_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endianess</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<div class="viewcode-block" id="SegyHeaderItem.to_bytes"><a class="viewcode-back" href="../../autoapi/segytools/segy_header_item/index.html#segytools.SegyHeaderItem.to_bytes">[docs]</a>    <span class="k">def</span> <span class="nf">to_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">byteorder</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the segy header item to a bytes object for writing back \</span>
 <span class="sd">            out to segy format.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        endianess : str</span>
+<span class="sd">        byteorder : str</span>
 <span class="sd">            &#39;&gt;&#39; for big endian, &#39;&lt;&#39; for little.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_format</span> <span class="o">==</span> <span class="s1">&#39;ibm&#39;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;IBM floats are not supported for </span><span class="se">\</span>
 <span class="s2">                writing to bytes. Use DataSampleFormat_FLOAT32.&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">endianess</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_format</span><span class="o">.</span><span class="n">format</span><span class="p">])</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">byteorder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_format</span><span class="o">.</span><span class="n">format</span><span class="p">])</span>
             <span class="c1"># val = self._value</span>
             <span class="n">bout</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">bout</span></div>
 
 <div class="viewcode-block" id="SegyHeaderItem.value_from_buffer"><a class="viewcode-back" href="../../autoapi/segytools/segy_header_item/index.html#segytools.SegyHeaderItem.value_from_buffer">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">value_from_buffer</span><span class="p">(</span><span class="n">buf</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">endianess</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">value_from_buffer</span><span class="p">(</span><span class="n">buf</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">byteorder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                           <span class="n">sample_format</span><span class="p">:</span> <span class="n">DataSampleFormat</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Unpack value from buffer.</span>
 
@@ -300,23 +308,23 @@
 <span class="sd">        ----------</span>
 <span class="sd">        buf : bytes</span>
 <span class="sd">            buffer</span>
-<span class="sd">        endianess : str</span>
+<span class="sd">        byteorder : str</span>
 <span class="sd">            either &#39;&lt;&#39; for little or &#39;&gt;&#39; for big endian</span>
 <span class="sd">        sample_format : DataSampleFormat</span>
 <span class="sd">            data sample format used for interpreting bytes object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">sample_format</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s1">&#39;ibm&#39;</span><span class="p">:</span>
             <span class="c1"># NOTE: only 32-bit ibm floats currently tested and supported</span>
-            <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">endianess</span><span class="p">,</span> <span class="s1">&#39;u4&#39;</span><span class="p">])</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">byteorder</span><span class="p">,</span> <span class="s1">&#39;u4&#39;</span><span class="p">])</span>
             <span class="n">val</span> <span class="o">=</span> <span class="n">ibm2float32</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">endianess</span><span class="p">,</span> <span class="n">sample_format</span><span class="o">.</span><span class="n">format</span><span class="p">])</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">byteorder</span><span class="p">,</span> <span class="n">sample_format</span><span class="o">.</span><span class="n">format</span><span class="p">])</span>
             <span class="n">val</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">buf</span><span class="p">)</span>
             <span class="n">val</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># unpack always returns a tuple</span>
         <span class="k">return</span> <span class="n">val</span></div>
 
 <div class="viewcode-block" id="SegyHeaderItem.from_bytes"><a class="viewcode-back" href="../../autoapi/segytools/segy_header_item/index.html#segytools.SegyHeaderItem.from_bytes">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_bytes</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">buf</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">endianess</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">from_bytes</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">buf</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">byteorder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                    <span class="n">sample_format</span><span class="p">:</span> <span class="n">DataSampleFormat</span><span class="p">,</span> <span class="n">start_byte</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
                    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">map_dict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a segy header item from a bytes object.</span>
@@ -325,7 +333,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        buf : bytes</span>
 <span class="sd">            The byte data.</span>
-<span class="sd">        endianess : str</span>
+<span class="sd">        byteorder : str</span>
 <span class="sd">            &#39;&gt;&#39; for big endian, &#39;&lt;&#39; for little</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">header_item</span> <span class="o">=</span> <span class="n">SegyHeaderItem</span><span class="p">(</span>
@@ -335,7 +343,7 @@
             <span class="n">map_dict</span><span class="o">=</span><span class="n">map_dict</span><span class="p">)</span>
         <span class="n">header_item</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">value_from_buffer</span><span class="p">(</span>
             <span class="n">buf</span><span class="o">=</span><span class="n">buf</span><span class="p">,</span>
-            <span class="n">endianess</span><span class="o">=</span><span class="n">endianess</span><span class="p">,</span>
+            <span class="n">byteorder</span><span class="o">=</span><span class="n">byteorder</span><span class="p">,</span>
             <span class="n">sample_format</span><span class="o">=</span><span class="n">sample_format</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">header_item</span></div></div>

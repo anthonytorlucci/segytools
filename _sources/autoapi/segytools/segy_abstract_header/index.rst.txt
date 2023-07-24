@@ -7,6 +7,14 @@
 
    segy abstract header
 
+   Copyright 2022 Anthony Torlucci
+
+   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 
 
 Module Contents
@@ -23,6 +31,7 @@ Classes
 
 
 .. py:class:: SegyAbstractHeader
+
 
    Bases: :py:obj:`object`
 
@@ -85,27 +94,27 @@ Classes
       objects.
 
 
-   .. py:method:: set_header_values(buf: bytes, endianess: str)
+   .. py:method:: set_header_values(buf: bytes, byteorder: str)
 
       Set the value for each header item in the container.
 
       :param buf: The byte data used to set the values. len(bsgy) must be equal to
                   the `byte_length` attribute.
       :type buf: bytes
-      :param endianess: Used to decode the byte data. Must be either 'little' or 'big'.
-      :type endianess: str
+      :param byteorder: Used to decode the byte data. Must be either 'little' or 'big'.
+      :type byteorder: str
 
       :raises ValueError: len(bsgy) != byte_length
-      :raises ValueError: endianess != 'little' or endianess != 'big'
+      :raises ValueError: byteorder != 'little' or byteorder != 'big'
 
 
-   .. py:method:: to_bytes(endianess: str) -> bytes
+   .. py:method:: to_bytes(byteorder: str) -> bytes
 
       Converts each header item to a byte object and returns the complete
       bytes object of length `byte_length`.
 
-      :param endianess: Either 'big' or 'little'
-      :type endianess: str
+      :param byteorder: Either 'big' or 'little'
+      :type byteorder: str
 
       :rtype: bytes
 

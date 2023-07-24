@@ -21,7 +21,9 @@
         <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="segytools.datatypes" href="datatypes/index.html" />
+    <link rel="prev" title="API Reference" href="../index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,8 +46,27 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../index.html">API Reference</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">segytools</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="datatypes/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">segytools.datatypes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="segy_abstract_header/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">segytools.segy_abstract_header</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="segy_file_header/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">segytools.segy_file_header</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="segy_header_item/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">segytools.segy_header_item</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="segy_trace_header/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">segytools.segy_trace_header</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="toolkit/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">segytools.toolkit</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">segytools.utils</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#package-contents">Package Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -62,6 +83,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">API Reference</a></li>
       <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">segytools</span></code></li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/autoapi/segytools/index.rst.txt" rel="nofollow"> View page source</a>
@@ -75,6 +97,10 @@
   <section id="module-segytools">
 <span id="segytools"></span><h1><a class="reference internal" href="#module-segytools" title="segytools"><code class="xref py py-mod docutils literal notranslate"><span class="pre">segytools</span></code></a><a class="headerlink" href="#module-segytools" title="Permalink to this heading"></a></h1>
 <p>segytools</p>
+<p>Copyright 2022 Anthony Torlucci</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
 <div class="toctree-wrapper compound">
@@ -189,20 +215,20 @@ objects.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="segytools.SegyAbstractHeader.set_header_values">
-<span class="sig-name descname"><span class="pre">set_header_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endianess</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/segytools/segy_abstract_header.html#SegyAbstractHeader.set_header_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#segytools.SegyAbstractHeader.set_header_values" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_header_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/segytools/segy_abstract_header.html#SegyAbstractHeader.set_header_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#segytools.SegyAbstractHeader.set_header_values" title="Permalink to this definition"></a></dt>
 <dd><p>Set the value for each header item in the container.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>buf</strong> (<em>bytes</em>) – The byte data used to set the values. len(bsgy) must be equal to
 the <cite>byte_length</cite> attribute.</p></li>
-<li><p><strong>endianess</strong> (<em>str</em>) – Used to decode the byte data. Must be either ‘little’ or ‘big’.</p></li>
+<li><p><strong>byteorder</strong> (<em>str</em>) – Used to decode the byte data. Must be either ‘little’ or ‘big’.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>ValueError</strong> – len(bsgy) != byte_length</p></li>
-<li><p><strong>ValueError</strong> – endianess != ‘little’ or endianess != ‘big’</p></li>
+<li><p><strong>ValueError</strong> – byteorder != ‘little’ or byteorder != ‘big’</p></li>
 </ul>
 </dd>
 </dl>
@@ -210,12 +236,12 @@ the <cite>byte_length</cite> attribute.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="segytools.SegyAbstractHeader.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endianess</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="../../_modules/segytools/segy_abstract_header.html#SegyAbstractHeader.to_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#segytools.SegyAbstractHeader.to_bytes" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="../../_modules/segytools/segy_abstract_header.html#SegyAbstractHeader.to_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#segytools.SegyAbstractHeader.to_bytes" title="Permalink to this definition"></a></dt>
 <dd><p>Converts each header item to a byte object and returns the complete
 bytes object of length <cite>byte_length</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>endianess</strong> (<em>str</em>) – Either ‘big’ or ‘little’</p>
+<dd class="field-odd"><p><strong>byteorder</strong> (<em>str</em>) – Either ‘big’ or ‘little’</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bytes</p>
@@ -371,24 +397,24 @@ For example, reading a 4-byte integer header from a bytes or             bytearr
 
 <dl class="py method">
 <dt class="sig sig-object py" id="segytools.SegyHeaderItem.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endianess</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="../../_modules/segytools/segy_header_item.html#SegyHeaderItem.to_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#segytools.SegyHeaderItem.to_bytes" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="../../_modules/segytools/segy_header_item.html#SegyHeaderItem.to_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#segytools.SegyHeaderItem.to_bytes" title="Permalink to this definition"></a></dt>
 <dd><p>Convert the segy header item to a bytes object for writing back             out to segy format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>endianess</strong> (<em>str</em>) – ‘&gt;’ for big endian, ‘&lt;’ for little.</p>
+<dd class="field-odd"><p><strong>byteorder</strong> (<em>str</em>) – ‘&gt;’ for big endian, ‘&lt;’ for little.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="segytools.SegyHeaderItem.value_from_buffer">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value_from_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endianess</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">segytools.datatypes.DataSampleFormat</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/segytools/segy_header_item.html#SegyHeaderItem.value_from_buffer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#segytools.SegyHeaderItem.value_from_buffer" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value_from_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">segytools.datatypes.DataSampleFormat</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/segytools/segy_header_item.html#SegyHeaderItem.value_from_buffer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#segytools.SegyHeaderItem.value_from_buffer" title="Permalink to this definition"></a></dt>
 <dd><p>Unpack value from buffer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>buf</strong> (<em>bytes</em>) – buffer</p></li>
-<li><p><strong>endianess</strong> (<em>str</em>) – either ‘&lt;’ for little or ‘&gt;’ for big endian</p></li>
+<li><p><strong>byteorder</strong> (<em>str</em>) – either ‘&lt;’ for little or ‘&gt;’ for big endian</p></li>
 <li><p><strong>sample_format</strong> (<em>DataSampleFormat</em>) – data sample format used for interpreting bytes object.</p></li>
 </ul>
 </dd>
@@ -397,13 +423,13 @@ For example, reading a 4-byte integer header from a bytes or             bytearr
 
 <dl class="py method">
 <dt class="sig sig-object py" id="segytools.SegyHeaderItem.from_bytes">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endianess</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">segytools.datatypes.DataSampleFormat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_byte</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/segytools/segy_header_item.html#SegyHeaderItem.from_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#segytools.SegyHeaderItem.from_bytes" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">segytools.datatypes.DataSampleFormat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_byte</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/segytools/segy_header_item.html#SegyHeaderItem.from_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#segytools.SegyHeaderItem.from_bytes" title="Permalink to this definition"></a></dt>
 <dd><p>Create a segy header item from a bytes object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>buf</strong> (<em>bytes</em>) – The byte data.</p></li>
-<li><p><strong>endianess</strong> (<em>str</em>) – ‘&gt;’ for big endian, ‘&lt;’ for little</p></li>
+<li><p><strong>byteorder</strong> (<em>str</em>) – ‘&gt;’ for big endian, ‘&lt;’ for little</p></li>
 </ul>
 </dd>
 </dl>
@@ -525,7 +551,10 @@ mapping.</p></li>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="datatypes/index.html" class="btn btn-neutral float-right" title="segytools.datatypes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
