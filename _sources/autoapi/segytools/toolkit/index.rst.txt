@@ -5,15 +5,9 @@
 
 .. autoapi-nested-parse::
 
-   Collection of tools for working with segy data
+   Collection of tools for working with segy data.
 
-   Copyright 2022 Anthony Torlucci
-
-   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+   The functions in this module will almost always take a segy file as input.
 
 
 
@@ -26,37 +20,21 @@ Functions
 
 .. autoapisummary::
 
-   segytools.toolkit.format_textheader_string
-   segytools.toolkit.read_trace_data
+   segytools.toolkit.textual_header
 
 
 
-.. py:function:: format_textheader_string(textheader)
+.. py:function:: textual_header(input_segy_file, txt_encoding) -> str
 
-   Format the textheader to have each line be 80 characters long and
-   return a single string.
+   Returns the textheader (first 3200 bytes) as a string.
 
-   :param textheader: The textual header string after decoding.
-   :type textheader: str
-
-   :returns: Textual header with 80 characters per line.
-   :rtype: str
-
-
-.. py:function:: read_trace_data(buf: bytes, fmt: segytools.datatypes.DataSampleFormat, byteorder='<') -> numpy.array
-
-   convert an input byte array to a numpy array.
-
-   :param buf: input byte array object
-   :type buf: bytearray
-   :param fmt: Describes the format of the samples in the buffer
-   :type fmt: DataSampleFormat
-   :param byteorder: Either '<' for little endian or '>' for big endian
-   :type byteorder: str
-
-   :returns: 1D array of trace data of length number of samples.
-   :rtype: numpy.ndarray
+   :param input_segy_file: Input segy file path from which to extract the textual header.
+   :type input_segy_file: str | pathlib.Path
+   :param txt_encoding: Must be either 'ebcdic' or 'ascii'
+   :type txt_encoding: str
 
    :raises ValueError:
+
+   :rtype: str
 
 

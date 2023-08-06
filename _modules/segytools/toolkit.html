@@ -73,104 +73,56 @@
              
   <h1>Source code for segytools.toolkit</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Collection of tools for working with segy data</span>
+<span class="sd">Collection of tools for working with segy data.</span>
 
-<span class="sd">Copyright 2022 Anthony Torlucci</span>
-
-<span class="sd">Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</span>
-
-<span class="sd">The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</span>
-
-<span class="sd">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+<span class="sd">The functions in this module will almost always take a segy file as input.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="c1"># standard</span>
-<span class="kn">import</span> <span class="nn">textwrap</span>
+<span class="c1"># Copyright 2022 Anthony Torlucci</span>
 
-<span class="c1"># third party</span>
-<span class="kn">import</span> <span class="nn">numpy</span>
-<span class="kn">from</span> <span class="nn">ibm2ieee</span> <span class="kn">import</span> <span class="n">ibm2float32</span><span class="p">,</span> <span class="n">ibm2float64</span>
+<span class="c1"># Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</span>
 
-<span class="c1"># local</span>
-<span class="kn">from</span> <span class="nn">.datatypes</span> <span class="kn">import</span> <span class="n">DataSampleFormat</span>
+<span class="c1"># The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</span>
 
-<div class="viewcode-block" id="format_textheader_string"><a class="viewcode-back" href="../../autoapi/segytools/toolkit/index.html#segytools.toolkit.format_textheader_string">[docs]</a><span class="k">def</span> <span class="nf">format_textheader_string</span><span class="p">(</span><span class="n">textheader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Format the textheader to have each line be 80 characters long and</span>
-<span class="sd">    return a single string.</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span>
+
+<div class="viewcode-block" id="textual_header"><a class="viewcode-back" href="../../autoapi/segytools/toolkit/index.html#segytools.toolkit.textual_header">[docs]</a><span class="k">def</span> <span class="nf">textual_header</span><span class="p">(</span><span class="n">input_segy_file</span><span class="p">,</span> <span class="n">txt_encoding</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the textheader (first 3200 bytes) as a string.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    textheader : str</span>
-<span class="sd">        The textual header string after decoding.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    str</span>
-<span class="sd">        Textual header with 80 characters per line.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">textheader</span><span class="p">,</span> <span class="mi">80</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="read_trace_data"><a class="viewcode-back" href="../../autoapi/segytools/toolkit/index.html#segytools.toolkit.read_trace_data">[docs]</a><span class="k">def</span> <span class="nf">read_trace_data</span><span class="p">(</span><span class="n">buf</span><span class="p">:</span><span class="nb">bytes</span><span class="p">,</span> <span class="n">fmt</span><span class="p">:</span><span class="n">DataSampleFormat</span><span class="p">,</span> <span class="n">byteorder</span><span class="o">=</span><span class="s1">&#39;&lt;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;convert an input byte array to a numpy array.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    buf : bytearray</span>
-<span class="sd">        input byte array object</span>
-<span class="sd">    fmt : DataSampleFormat</span>
-<span class="sd">        Describes the format of the samples in the buffer</span>
-<span class="sd">    byteorder : str</span>
-<span class="sd">        Either &#39;&lt;&#39; for little endian or &#39;&gt;&#39; for big endian</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    numpy.ndarray</span>
-<span class="sd">        1D array of trace data of length number of samples.</span>
+<span class="sd">    input_segy_file : str | pathlib.Path</span>
+<span class="sd">        Input segy file path from which to extract the textual header.</span>
+<span class="sd">    txt_encoding : str</span>
+<span class="sd">        Must be either &#39;ebcdic&#39; or &#39;ascii&#39;</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
 <span class="sd">    ValueError</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># TODO: assert byteorder &#39;&lt;&#39; or &#39;&gt;&#39;</span>
-    <span class="k">if</span> <span class="n">fmt</span><span class="o">.</span><span class="n">ctype</span> <span class="o">==</span> <span class="s1">&#39;char&#39;</span><span class="p">:</span>
-        <span class="n">dt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int8</span>
-        <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="n">byteorder</span><span class="p">)</span>
-        <span class="n">trc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">fmt</span><span class="o">.</span><span class="n">ctype</span> <span class="o">==</span> <span class="s1">&#39;unsigned char&#39;</span><span class="p">:</span>
-        <span class="n">dt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">uint8</span>
-        <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="n">byteorder</span><span class="p">)</span>
-        <span class="n">trc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">fmt</span><span class="o">.</span><span class="n">ctype</span> <span class="o">==</span> <span class="s1">&#39;short&#39;</span><span class="p">:</span>
-        <span class="n">dt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int16</span>
-        <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="n">byteorder</span><span class="p">)</span>
-        <span class="n">trc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">fmt</span><span class="o">.</span><span class="n">ctype</span> <span class="o">==</span> <span class="s1">&#39;unsigned short&#39;</span><span class="p">:</span>
-        <span class="n">dt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">uint16</span>
-        <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="n">byteorder</span><span class="p">)</span>
-        <span class="n">trc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">fmt</span><span class="o">.</span><span class="n">ctype</span> <span class="o">==</span> <span class="s1">&#39;int&#39;</span><span class="p">:</span>
-        <span class="n">dt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int32</span>
-        <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="n">byteorder</span><span class="p">)</span>
-        <span class="n">trc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">fmt</span><span class="o">.</span><span class="n">ctype</span> <span class="o">==</span> <span class="s1">&#39;unsigned int&#39;</span><span class="p">:</span>
-        <span class="n">dt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">uint32</span>
-        <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="n">byteorder</span><span class="p">)</span>
-        <span class="n">trc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">fmt</span><span class="o">.</span><span class="n">ctype</span> <span class="o">==</span> <span class="s1">&#39;float&#39;</span><span class="p">:</span>
-        <span class="n">dt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">float32</span>
-        <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="n">byteorder</span><span class="p">)</span>
-        <span class="n">trc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">fmt</span><span class="o">.</span><span class="n">ctype</span> <span class="o">==</span> <span class="s1">&#39;double&#39;</span><span class="p">:</span>
-        <span class="n">dt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">float64</span>
-        <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="n">byteorder</span><span class="p">)</span>
-        <span class="n">trc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">fmt</span><span class="o">.</span><span class="n">ctype</span> <span class="o">==</span> <span class="s1">&#39;ibm&#39;</span><span class="p">:</span>
-        <span class="n">trc</span> <span class="o">=</span> <span class="n">ibm2float64</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">byteorder</span><span class="p">,</span><span class="s1">&#39;u4&#39;</span><span class="p">])))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;fmt is an unsupported DataSampleFormat.&quot;</span><span class="p">)</span>
+    <span class="c1"># &#39;rb&#39; is &quot;read bytes&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_segy_file</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fobj</span><span class="p">:</span>
+        <span class="c1"># read the first 3200 bytes.</span>
+        <span class="c1"># This will always be 3200 byte textual file header</span>
+        <span class="n">b_text_header</span> <span class="o">=</span> <span class="n">fobj</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">3200</span><span class="p">)</span>
+        <span class="c1"># print(type(b_text_header))</span>
 
-    <span class="k">return</span> <span class="n">trc</span></div>
+        <span class="n">textheader</span> <span class="o">=</span> <span class="nb">str</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">txt_encoding</span> <span class="o">==</span> <span class="s1">&#39;ebcdic&#39;</span><span class="p">:</span>
+            <span class="n">textheader</span> <span class="o">=</span> <span class="n">b_text_header</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;cp500&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">txt_encoding</span> <span class="o">==</span> <span class="s1">&#39;ascii&#39;</span><span class="p">:</span>
+            <span class="n">textheader</span> <span class="o">=</span> <span class="n">b_text_header</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to decode textheader.&quot;</span><span class="p">)</span>
+    
+        <span class="n">fobj</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
+    <span class="k">return</span> <span class="n">textheader</span></div>
 </pre></div>
 
            </div>
