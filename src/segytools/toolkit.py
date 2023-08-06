@@ -1,99 +1,51 @@
 """
-Collection of tools for working with segy data
+Collection of tools for working with segy data.
 
-Copyright 2022 Anthony Torlucci
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+The functions in this module will almost always take a segy file as input.
 """
 
-# standard
-import textwrap
+# Copyright 2022 Anthony Torlucci
 
-# third party
-import numpy
-from ibm2ieee import ibm2float32, ibm2float64
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-# local
-from .datatypes import DataSampleFormat
+# The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-def format_textheader_string(textheader):
-    """Format the textheader to have each line be 80 characters long and
-    return a single string.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-    Parameters
-    ----------
-    textheader : str
-        The textual header string after decoding.
-
-    Returns
-    -------
-    str
-        Textual header with 80 characters per line.
+def textual_header(input_segy_file, txt_encoding) -> str:
     """
-    return "\n".join(textwrap.wrap(textheader, 80))
-
-def read_trace_data(buf:bytes, fmt:DataSampleFormat, byteorder='<') -> numpy.array:
-    """convert an input byte array to a numpy array.
+    Returns the textheader (first 3200 bytes) as a string.
 
     Parameters
     ----------
-    buf : bytearray
-        input byte array object
-    fmt : DataSampleFormat
-        Describes the format of the samples in the buffer
-    byteorder : str
-        Either '<' for little endian or '>' for big endian
-
-    Returns
-    -------
-    numpy.ndarray
-        1D array of trace data of length number of samples.
+    input_segy_file : str | pathlib.Path
+        Input segy file path from which to extract the textual header.
+    txt_encoding : str
+        Must be either 'ebcdic' or 'ascii'
 
     Raises
     ------
     ValueError
+    
+    Returns
+    -------
+    str
     """
-    # TODO: assert byteorder '<' or '>'
-    if fmt.ctype == 'char':
-        dt = numpy.int8
-        dt = dt.newbyteorder(byteorder)
-        trc = numpy.frombuffer(buf, dtype=dt)
-    elif fmt.ctype == 'unsigned char':
-        dt = numpy.uint8
-        dt = dt.newbyteorder(byteorder)
-        trc = numpy.frombuffer(buf, dtype=dt)
-    elif fmt.ctype == 'short':
-        dt = numpy.int16
-        dt = dt.newbyteorder(byteorder)
-        trc = numpy.frombuffer(buf, dtype=dt)
-    elif fmt.ctype == 'unsigned short':
-        dt = numpy.uint16
-        dt = dt.newbyteorder(byteorder)
-        trc = numpy.frombuffer(buf, dtype=dt)
-    elif fmt.ctype == 'int':
-        dt = numpy.int32
-        dt = dt.newbyteorder(byteorder)
-        trc = numpy.frombuffer(buf, dtype=dt)
-    elif fmt.ctype == 'unsigned int':
-        dt = numpy.uint32
-        dt = dt.newbyteorder(byteorder)
-        trc = numpy.frombuffer(buf, dtype=dt)
-    elif fmt.ctype == 'float':
-        dt = numpy.float32
-        dt = dt.newbyteorder(byteorder)
-        trc = numpy.frombuffer(buf, dtype=dt)
-    elif fmt.ctype == 'double':
-        dt = numpy.float64
-        dt = dt.newbyteorder(byteorder)
-        trc = numpy.frombuffer(buf, dtype=dt)
-    elif fmt.ctype == 'ibm':
-        trc = ibm2float64(numpy.frombuffer(buffer=buf, dtype=''.join([byteorder,'u4'])))
-    else:
-        raise ValueError("fmt is an unsupported DataSampleFormat.")
+    # 'rb' is "read bytes"
+    with open(input_segy_file, 'rb') as fobj:
+        # read the first 3200 bytes.
+        # This will always be 3200 byte textual file header
+        b_text_header = fobj.read(3200)
+        # print(type(b_text_header))
 
-    return trc
+        textheader = str()
+        if txt_encoding == 'ebcdic':
+            textheader = b_text_header.decode(encoding='cp500')
+        elif txt_encoding == 'ascii':
+            textheader = b_text_header.decode(encoding='utf-8')
+        else:
+            raise ValueError(f"Unable to decode textheader.")
+    
+        fobj.close()
 
+    return textheader
