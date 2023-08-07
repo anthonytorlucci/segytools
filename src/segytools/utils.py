@@ -60,35 +60,35 @@ def read_trace_data(buf:bytes, fmt:DataSampleFormat, byteorder='<') -> numpy.arr
     """
     # TODO: assert byteorder '<' or '>'
     if fmt.ctype == 'char':
-        dt = numpy.int8
+        dt = numpy.dtype(numpy.int8)
         dt = dt.newbyteorder(byteorder)
         trc = numpy.frombuffer(buf, dtype=dt)
     elif fmt.ctype == 'unsigned char':
-        dt = numpy.uint8
+        dt = numpy.dtype(numpy.uint8)
         dt = dt.newbyteorder(byteorder)
         trc = numpy.frombuffer(buf, dtype=dt)
     elif fmt.ctype == 'short':
-        dt = numpy.int16
+        dt = numpy.dtype(numpy.int16)
         dt = dt.newbyteorder(byteorder)
         trc = numpy.frombuffer(buf, dtype=dt)
     elif fmt.ctype == 'unsigned short':
-        dt = numpy.uint16
+        dt = numpy.dtype(numpy.uint16)
         dt = dt.newbyteorder(byteorder)
         trc = numpy.frombuffer(buf, dtype=dt)
     elif fmt.ctype == 'int':
-        dt = numpy.int32
+        dt = numpy.dtype(numpy.int32)
         dt = dt.newbyteorder(byteorder)
         trc = numpy.frombuffer(buf, dtype=dt)
     elif fmt.ctype == 'unsigned int':
-        dt = numpy.uint32
+        dt = numpy.dtype(numpy.uint32)
         dt = dt.newbyteorder(byteorder)
         trc = numpy.frombuffer(buf, dtype=dt)
     elif fmt.ctype == 'float':
-        dt = numpy.float32
+        dt = numpy.dtype(numpy.float32)
         dt = dt.newbyteorder(byteorder)
         trc = numpy.frombuffer(buf, dtype=dt)
     elif fmt.ctype == 'double':
-        dt = numpy.float64
+        dt = numpy.dtype(numpy.float64)
         dt = dt.newbyteorder(byteorder)
         trc = numpy.frombuffer(buf, dtype=dt)
     elif fmt.ctype == 'ibm':
