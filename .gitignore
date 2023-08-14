@@ -159,10 +159,4 @@ sandbox.py
 references/
 
 # example data too large for upload
-examples/poland2D/data/Line_001.RPS
-examples/poland2D/data/Line_001.SPS
-examples/poland2D/data/Line_001.XPS
-examples/poland2D/data/Line_001.TXT
-examples/poland2D/data/Line_001.sgy
-examples/poland2D/data/Line_001_NO_AUX.sgy
-examples/poland2D/data/Line_001_NO_AUX_geom.sgy
+examples/poland2D/data/
